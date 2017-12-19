@@ -22,8 +22,8 @@ public class PeripheralDevice {
     @NotNull
     private Status status;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "gateway_serial_number", referencedColumnName = "serial_number")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(referencedColumnName = "serial_number", unique = true)
     private Gateway gateway;
 
     public PeripheralDevice() {

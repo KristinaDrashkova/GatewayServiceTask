@@ -2,9 +2,10 @@ package com.musala.gateway.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Entity
-@Table(name = "gateway")
+@Table(name = "gateways")
 public class Gateway {
 
     @Id
@@ -18,6 +19,8 @@ public class Gateway {
     @Column(name = "ipv4_address")
     private String ipv4Address;
 
+    @OneToMany(mappedBy = "uid", fetch = FetchType.LAZY)
+    private Set<PeripheralDevice> peripheralDevices;
     public Gateway() {
     }
 
@@ -43,5 +46,13 @@ public class Gateway {
 
     public void setIpv4Address(String ipv4Address) {
         this.ipv4Address = ipv4Address;
+    }
+
+    public Set<PeripheralDevice> getPeripheralDevices() {
+        return peripheralDevices;
+    }
+
+    public void setPeripheralDevices(Set<PeripheralDevice> peripheralDevices) {
+        this.peripheralDevices = peripheralDevices;
     }
 }
