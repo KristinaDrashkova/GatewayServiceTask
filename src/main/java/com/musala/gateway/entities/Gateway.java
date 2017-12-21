@@ -19,8 +19,10 @@ public class Gateway {
     @Column(name = "ipv4_address")
     private String ipv4Address;
 
-    @OneToMany(mappedBy = "uid", fetch = FetchType.LAZY)
+    @NotNull
+    @OneToMany(mappedBy = "gateway", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<PeripheralDevice> peripheralDevices;
+
     public Gateway() {
     }
 
@@ -54,5 +56,15 @@ public class Gateway {
 
     public void setPeripheralDevices(Set<PeripheralDevice> peripheralDevices) {
         this.peripheralDevices = peripheralDevices;
+    }
+
+    @Override
+    public String toString() {
+        return "Gateway{" +
+                "serialNumber='" + serialNumber + '\'' +
+                ", name='" + name + '\'' +
+                ", ipv4Address='" + ipv4Address + '\'' +
+                ", peripheralDevices=" + peripheralDevices.toString() +
+                '}';
     }
 }

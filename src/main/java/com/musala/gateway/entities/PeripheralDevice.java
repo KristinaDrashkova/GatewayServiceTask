@@ -2,14 +2,13 @@ package com.musala.gateway.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "peripheral_devices")
 public class PeripheralDevice {
 
     @Id
-    @NotNull
     private Integer uid;
 
     @NotNull
@@ -17,13 +16,14 @@ public class PeripheralDevice {
 
     @NotNull
     @Column(name = "date_created")
-    private LocalDateTime dateCreated;
+    private LocalDate dateCreated;
 
     @NotNull
     private Status status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "serial_number", unique = true)
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "gateway_serial_number", referencedColumnName = "serial_number")
     private Gateway gateway;
 
     public PeripheralDevice() {
@@ -45,11 +45,11 @@ public class PeripheralDevice {
         this.vendor = vendor;
     }
 
-    public LocalDateTime getDateCreated() {
+    public LocalDate getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(LocalDateTime dateCreated) {
+    public void setDateCreated(LocalDate dateCreated) {
         this.dateCreated = dateCreated;
     }
 
@@ -67,5 +67,16 @@ public class PeripheralDevice {
 
     public void setGateway(Gateway gateway) {
         this.gateway = gateway;
+    }
+
+    @Override
+    public String toString() {
+        return "PeripheralDevice{" +
+                "uid=" + uid +
+                ", vendor='" + vendor + '\'' +
+                ", dateCreated=" + dateCreated +
+                ", status=" + status +
+                ", gateway=" + gateway +
+                '}';
     }
 }

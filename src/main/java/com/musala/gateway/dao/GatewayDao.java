@@ -7,9 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface GatewayDao extends JpaRepository<Gateway, String>{
+public interface GatewayDao extends JpaRepository<Gateway, String> {
     List<Gateway> findAll();
 
     Gateway findBySerialNumber(String serialNumber);
-
 }

@@ -1,8 +1,12 @@
 package com.musala.gateway.service;
 
+import com.musala.gateway.dto.GatewayAddDto;
+
+
 public interface GatewayService {
-    void create();
-    void read();
-    void update();
-    void delete();
+    void printInfoForAllGateways();
+
+    void save(GatewayAddDto gatewayAddDto);
+
+    void printInfoForAGateway(String serialNumber);
 }
