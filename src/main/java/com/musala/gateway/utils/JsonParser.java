@@ -19,7 +19,7 @@ public class JsonParser {
                 .excludeFieldsWithoutExposeAnnotation()
                 .setPrettyPrinting()
                 .serializeNulls()
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+                .setDateFormat("yyyy-MM-dd")
                 .create();
         this.fileReader = fileReader;
     }

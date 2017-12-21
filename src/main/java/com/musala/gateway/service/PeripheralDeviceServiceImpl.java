@@ -11,11 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.BufferedReader;
 
 @Service
 @Transactional
-public class PeripheralDeviceServiceImpl implements PeripheralDeviceService{
+public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
     private final PeripheralDeviceDao peripheralDeviceDao;
     private final GatewayDao gatewayDao;
 
@@ -27,12 +26,12 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService{
 
     public void save(PeripheralDeviceAddDto peripheralDeviceAddDto) {
         PeripheralDevice peripheralDevice = ModelParser.getInstance().map(peripheralDeviceAddDto, PeripheralDevice.class);
-        String gatewayNumber = peripheralDeviceAddDto.getGateway();
-        Gateway gateway = gatewayDao.findBySerialNumber(gatewayNumber);
-        if (gateway.getPeripheralDevices().size() < 10) {
+        Integer gatewayId = peripheralDeviceAddDto.getGateway();
+        Gateway gateway = gatewayDao.findById(gatewayId);
+        if (gateway != null && gateway.getPeripheralDevices().size() < 10) {
             peripheralDevice.setGateway(gateway);
             if (ValidationUtil.isValid(peripheralDevice)) {
-                peripheralDeviceDao.saveAndFlush(peripheralDevice);
+                peripheralDeviceDao.save(peripheralDevice);
             } else {
                 //log here
             }
@@ -41,8 +40,8 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService{
         }
     }
 
-    public void removeDevice(String gatewayNumber, int uid) {
-        Gateway gateway = gatewayDao.findBySerialNumber(gatewayNumber);
-        gateway.getPeripheralDevices().removeIf(p -> p.getUid() == uid);
+    @Override
+    public void removeDevice(int uid) {
+        peripheralDeviceDao.remove(uid);
     }
 }

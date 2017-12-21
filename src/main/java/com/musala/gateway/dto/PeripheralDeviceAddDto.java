@@ -3,22 +3,23 @@ package com.musala.gateway.dto;
 import com.google.gson.annotations.Expose;
 import com.musala.gateway.entities.Status;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 public class PeripheralDeviceAddDto {
+    @Expose
     private Integer uid;
 
     @Expose
     private String vendor;
 
     @Expose
-    private LocalDate dateCreated;
+    private Date dateCreated;
 
     @Expose
     private Status status;
 
     @Expose
-    private String gateway;
+    private Integer gateway;
 
     public PeripheralDeviceAddDto() {
     }
@@ -39,11 +40,11 @@ public class PeripheralDeviceAddDto {
         this.vendor = vendor;
     }
 
-    public LocalDate getDateCreated() {
+    public Date getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(LocalDate dateCreated) {
+    public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
 
@@ -55,11 +56,11 @@ public class PeripheralDeviceAddDto {
         this.status = status;
     }
 
-    public String getGateway() {
+    public Integer getGateway() {
         return gateway;
     }
 
-    public void setGateway(String gateway) {
+    public void setGateway(Integer gateway) {
         this.gateway = gateway;
     }
 }

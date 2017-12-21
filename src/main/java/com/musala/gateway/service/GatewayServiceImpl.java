@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -31,15 +32,16 @@ public class GatewayServiceImpl implements GatewayService {
 
     public void save(GatewayAddDto gatewayAddDto) {
         Gateway gateway = ModelParser.getInstance().map(gatewayAddDto, Gateway.class);
+        gateway.setPeripheralDevices(new HashSet<>());
         if (ValidationUtil.isValid(gateway)) {
-            gatewayDao.saveAndFlush(gateway);
+            gatewayDao.save(gateway);
         } else {
             //log here
         }
     }
 
     public void printInfoForAGateway(String serialNumber) {
-        Gateway gateway = gatewayDao.findBySerialNumber(serialNumber);
+        Gateway gateway = gatewayDao.findById(serialNumber);
         System.out.println(gateway.toString());
     }
 

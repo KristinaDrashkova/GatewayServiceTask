@@ -2,28 +2,27 @@ package com.musala.gateway.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
-@Table(name = "peripheral_devices")
-public class PeripheralDevice {
+@Table(name = "peripheral_device")
+public class PeripheralDevice extends BaseEntity{
 
-    @Id
     private Integer uid;
 
     @NotNull
     private String vendor;
 
-    @NotNull
     @Column(name = "date_created")
-    private LocalDate dateCreated;
+    private Date dateCreated;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "gateway_serial_number", referencedColumnName = "serial_number")
+    @JoinColumn(name = "gateway_id", referencedColumnName = "id")
     private Gateway gateway;
 
     public PeripheralDevice() {
@@ -45,11 +44,11 @@ public class PeripheralDevice {
         this.vendor = vendor;
     }
 
-    public LocalDate getDateCreated() {
+    public Date getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(LocalDate dateCreated) {
+    public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
 

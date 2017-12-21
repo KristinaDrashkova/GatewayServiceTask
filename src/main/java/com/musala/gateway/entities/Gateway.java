@@ -5,10 +5,9 @@ import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
-@Table(name = "gateways")
-public class Gateway {
+@Table(name = "gateway")
+public class Gateway extends BaseEntity{
 
-    @Id
     @Column(name = "serial_number")
     private String serialNumber;
 
