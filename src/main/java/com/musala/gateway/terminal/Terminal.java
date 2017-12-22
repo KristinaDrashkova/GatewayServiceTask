@@ -13,12 +13,16 @@ import org.springframework.stereotype.Component;
 public class Terminal implements CommandLineRunner {
     private static final String IMPORT_GATEWAY_PATH = "/json/in/gateways.json";
     private static final String IMPORT_PERIPHERAL_DEVICE_PATH = "/json/in/peripheral_devices.json";
+    private final JsonParser jsonParser;
+    private final GatewayService gatewayService;
+    private final PeripheralDeviceService peripheralDeviceService;
+
     @Autowired
-    private JsonParser jsonParser;
-    @Autowired
-    private GatewayService gatewayService;
-    @Autowired
-    private PeripheralDeviceService peripheralDeviceService;
+    public Terminal(JsonParser jsonParser, GatewayService gatewayService, PeripheralDeviceService peripheralDeviceService) {
+        this.jsonParser = jsonParser;
+        this.gatewayService = gatewayService;
+        this.peripheralDeviceService = peripheralDeviceService;
+    }
 
 
     @Override

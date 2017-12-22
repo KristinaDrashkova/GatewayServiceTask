@@ -1,31 +1,53 @@
 package com.musala.gateway.dao;
 
 import com.musala.gateway.entities.Gateway;
+import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import java.util.List;
 
+@Repository
 public class GatewayDaoImpl implements GatewayDao {
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("GatewayService");
-    private EntityManager em = emf.createEntityManager();
 
-    public GatewayDaoImpl() {
-    }
+    @PersistenceUnit(unitName = "gateway")
+    private EntityManagerFactory emf;
 
     @Override
     public List<Gateway> findAll() {
-        return em.createQuery("SELECT g FROM gateway AS g").getResultList();
+        EntityManager em = this.emf.createEntityManager();
+        try {
+            return em.createQuery("FROM Gateway").getResultList();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+
     }
 
     @Override
     public Gateway findById(Integer id) {
-        return em.find(Gateway.class, id);
+        EntityManager em = this.emf.createEntityManager();
+        try {
+            return em.find(Gateway.class, id);
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
     }
 
     @Override
     public void save(Gateway gateway) {
-        em.persist(gateway);
+        EntityManager em = this.emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.persist(gateway);
+            em.getTransaction().commit();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
     }
 }

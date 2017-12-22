@@ -3,7 +3,6 @@ package com.musala.gateway.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "entity")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class BaseEntity {
     @Id

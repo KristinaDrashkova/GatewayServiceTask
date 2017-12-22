@@ -40,8 +40,8 @@ public class GatewayServiceImpl implements GatewayService {
         }
     }
 
-    public void printInfoForAGateway(String serialNumber) {
-        Gateway gateway = gatewayDao.findById(serialNumber);
+    public void printInfoForAGateway(Integer id) {
+        Gateway gateway = gatewayDao.findById(id);
         System.out.println(gateway.toString());
     }
 

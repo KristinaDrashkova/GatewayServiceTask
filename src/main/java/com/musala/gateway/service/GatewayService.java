@@ -8,5 +8,5 @@ public interface GatewayService {
 
     void save(GatewayAddDto gatewayAddDto);
 
-    void printInfoForAGateway(String serialNumber);
+    void printInfoForAGateway(Integer id);
 }

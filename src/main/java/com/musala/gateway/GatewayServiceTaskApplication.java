@@ -5,8 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class GatewayServiceTaskApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(GatewayServiceTaskApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(GatewayServiceTaskApplication.class, args);
+    }
 }

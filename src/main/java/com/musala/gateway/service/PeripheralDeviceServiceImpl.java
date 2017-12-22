@@ -24,6 +24,7 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
         this.gatewayDao = gatewayDao;
     }
 
+
     public void save(PeripheralDeviceAddDto peripheralDeviceAddDto) {
         PeripheralDevice peripheralDevice = ModelParser.getInstance().map(peripheralDeviceAddDto, PeripheralDevice.class);
         Integer gatewayId = peripheralDeviceAddDto.getGateway();
