@@ -4,17 +4,18 @@ import com.musala.gateway.entities.Gateway;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.List;
 
+@Transactional
 @Repository
 public class GatewayDaoImpl implements GatewayDao {
 
-    @PersistenceUnit(unitName = "gateway")
-    private EntityManagerFactory emf;
+    @PersistenceContext(name = "gateway")
+    private EntityManager em;
 
     @Override
     public List<Gateway> findAll() {
-        EntityManager em = this.emf.createEntityManager();
         try {
             return em.createQuery("FROM Gateway").getResultList();
         } finally {
@@ -27,7 +28,6 @@ public class GatewayDaoImpl implements GatewayDao {
 
     @Override
     public Gateway findById(Integer id) {
-        EntityManager em = this.emf.createEntityManager();
         try {
             return em.find(Gateway.class, id);
         } finally {
@@ -39,11 +39,8 @@ public class GatewayDaoImpl implements GatewayDao {
 
     @Override
     public void save(Gateway gateway) {
-        EntityManager em = this.emf.createEntityManager();
         try {
-            em.getTransaction().begin();
             em.persist(gateway);
-            em.getTransaction().commit();
         } finally {
             if (em != null) {
                 em.close();
