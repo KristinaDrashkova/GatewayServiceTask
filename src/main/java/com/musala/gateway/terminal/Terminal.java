@@ -44,5 +44,4 @@ public class Terminal implements CommandLineRunner {
             peripheralDeviceService.save(peripheralDeviceAddDto);
         }
     }
-
 }
