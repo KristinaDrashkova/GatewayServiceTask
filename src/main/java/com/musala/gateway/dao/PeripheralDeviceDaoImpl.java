@@ -2,6 +2,7 @@ package com.musala.gateway.dao;
 
 import com.musala.gateway.entities.PeripheralDevice;
 import org.springframework.stereotype.Repository;
+
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -32,7 +33,12 @@ public class PeripheralDeviceDaoImpl implements PeripheralDeviceDao {
         try {
             Query query = em.createQuery("FROM PeripheralDevice WHERE uid = :uid");
             query.setParameter("uid", uid);
-            return (PeripheralDevice) query.getResultList().get(0);
+            List<Object> objects = query.getResultList();
+            if (objects.size() > 0) {
+                return (PeripheralDevice) objects.get(0);
+            }
+            return null;
+
         } finally {
             if (em != null) {
                 em.close();

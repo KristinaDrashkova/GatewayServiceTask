@@ -28,19 +28,24 @@ public class GatewayServiceImplTest {
     }
 
     @Test
-    public void printInfoForAllGateways() throws Exception {
+    public void printInfoForAllGatewaysShouldWorkCorrectly() throws Exception {
         gatewayService.printInfoForAllGateways();
         verify(gatewayDaoMock, times(1)).findAll();
     }
 
     @Test
-    public void save() throws Exception {
+    public void saveShouldWorkCorrectly() throws Exception {
         gatewayService.save(gatewayAddDto);
         verify(gatewayDaoMock, times(1)).save(any());
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void saveShouldThrowExceptionWithNullArgument() throws Exception {
+        gatewayService.save(null);
+    }
+
     @Test
-    public void printInfoForAGateway() throws Exception {
+    public void printInfoForAGatewayShouldWorkCorrectly() throws Exception {
         gatewayService.printInfoForAGateway(1);
         verify(gatewayDaoMock, times(1)).findById(1);
     }

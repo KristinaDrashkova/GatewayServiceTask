@@ -43,24 +43,29 @@ public class PeripheralDeviceServiceImplTest {
     }
 
     @Test
-    public void save() throws Exception {
+    public void saveShouldWorkCorrectly() throws Exception {
         Mockito.when(gatewayDaoMock.findById(1)).thenReturn(gatewayMock);
         peripheralDeviceService.save(peripheralDeviceAddDto);
         verify(peripheralDeviceDaoMock, times(1)).save(any());
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void saveShouldThrowExceptionWithNull() throws Exception {
+        peripheralDeviceService.save(null);
+
+    }
+
     @Test
-    public void removeDevice() throws Exception {
+    public void removeDeviceShouldWorkCorrectly() throws Exception {
         peripheralDeviceService.removeDevice(1);
 
         Mockito.verify(peripheralDeviceDaoMock, times(1)).remove(1);
     }
 
     @Test
-    public void printInfoForAPeripheralDevice() throws Exception {
+    public void printInfoForAPeripheralDeviceShouldWorkCorrectly() throws Exception {
         peripheralDeviceService.printInfoForAPeripheralDevice(1);
 
         Mockito.verify(peripheralDeviceDaoMock, times(1)).findByUid(1);
     }
-
 }

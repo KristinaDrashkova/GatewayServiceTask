@@ -62,7 +62,7 @@ public class PeripheralDeviceDaoImplTest {
     @Test
     @Transactional
     @Rollback
-    public void findAll() throws Exception {
+    public void findAllShouldWorkCorrectly() throws Exception {
         em.persist(peripheralDevice);
 
         List<PeripheralDevice> peripheralDevices = peripheralDeviceDao.findAll();
@@ -73,7 +73,7 @@ public class PeripheralDeviceDaoImplTest {
     @Test
     @Transactional
     @Rollback
-    public void findByUid() throws Exception {
+    public void findByUidShouldWorkCorrectly() throws Exception {
         em.persist(peripheralDevice);
 
         PeripheralDevice peripheralDeviceDb = peripheralDeviceDao.findByUid(1);
@@ -83,17 +83,27 @@ public class PeripheralDeviceDaoImplTest {
     @Test
     @Transactional
     @Rollback
-    public void save() throws Exception {
+    public void saveShouldWorkCorrectly() throws Exception {
         peripheralDeviceDao.save(peripheralDevice);
 
         PeripheralDevice peripheralDeviceDb = peripheralDeviceDao.findByUid(1);
+        PeripheralDevice peripheralDeviceNull = peripheralDeviceDao.findByUid(2);
         Assert.assertEquals(peripheralDevice, peripheralDeviceDb);
+        Assert.assertEquals(null, peripheralDeviceNull);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @Transactional
+    @Rollback
+    public void saveShouldThrowExceptionWithNull() {
+        peripheralDeviceDao.save(null);
+
     }
 
     @Test
     @Transactional
     @Rollback
-    public void remove() throws Exception {
+    public void removeShouldWorkCorrectly() throws Exception {
         em.persist(peripheralDevice);
 
         peripheralDeviceDao.remove(1);
@@ -101,4 +111,13 @@ public class PeripheralDeviceDaoImplTest {
         Assert.assertEquals(0, peripheralDevices.size());
     }
 
+
+    @Test(expected = IllegalArgumentException.class)
+    @Transactional
+    @Rollback
+    public void removeShouldThrowExceptionWithNoExistingNumber() throws Exception {
+        em.persist(peripheralDevice);
+
+        peripheralDeviceDao.remove(2);
+    }
 }

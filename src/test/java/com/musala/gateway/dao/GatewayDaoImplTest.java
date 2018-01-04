@@ -4,6 +4,7 @@ import com.musala.gateway.JpaConfig;
 import com.musala.gateway.entities.Gateway;
 import com.musala.gateway.entities.PeripheralDevice;
 import com.musala.gateway.entities.Status;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,10 +63,12 @@ public class GatewayDaoImplTest {
     @Test
     @Transactional
     @Rollback
-    public void findAll() {
+    public void findAllShouldWorkCorrectly() {
+        List<Gateway> gateways = gatewayDao.findAll();
+        Assert.assertEquals(0, gateways.size());
         em.persist(gateway);
 
-        List<Gateway> gateways = gatewayDao.findAll();
+        gateways = gatewayDao.findAll();
         Assert.assertEquals(gateway.getId(), gateways.get(0).getId());
         Assert.assertEquals(1, gateways.size());
     }
@@ -73,20 +76,31 @@ public class GatewayDaoImplTest {
     @Test
     @Transactional
     @Rollback
-    public void findById() {
+    public void findByIdShouldWorkCorrectly() {
         em.persist(gateway);
 
-        Gateway dbGateway = gatewayDao.findById(1);
-        Assert.assertEquals(gateway, dbGateway);
+        Gateway gatewayDb = gatewayDao.findById(1);
+        Gateway gatewayNull = gatewayDao.findById(2);
+        Assert.assertEquals(gateway, gatewayDb);
+        Assert.assertEquals(null, gatewayNull);
     }
 
     @Test
     @Transactional
     @Rollback
-    public void save() {
+    public void saveShouldWorkCorrectly() {
         gatewayDao.save(gateway);
 
         Gateway gatewayDb = gatewayDao.findById(1);
         Assert.assertEquals(gateway, gatewayDb);
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    @Transactional
+    @Rollback
+    public void saveShouldThrowExceptionWithNull() {
+        gatewayDao.save(null);
+
+    }
+
 }
