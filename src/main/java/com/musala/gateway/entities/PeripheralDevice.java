@@ -9,11 +9,13 @@ import java.util.Objects;
 @Table(name = "peripheral_device")
 public class PeripheralDevice extends BaseEntity {
 
+    @NotNull
     private Integer uid;
 
     @NotNull
     private String vendor;
 
+    @NotNull
     @Column(name = "date_created")
     private Date dateCreated;
 
@@ -21,8 +23,7 @@ public class PeripheralDevice extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @NotNull
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "gateway_id", referencedColumnName = "id")
     private Gateway gateway;
 
@@ -92,12 +93,12 @@ public class PeripheralDevice extends BaseEntity {
 
     @Override
     public String toString() {
-        return "PeripheralDevice{" +
-                "uid=" + uid +
-                ", vendor='" + vendor + '\'' +
-                ", dateCreated=" + dateCreated +
-                ", status=" + status +
-                ", gateway=" + gateway +
+        return "PeripheralDevice { " + System.lineSeparator() +
+                "uid = " + uid + System.lineSeparator() +
+                "vendor = " + vendor + System.lineSeparator() +
+                "dateCreated = " + dateCreated + System.lineSeparator() +
+                "status = " + status + System.lineSeparator() +
+                "gateway = " + gateway.getName() + System.lineSeparator() +
                 '}';
     }
 }

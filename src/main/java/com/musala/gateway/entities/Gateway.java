@@ -7,8 +7,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "gateway")
-public class Gateway extends BaseEntity{
+public class Gateway extends BaseEntity {
 
+    @NotNull
     @Column(name = "serial_number")
     private String serialNumber;
 
@@ -19,7 +20,6 @@ public class Gateway extends BaseEntity{
     @Column(name = "ipv4_address")
     private String ipv4Address;
 
-    @NotNull
     @OneToMany(mappedBy = "gateway", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<PeripheralDevice> peripheralDevices;
 
@@ -60,11 +60,11 @@ public class Gateway extends BaseEntity{
 
     @Override
     public String toString() {
-        return "Gateway{" +
-                "serialNumber='" + serialNumber + '\'' +
-                ", name='" + name + '\'' +
-                ", ipv4Address='" + ipv4Address + '\'' +
-                ", peripheralDevices=" + peripheralDevices.toString() +
+        return "Gateway {" + System.lineSeparator() +
+                "serialNumber = " + serialNumber + System.lineSeparator() +
+                "name = " + name + System.lineSeparator() +
+                "ipv4Address = " + ipv4Address + System.lineSeparator() +
+                "peripheralDevices: " + System.lineSeparator() + peripheralDevices.toString() +
                 '}';
     }
 }

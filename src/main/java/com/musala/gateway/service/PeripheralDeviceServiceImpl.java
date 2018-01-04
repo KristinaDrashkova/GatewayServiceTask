@@ -25,6 +25,7 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
     }
 
 
+    @Override
     public void save(PeripheralDeviceAddDto peripheralDeviceAddDto) {
         PeripheralDevice peripheralDevice = ModelParser.getInstance().map(peripheralDeviceAddDto, PeripheralDevice.class);
         Integer gatewayId = peripheralDeviceAddDto.getGateway();
@@ -44,5 +45,12 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
     @Override
     public void removeDevice(int uid) {
         peripheralDeviceDao.remove(uid);
+    }
+
+    @Override
+    public void printInfoForAPeripheralDevice(int uid) {
+        PeripheralDevice peripheralDevice = peripheralDeviceDao.findByUid(uid);
+
+        System.out.println(peripheralDevice);
     }
 }

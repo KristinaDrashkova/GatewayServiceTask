@@ -7,4 +7,6 @@ public interface PeripheralDeviceService {
     void save(PeripheralDeviceAddDto peripheralDeviceAddDto);
 
     void removeDevice(int uid);
+
+    void printInfoForAPeripheralDevice(int uid);
 }

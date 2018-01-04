@@ -13,6 +13,7 @@ public class PeripheralDeviceDaoImpl implements PeripheralDeviceDao {
     @PersistenceContext(name = "gateway")
     private EntityManager em;
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<PeripheralDevice> findAll() {
         try {
@@ -25,10 +26,13 @@ public class PeripheralDeviceDaoImpl implements PeripheralDeviceDao {
 
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public PeripheralDevice findByUid(int uid) {
         try {
-            return em.find(PeripheralDevice.class, uid);
+            Query query = em.createQuery("FROM PeripheralDevice WHERE uid = :uid");
+            query.setParameter("uid", uid);
+            return (PeripheralDevice) query.getResultList().get(0);
         } finally {
             if (em != null) {
                 em.close();

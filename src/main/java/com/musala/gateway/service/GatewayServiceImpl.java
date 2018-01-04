@@ -42,7 +42,7 @@ public class GatewayServiceImpl implements GatewayService {
 
     public void printInfoForAGateway(Integer id) {
         Gateway gateway = gatewayDao.findById(id);
-        System.out.println(gateway.toString());
+        System.out.println(gateway);
     }
 
 }

@@ -2,12 +2,15 @@ package com.musala.gateway.terminal;
 
 import com.musala.gateway.dto.GatewayAddDto;
 import com.musala.gateway.dto.PeripheralDeviceAddDto;
+import com.musala.gateway.entities.PeripheralDevice;
 import com.musala.gateway.service.GatewayService;
 import com.musala.gateway.service.PeripheralDeviceService;
 import com.musala.gateway.utils.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class Terminal implements CommandLineRunner {
@@ -44,4 +47,5 @@ public class Terminal implements CommandLineRunner {
             peripheralDeviceService.save(peripheralDeviceAddDto);
         }
     }
+
 }

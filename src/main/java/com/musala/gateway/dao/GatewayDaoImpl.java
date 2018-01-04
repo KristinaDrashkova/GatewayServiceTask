@@ -1,6 +1,7 @@
 package com.musala.gateway.dao;
 
 import com.musala.gateway.entities.Gateway;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ public class GatewayDaoImpl implements GatewayDao {
     @PersistenceContext(name = "gateway")
     private EntityManager em;
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Gateway> findAll() {
         try {
