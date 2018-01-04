@@ -31,9 +31,7 @@ import java.util.Set;
 @ContextConfiguration(
         classes = {JpaConfig.class},
         loader = AnnotationConfigContextLoader.class)
-@Transactional
 public class GatewayDaoImplTest {
-
     @Autowired
     private GatewayDao gatewayDao;
 
@@ -43,7 +41,7 @@ public class GatewayDaoImplTest {
     private Gateway gateway = new Gateway();
 
     @Before
-    public void initialize() throws ParseException {
+    public void setUp() throws ParseException {
         gateway.setName("name");
         gateway.setSerialNumber("1245-1234-1234-1235");
         gateway.setIpv4Address("192.168.3.24");
@@ -79,8 +77,8 @@ public class GatewayDaoImplTest {
     public void findByIdShouldWorkCorrectly() {
         em.persist(gateway);
 
-        Gateway gatewayDb = gatewayDao.findById(1);
-        Gateway gatewayNull = gatewayDao.findById(2);
+        Gateway gatewayDb = gatewayDao.findById(gateway.getId());
+        Gateway gatewayNull = gatewayDao.findById(10);
         Assert.assertEquals(gateway, gatewayDb);
         Assert.assertEquals(null, gatewayNull);
     }
@@ -91,7 +89,7 @@ public class GatewayDaoImplTest {
     public void saveShouldWorkCorrectly() {
         gatewayDao.save(gateway);
 
-        Gateway gatewayDb = gatewayDao.findById(1);
+        Gateway gatewayDb = gatewayDao.findById(gateway.getId());
         Assert.assertEquals(gateway, gatewayDb);
     }
 
@@ -103,4 +101,8 @@ public class GatewayDaoImplTest {
 
     }
 
+    @After
+    public void finalize() {
+
+    }
 }

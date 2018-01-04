@@ -18,7 +18,7 @@ public class GatewayServiceImplTest {
 
 
     @Before
-    public void initialize() {
+    public void setUp() {
         gatewayDaoMock = Mockito.mock(GatewayDao.class);
         gatewayService = new GatewayServiceImpl(gatewayDaoMock);
         gatewayAddDto = new GatewayAddDto();

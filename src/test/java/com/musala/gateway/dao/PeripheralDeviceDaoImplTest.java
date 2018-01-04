@@ -40,7 +40,7 @@ public class PeripheralDeviceDaoImplTest {
     private PeripheralDevice peripheralDevice = new PeripheralDevice();
 
     @Before
-    public void initialize() throws ParseException {
+    public void setUp() throws ParseException {
         Gateway gateway = new Gateway();
         gateway.setName("name");
         gateway.setSerialNumber("1245-1234-1234-1235");
@@ -76,7 +76,7 @@ public class PeripheralDeviceDaoImplTest {
     public void findByUidShouldWorkCorrectly() throws Exception {
         em.persist(peripheralDevice);
 
-        PeripheralDevice peripheralDeviceDb = peripheralDeviceDao.findByUid(1);
+        PeripheralDevice peripheralDeviceDb = peripheralDeviceDao.findByUid(peripheralDevice.getUid());
         Assert.assertEquals(peripheralDevice, peripheralDeviceDb);
     }
 
@@ -86,7 +86,7 @@ public class PeripheralDeviceDaoImplTest {
     public void saveShouldWorkCorrectly() throws Exception {
         peripheralDeviceDao.save(peripheralDevice);
 
-        PeripheralDevice peripheralDeviceDb = peripheralDeviceDao.findByUid(1);
+        PeripheralDevice peripheralDeviceDb = peripheralDeviceDao.findByUid(peripheralDevice.getUid());
         PeripheralDevice peripheralDeviceNull = peripheralDeviceDao.findByUid(2);
         Assert.assertEquals(peripheralDevice, peripheralDeviceDb);
         Assert.assertEquals(null, peripheralDeviceNull);
@@ -106,7 +106,7 @@ public class PeripheralDeviceDaoImplTest {
     public void removeShouldWorkCorrectly() throws Exception {
         em.persist(peripheralDevice);
 
-        peripheralDeviceDao.remove(1);
+        peripheralDeviceDao.remove(peripheralDevice.getUid());
         List<PeripheralDevice> peripheralDevices = peripheralDeviceDao.findAll();
         Assert.assertEquals(0, peripheralDevices.size());
     }
@@ -118,6 +118,6 @@ public class PeripheralDeviceDaoImplTest {
     public void removeShouldThrowExceptionWithNoExistingNumber() throws Exception {
         em.persist(peripheralDevice);
 
-        peripheralDeviceDao.remove(2);
+        peripheralDeviceDao.remove(10);
     }
 }

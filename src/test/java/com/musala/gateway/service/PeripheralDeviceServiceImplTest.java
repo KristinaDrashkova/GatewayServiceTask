@@ -27,7 +27,7 @@ public class PeripheralDeviceServiceImplTest {
     private Gateway gatewayMock;
 
     @Before
-    public void initialize() throws ParseException {
+    public void setUp() throws ParseException {
         peripheralDeviceDaoMock = Mockito.mock(PeripheralDeviceDao.class);
         gatewayDaoMock = Mockito.mock(GatewayDao.class);
         peripheralDeviceService = new PeripheralDeviceServiceImpl(peripheralDeviceDaoMock, gatewayDaoMock);
