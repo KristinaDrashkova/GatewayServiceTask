@@ -20,10 +20,16 @@ public class Gateway extends BaseEntity {
     @Column(name = "ipv4_address")
     private String ipv4Address;
 
-    @OneToMany(mappedBy = "gateway", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "gateway", cascade = CascadeType.ALL)
     private Set<PeripheralDevice> peripheralDevices;
 
     public Gateway() {
+    }
+
+    public Gateway(@NotNull String serialNumber, @NotNull String name, @NotNull String ipv4Address) {
+        this.serialNumber = serialNumber;
+        this.name = name;
+        this.ipv4Address = ipv4Address;
     }
 
     public String getSerialNumber() {
@@ -64,7 +70,7 @@ public class Gateway extends BaseEntity {
                 "serialNumber = " + serialNumber + System.lineSeparator() +
                 "name = " + name + System.lineSeparator() +
                 "ipv4Address = " + ipv4Address + System.lineSeparator() +
-                "peripheralDevices: " + System.lineSeparator() + peripheralDevices.toString() +
+                "peripheralDevices count: " + peripheralDevices.size() +
                 '}';
     }
 }

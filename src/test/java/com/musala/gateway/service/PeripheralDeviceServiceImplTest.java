@@ -66,6 +66,6 @@ public class PeripheralDeviceServiceImplTest {
     public void printInfoForAPeripheralDeviceShouldWorkCorrectly() throws Exception {
         peripheralDeviceService.printInfoForAPeripheralDevice(1);
 
-        Mockito.verify(peripheralDeviceDaoMock, times(1)).findByUid(1);
+        Mockito.verify(peripheralDeviceDaoMock, times(1)).findById(1);
     }
 }

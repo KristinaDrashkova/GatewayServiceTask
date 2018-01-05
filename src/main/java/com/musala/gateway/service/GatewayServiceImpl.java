@@ -2,6 +2,7 @@ package com.musala.gateway.service;
 
 import com.musala.gateway.dao.GatewayDao;
 import com.musala.gateway.dto.GatewayAddDto;
+import com.musala.gateway.entities.BaseEntity;
 import com.musala.gateway.entities.Gateway;
 import com.musala.gateway.utils.ModelParser;
 import com.musala.gateway.utils.ValidationUtil;
@@ -24,8 +25,9 @@ public class GatewayServiceImpl implements GatewayService {
     }
 
     public void printInfoForAllGateways() {
-        List<Gateway> gateways = gatewayDao.findAll();
-        for (Gateway gateway : gateways) {
+        List<BaseEntity> baseEntities = gatewayDao.findAll();
+        for (BaseEntity baseEntity : baseEntities) {
+            Gateway gateway = (Gateway) baseEntity;
             System.out.println(gateway.toString());
         }
     }
@@ -41,7 +43,8 @@ public class GatewayServiceImpl implements GatewayService {
     }
 
     public void printInfoForAGateway(Integer id) {
-        Gateway gateway = gatewayDao.findById(id);
+        BaseEntity baseEntity = gatewayDao.findById(id);
+        Gateway gateway = (Gateway) baseEntity;
         System.out.println(gateway);
     }
 

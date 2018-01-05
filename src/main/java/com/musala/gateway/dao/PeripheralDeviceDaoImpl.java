@@ -3,64 +3,21 @@ package com.musala.gateway.dao;
 import com.musala.gateway.entities.PeripheralDevice;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Transactional
 @Repository
-public class PeripheralDeviceDaoImpl implements PeripheralDeviceDao {
+public class PeripheralDeviceDaoImpl extends BaseDaoImpl implements PeripheralDeviceDao {
 
     @PersistenceContext(name = "gateway")
     private EntityManager em;
 
-    @SuppressWarnings("unchecked")
     @Override
-    public List<PeripheralDevice> findAll() {
+    public void remove(int id) {
         try {
-            return em.createQuery("FROM PeripheralDevice").getResultList();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
-
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public PeripheralDevice findByUid(int uid) {
-        try {
-            Query query = em.createQuery("FROM PeripheralDevice WHERE uid = :uid");
-            query.setParameter("uid", uid);
-            List<Object> objects = query.getResultList();
-            if (objects.size() > 0) {
-                return (PeripheralDevice) objects.get(0);
-            }
-            return null;
-
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
-    }
-
-    @Override
-    public void save(PeripheralDevice peripheralDevice) {
-        try {
-            em.persist(peripheralDevice);
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
-    }
-
-    @Override
-    public void remove(int uid) {
-        try {
-            PeripheralDevice peripheralDevice = findByUid(uid);
+            PeripheralDevice peripheralDevice = (PeripheralDevice) findById(id);
             em.remove(peripheralDevice);
         } finally {
             if (em != null) {

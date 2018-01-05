@@ -3,6 +3,7 @@ package com.musala.gateway.service;
 import com.musala.gateway.dao.GatewayDao;
 import com.musala.gateway.dao.PeripheralDeviceDao;
 import com.musala.gateway.dto.PeripheralDeviceAddDto;
+import com.musala.gateway.entities.BaseEntity;
 import com.musala.gateway.entities.Gateway;
 import com.musala.gateway.entities.PeripheralDevice;
 import com.musala.gateway.utils.ModelParser;
@@ -29,7 +30,8 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
     public void save(PeripheralDeviceAddDto peripheralDeviceAddDto) {
         PeripheralDevice peripheralDevice = ModelParser.getInstance().map(peripheralDeviceAddDto, PeripheralDevice.class);
         Integer gatewayId = peripheralDeviceAddDto.getGateway();
-        Gateway gateway = gatewayDao.findById(gatewayId);
+        BaseEntity baseEntity = gatewayDao.findById(gatewayId);
+        Gateway gateway = (Gateway) baseEntity;
         if (gateway != null && gateway.getPeripheralDevices().size() < 10) {
             peripheralDevice.setGateway(gateway);
             if (ValidationUtil.isValid(peripheralDevice)) {
@@ -49,8 +51,8 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
 
     @Override
     public void printInfoForAPeripheralDevice(int uid) {
-        PeripheralDevice peripheralDevice = peripheralDeviceDao.findByUid(uid);
-
+        BaseEntity baseEntity = peripheralDeviceDao.findById(uid);
+        PeripheralDevice peripheralDevice = (PeripheralDevice) baseEntity;
         System.out.println(peripheralDevice);
     }
 }
