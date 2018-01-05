@@ -15,14 +15,8 @@ public class PeripheralDeviceDaoImpl extends BaseDaoImpl implements PeripheralDe
     private EntityManager em;
 
     @Override
-    public void remove(int id) {
-        try {
-            PeripheralDevice peripheralDevice = (PeripheralDevice) findById(id);
-            em.remove(peripheralDevice);
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
+    public void remove(long id) {
+        PeripheralDevice peripheralDevice = (PeripheralDevice) findById(id);
+        em.remove(peripheralDevice);
     }
 }

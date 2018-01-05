@@ -29,12 +29,11 @@ public class PeripheralDevice extends BaseEntity {
     public PeripheralDevice() {
     }
 
-    public PeripheralDevice(@NotNull Integer uid, @NotNull String vendor, @NotNull Date dateCreated, @NotNull Status status, Gateway gateway) {
+    public PeripheralDevice(@NotNull Integer uid, @NotNull String vendor, @NotNull Date dateCreated, @NotNull Status status) {
         this.uid = uid;
         this.vendor = vendor;
         this.dateCreated = dateCreated;
         this.status = status;
-        this.gateway = gateway;
     }
 
     public Integer getUid() {
