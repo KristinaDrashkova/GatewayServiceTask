@@ -1,6 +1,5 @@
 package com.musala.gateway.dao;
 
-import com.musala.gateway.entities.BaseEntity;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -8,23 +7,25 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
-public class BaseDaoImpl implements BaseDao {
+public class BaseDaoImpl<E> implements BaseDao<E> {
     @PersistenceContext(name = "gateway")
     private EntityManager em;
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<BaseEntity> findAll() {
+    public List<E> findAll() {
         return em.createQuery("FROM BaseEntity ").getResultList();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public BaseEntity findById(long id) {
-        return em.find(BaseEntity.class, id);
+    public <E>E findById(long id, String className) throws ClassNotFoundException {
+        Class<E> currentClass = (Class<E>) Class.forName(className);
+        return em.find(currentClass, id);
     }
 
     @Override
-    public void save(BaseEntity baseEntity) {
-        em.persist(baseEntity);
+    public <E> void save(E entity) {
+        em.persist(entity);
     }
 }

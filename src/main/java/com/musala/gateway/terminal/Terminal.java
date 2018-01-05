@@ -38,7 +38,7 @@ public class Terminal implements CommandLineRunner {
         }
     }
 
-    private void importPeripheralDevicesFromJson() {
+    private void importPeripheralDevicesFromJson() throws ClassNotFoundException {
         PeripheralDeviceAddDto[] peripheralDeviceAddDtos = jsonParser.getObject(PeripheralDeviceAddDto[].class, IMPORT_PERIPHERAL_DEVICE_PATH);
         for (PeripheralDeviceAddDto peripheralDeviceAddDto : peripheralDeviceAddDtos) {
             peripheralDeviceService.save(peripheralDeviceAddDto);

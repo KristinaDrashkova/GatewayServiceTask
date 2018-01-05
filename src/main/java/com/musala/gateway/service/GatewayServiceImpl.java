@@ -2,7 +2,6 @@ package com.musala.gateway.service;
 
 import com.musala.gateway.dao.GatewayDao;
 import com.musala.gateway.dto.GatewayAddDto;
-import com.musala.gateway.entities.BaseEntity;
 import com.musala.gateway.entities.Gateway;
 import com.musala.gateway.utils.ModelParser;
 import com.musala.gateway.utils.ValidationUtil;
@@ -15,7 +14,6 @@ import java.util.List;
 
 
 @Service
-@Transactional
 public class GatewayServiceImpl implements GatewayService {
     private final GatewayDao gatewayDao;
 
@@ -24,16 +22,15 @@ public class GatewayServiceImpl implements GatewayService {
         this.gatewayDao = gatewayDao;
     }
 
+    @SuppressWarnings("unchecked")
     public void printInfoForAllGateways() {
-        List<BaseEntity> baseEntities = gatewayDao.findAll();
-        for (BaseEntity baseEntity : baseEntities) {
-            if (baseEntity instanceof Gateway) {
-                Gateway gateway = (Gateway) baseEntity;
-                System.out.println(gateway.toString());
-            }
+        List<Gateway> gateways = gatewayDao.findAll();
+        for (Gateway gateway : gateways) {
+            System.out.println(gateway.toString());
         }
     }
 
+    @Transactional
     public void save(GatewayAddDto gatewayAddDto) {
         Gateway gateway = ModelParser.getInstance().map(gatewayAddDto, Gateway.class);
         gateway.setPeripheralDevices(new HashSet<>());
@@ -44,12 +41,8 @@ public class GatewayServiceImpl implements GatewayService {
         }
     }
 
-    public void printInfoForAGateway(long id) {
-        BaseEntity baseEntity = gatewayDao.findById(id);
-        if (baseEntity instanceof Gateway) {
-            Gateway gateway = (Gateway) baseEntity;
-            System.out.println(gateway);
-        }
+    public void printInfoForAGateway(long id) throws ClassNotFoundException {
+        Gateway gateway = (Gateway) gatewayDao.findById(id, "com.musala.gateway.entities.Gateway");
+        System.out.println(gateway);
     }
-
 }

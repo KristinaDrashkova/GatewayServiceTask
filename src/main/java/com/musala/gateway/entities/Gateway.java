@@ -10,7 +10,7 @@ import java.util.Set;
 public class Gateway extends BaseEntity {
 
     @NotNull
-    @Column(name = "serial_number")
+    @Column(name = "serial_number", unique = true)
     private String serialNumber;
 
     @NotNull

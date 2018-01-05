@@ -9,6 +9,7 @@ import java.util.Date;
 public class PeripheralDevice extends BaseEntity {
 
     @NotNull
+    @Column(unique = true)
     private Integer uid;
 
     @NotNull

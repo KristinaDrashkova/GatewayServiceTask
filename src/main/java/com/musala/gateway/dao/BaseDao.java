@@ -1,13 +1,11 @@
 package com.musala.gateway.dao;
 
-import com.musala.gateway.entities.BaseEntity;
-
 import java.util.List;
 
-public interface BaseDao {
-    List<BaseEntity> findAll();
+public interface BaseDao<Е> {
+    List<Е> findAll();
 
-    BaseEntity findById(long id);
+    <E>E findById(long id, String className) throws ClassNotFoundException;
 
-    void save(BaseEntity baseEntity);
+    <E>void save(E entity);
 }
