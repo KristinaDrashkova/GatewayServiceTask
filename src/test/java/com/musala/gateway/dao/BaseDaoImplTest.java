@@ -23,21 +23,20 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-@Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
         classes = {JpaConfig.class},
         loader = AnnotationConfigContextLoader.class)
 public class BaseDaoImplTest {
-    private BaseEntity GATEWAY_NORMAL = new Gateway("1245-1234-1234-1235", "name", "192.168.3.24");
-    private BaseEntity GATEWAY_NULL_SERIAL_NUMBER = new Gateway(null, "name", "192.168.3.24");
-    private BaseEntity GATEWAY_NULL_NAME = new Gateway("1245-1234-1234-1235", null, "192.168.3.24");
-    private BaseEntity GATEWAY_NULL_ADDRESS = new Gateway("1245-1234-1234-1235", "name", null);
-    private BaseEntity PERIPHERAL_DEVICE_NORMAL = new PeripheralDevice(1, "SteelSeries", parseDate(), Status.OFFLINE);
-    private BaseEntity PERIPHERAL_DEVICE_NULL_UID = new PeripheralDevice(null, "SteelSeries", parseDate(), Status.OFFLINE);
-    private BaseEntity PERIPHERAL_DEVICE_NULL_VENDOR = new PeripheralDevice(1, null, parseDate(), Status.OFFLINE);
-    private BaseEntity PERIPHERAL_DEVICE_NULL_DATE = new PeripheralDevice(null, "SteelSeries", null, Status.OFFLINE);
-    private BaseEntity PERIPHERAL_DEVICE_NULL_STATUS = new PeripheralDevice(1, "SteelSeries", parseDate(), null);
+    private BaseEntity gatewayNormal = new Gateway("1245-1234-1234-1235", "name", "192.168.3.24");
+    private BaseEntity gatewayNullSerialNumber = new Gateway(null, "name", "192.168.3.24");
+    private BaseEntity gatewayNullName = new Gateway("1245-1234-1234-1235", null, "192.168.3.24");
+    private BaseEntity gatewayNullAddress = new Gateway("1245-1234-1234-1235", "name", null);
+    private BaseEntity peripheralDeviceNormal = new PeripheralDevice(1, "SteelSeries", parseDate(), Status.OFFLINE);
+    private BaseEntity peripheralDeviceNullUid = new PeripheralDevice(null, "SteelSeries", parseDate(), Status.OFFLINE);
+    private BaseEntity peripheralDeviceNullVendor = new PeripheralDevice(1, null, parseDate(), Status.OFFLINE);
+    private BaseEntity peripheralDeviceNullDate = new PeripheralDevice(null, "SteelSeries", null, Status.OFFLINE);
+    private BaseEntity peripheralDeviceNullStatus = new PeripheralDevice(1, "SteelSeries", parseDate(), null);
 
     @PersistenceContext
     private EntityManager em;
@@ -49,81 +48,95 @@ public class BaseDaoImplTest {
     @Before
     public void setUp() {
         Set<PeripheralDevice> peripheralDevices = new LinkedHashSet<>();
-        peripheralDevices.add((PeripheralDevice) PERIPHERAL_DEVICE_NORMAL);
-        ((Gateway) GATEWAY_NORMAL).setPeripheralDevices(peripheralDevices);
-        ((Gateway) GATEWAY_NULL_ADDRESS).setPeripheralDevices(peripheralDevices);
-        ((Gateway) GATEWAY_NULL_NAME).setPeripheralDevices(peripheralDevices);
-        ((Gateway) GATEWAY_NULL_SERIAL_NUMBER).setPeripheralDevices(peripheralDevices);
+        peripheralDevices.add((PeripheralDevice) peripheralDeviceNormal);
+        ((Gateway) gatewayNormal).setPeripheralDevices(peripheralDevices);
+        ((Gateway) gatewayNullAddress).setPeripheralDevices(peripheralDevices);
+        ((Gateway) gatewayNullName).setPeripheralDevices(peripheralDevices);
+        ((Gateway) gatewayNullSerialNumber).setPeripheralDevices(peripheralDevices);
     }
 
+    @Transactional
     @Test
     public void findAllShouldWorkCorrectly() throws Exception {
         List<BaseEntity> baseEntities = baseDao.findAll();
         Assert.assertEquals(0, baseEntities.size());
-        em.persist(GATEWAY_NORMAL);
+        em.persist(gatewayNormal);
 
         baseEntities = baseDao.findAll();
-        Assert.assertTrue(baseEntities.contains(GATEWAY_NORMAL));
-        Assert.assertTrue(baseEntities.contains(PERIPHERAL_DEVICE_NORMAL));
+        Assert.assertTrue(baseEntities.contains(gatewayNormal));
+        Assert.assertTrue(baseEntities.contains(peripheralDeviceNormal));
         Assert.assertEquals(2, baseEntities.size());
     }
 
+    @Transactional
     @Test
     public void findByIdShouldWorkCorrectly() throws Exception {
-        em.persist(GATEWAY_NORMAL);
+        em.persist(gatewayNormal);
 
-        BaseEntity baseEntityDb = baseDao.findById(GATEWAY_NORMAL.getId());
+        BaseEntity baseEntityDb = baseDao.findById(gatewayNormal.getId());
         BaseEntity baseEntityNull = baseDao.findById(10);
-        Assert.assertEquals(GATEWAY_NORMAL, baseEntityDb);
+        Assert.assertEquals(gatewayNormal, baseEntityDb);
         Assert.assertEquals(null, baseEntityNull);
     }
 
+    @Transactional
     @Test
     public void saveShouldWorkCorrectlyWithNormalGateway() throws Exception {
-        baseDao.save(GATEWAY_NORMAL);
+        baseDao.save(gatewayNormal);
 
-        BaseEntity baseEntityDb = baseDao.findById(GATEWAY_NORMAL.getId());
-        Assert.assertEquals(GATEWAY_NORMAL, baseEntityDb);
+        BaseEntity baseEntityDb = baseDao.findById(gatewayNormal.getId());
+        Assert.assertEquals(gatewayNormal, baseEntityDb);
     }
 
+    @Transactional
     @Test
     public void saveShouldWorkCorrectlyWithNormalPeripheralDevice() throws Exception {
-        baseDao.save(PERIPHERAL_DEVICE_NORMAL);
+        baseDao.save(peripheralDeviceNormal);
 
-        BaseEntity baseEntityDb = baseDao.findById(PERIPHERAL_DEVICE_NORMAL.getId());
-        Assert.assertEquals(PERIPHERAL_DEVICE_NORMAL, baseEntityDb);
+        BaseEntity baseEntityDb = baseDao.findById(peripheralDeviceNormal.getId());
+        Assert.assertEquals(peripheralDeviceNormal, baseEntityDb);
     }
 
+    @Transactional
     @Test(expected = ConstraintViolationException.class)
     public void saveShouldThrowExceptionWithNullAddressGateway() throws Exception {
-        baseDao.save(GATEWAY_NULL_ADDRESS);
+        baseDao.save(gatewayNullAddress);
     }
 
+    @Transactional
     @Test(expected = ConstraintViolationException.class)
     public void saveShouldThrowExceptionWithNullNameGateway() throws Exception {
-        baseDao.save(GATEWAY_NULL_NAME);
+        baseDao.save(gatewayNullName);
     }
 
+    @Transactional
     @Test(expected = ConstraintViolationException.class)
     public void saveShouldThrowExceptionWithNullSerialNumberGateway() throws Exception {
-        baseDao.save(GATEWAY_NULL_SERIAL_NUMBER);
+        baseDao.save(gatewayNullSerialNumber);
     }
 
+    @Transactional
     @Test(expected = ConstraintViolationException.class)
     public void saveShouldThrowExceptionWithNullUidPeripheralDevice() throws Exception {
-        baseDao.save(PERIPHERAL_DEVICE_NULL_UID);
+        baseDao.save(peripheralDeviceNullUid);
     }
+
+    @Transactional
     @Test(expected = ConstraintViolationException.class)
     public void saveShouldThrowExceptionWithNullVendorPeripheralDevice() throws Exception {
-        baseDao.save(PERIPHERAL_DEVICE_NULL_VENDOR);
+        baseDao.save(peripheralDeviceNullVendor);
     }
+
+    @Transactional
     @Test(expected = ConstraintViolationException.class)
     public void saveShouldThrowExceptionWithNullDatePeripheralDevice() throws Exception {
-        baseDao.save(PERIPHERAL_DEVICE_NULL_DATE);
+        baseDao.save(peripheralDeviceNullDate);
     }
+
+    @Transactional
     @Test(expected = ConstraintViolationException.class)
     public void saveShouldThrowExceptionWithNullStatusPeripheralDevice() throws Exception {
-        baseDao.save(PERIPHERAL_DEVICE_NULL_STATUS);
+        baseDao.save(peripheralDeviceNullStatus);
     }
 
     private Date parseDate() {

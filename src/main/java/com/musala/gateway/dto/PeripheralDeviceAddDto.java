@@ -24,6 +24,14 @@ public class PeripheralDeviceAddDto {
     public PeripheralDeviceAddDto() {
     }
 
+    public PeripheralDeviceAddDto(Integer uid, String vendor, Date dateCreated, Status status, Integer gateway) {
+        this.uid = uid;
+        this.vendor = vendor;
+        this.dateCreated = dateCreated;
+        this.status = status;
+        this.gateway = gateway;
+    }
+
     public Integer getUid() {
         return uid;
     }

@@ -31,13 +31,9 @@ public class PeripheralDeviceServiceImplTest {
         peripheralDeviceDaoMock = Mockito.mock(PeripheralDeviceDao.class);
         gatewayDaoMock = Mockito.mock(GatewayDao.class);
         peripheralDeviceService = new PeripheralDeviceServiceImpl(peripheralDeviceDaoMock, gatewayDaoMock);
-        peripheralDeviceAddDto = new PeripheralDeviceAddDto();
-        peripheralDeviceAddDto.setUid(1);
-        peripheralDeviceAddDto.setGateway(1);
         DateFormat format = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
-        peripheralDeviceAddDto.setDateCreated(format.parse("2015-12-20"));
-        peripheralDeviceAddDto.setStatus(Status.OFFLINE);
-        peripheralDeviceAddDto.setVendor("IBM");
+        peripheralDeviceAddDto =
+                new PeripheralDeviceAddDto(1, "IBM", format.parse("2015-12-20"), Status.OFFLINE, 1);
         gatewayMock = Mockito.mock(Gateway.class);
         Mockito.when(gatewayMock.getPeripheralDevices()).thenReturn(new LinkedHashSet<>(1));
     }

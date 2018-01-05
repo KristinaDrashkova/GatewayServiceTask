@@ -23,11 +23,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
         classes = {JpaConfig.class},
         loader = AnnotationConfigContextLoader.class)
-@Transactional
 public class PeripheralDeviceDaoImplTest {
     @Autowired
     private PeripheralDeviceDao peripheralDeviceDao;
@@ -44,6 +44,7 @@ public class PeripheralDeviceDaoImplTest {
         peripheralDevice = new PeripheralDevice(1, "SteelSeries", date, Status.OFFLINE);
     }
 
+    @Transactional
     @Test
     public void removeShouldWorkCorrectly() throws Exception {
         em.persist(peripheralDevice);
@@ -53,7 +54,7 @@ public class PeripheralDeviceDaoImplTest {
         Assert.assertEquals(0, baseEntities.size());
     }
 
-
+    @Transactional
     @Test(expected = IllegalArgumentException.class)
     public void removeShouldThrowExceptionWithNoExistingNumber() throws Exception {
         em.persist(peripheralDevice);

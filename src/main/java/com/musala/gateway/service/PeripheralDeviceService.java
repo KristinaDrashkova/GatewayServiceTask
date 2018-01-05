@@ -6,7 +6,7 @@ import com.musala.gateway.dto.PeripheralDeviceAddDto;
 public interface PeripheralDeviceService {
     void save(PeripheralDeviceAddDto peripheralDeviceAddDto);
 
-    void removeDevice(int uid);
+    void removeDevice(long id);
 
-    void printInfoForAPeripheralDevice(int uid);
+    void printInfoForAPeripheralDevice(long id);
 }

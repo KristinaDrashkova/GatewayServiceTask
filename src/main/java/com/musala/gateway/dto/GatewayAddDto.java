@@ -15,6 +15,12 @@ public class GatewayAddDto {
     public GatewayAddDto() {
     }
 
+    public GatewayAddDto(String serialNumber, String name, String ipv4Address) {
+        this.serialNumber = serialNumber;
+        this.name = name;
+        this.ipv4Address = ipv4Address;
+    }
+
     public String getSerialNumber() {
         return serialNumber;
     }

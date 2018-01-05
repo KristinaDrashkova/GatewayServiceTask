@@ -27,8 +27,10 @@ public class GatewayServiceImpl implements GatewayService {
     public void printInfoForAllGateways() {
         List<BaseEntity> baseEntities = gatewayDao.findAll();
         for (BaseEntity baseEntity : baseEntities) {
-            Gateway gateway = (Gateway) baseEntity;
-            System.out.println(gateway.toString());
+            if (baseEntity instanceof Gateway) {
+                Gateway gateway = (Gateway) baseEntity;
+                System.out.println(gateway.toString());
+            }
         }
     }
 
@@ -42,10 +44,12 @@ public class GatewayServiceImpl implements GatewayService {
         }
     }
 
-    public void printInfoForAGateway(Integer id) {
+    public void printInfoForAGateway(long id) {
         BaseEntity baseEntity = gatewayDao.findById(id);
-        Gateway gateway = (Gateway) baseEntity;
-        System.out.println(gateway);
+        if (baseEntity instanceof Gateway) {
+            Gateway gateway = (Gateway) baseEntity;
+            System.out.println(gateway);
+        }
     }
 
 }

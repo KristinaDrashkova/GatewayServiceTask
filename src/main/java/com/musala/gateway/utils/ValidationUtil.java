@@ -9,7 +9,7 @@ public class ValidationUtil {
     public ValidationUtil() {
     }
 
-    public static <T> boolean isValid(T t){
+    public static <T> boolean isValid(T t) {
         return t != null && validator.validate(t).size() == 0;
     }
 }

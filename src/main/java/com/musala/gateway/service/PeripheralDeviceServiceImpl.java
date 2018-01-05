@@ -31,28 +31,32 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
         PeripheralDevice peripheralDevice = ModelParser.getInstance().map(peripheralDeviceAddDto, PeripheralDevice.class);
         Integer gatewayId = peripheralDeviceAddDto.getGateway();
         BaseEntity baseEntity = gatewayDao.findById(gatewayId);
-        Gateway gateway = (Gateway) baseEntity;
-        if (gateway != null && gateway.getPeripheralDevices().size() < 10) {
-            peripheralDevice.setGateway(gateway);
-            if (ValidationUtil.isValid(peripheralDevice)) {
-                peripheralDeviceDao.save(peripheralDevice);
+        if (baseEntity instanceof Gateway) {
+            Gateway gateway = (Gateway) baseEntity;
+            if (gateway.getPeripheralDevices().size() < 10) {
+                peripheralDevice.setGateway(gateway);
+                if (ValidationUtil.isValid(peripheralDevice)) {
+                    peripheralDeviceDao.save(peripheralDevice);
+                } else {
+                    //log here
+                }
             } else {
-                //log here
+                //log here(no more than 10 devices per gateway)
             }
-        } else {
-            //log here(no more than 10 devices per gateway)
         }
     }
 
     @Override
-    public void removeDevice(int uid) {
-        peripheralDeviceDao.remove(uid);
+    public void removeDevice(long id) {
+        peripheralDeviceDao.remove(id);
     }
 
     @Override
-    public void printInfoForAPeripheralDevice(int uid) {
-        BaseEntity baseEntity = peripheralDeviceDao.findById(uid);
-        PeripheralDevice peripheralDevice = (PeripheralDevice) baseEntity;
-        System.out.println(peripheralDevice);
+    public void printInfoForAPeripheralDevice(long id) {
+        BaseEntity baseEntity = peripheralDeviceDao.findById(id);
+        if (baseEntity instanceof PeripheralDevice) {
+            PeripheralDevice peripheralDevice = (PeripheralDevice) baseEntity;
+            System.out.println(peripheralDevice);
+        }
     }
 }

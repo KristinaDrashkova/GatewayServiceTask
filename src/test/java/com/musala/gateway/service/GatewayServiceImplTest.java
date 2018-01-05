@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.text.ParseException;
+
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -18,13 +20,10 @@ public class GatewayServiceImplTest {
 
 
     @Before
-    public void setUp() {
+    public void setUp() throws ParseException {
         gatewayDaoMock = Mockito.mock(GatewayDao.class);
         gatewayService = new GatewayServiceImpl(gatewayDaoMock);
-        gatewayAddDto = new GatewayAddDto();
-        gatewayAddDto.setIpv4Address("192.168.3.24");
-        gatewayAddDto.setName("A");
-        gatewayAddDto.setSerialNumber("1330-1691-2320-1630-3127-2515");
+        gatewayAddDto = new GatewayAddDto("192.168.3.24", "A", "1330-1691-2320-1630-3127-2515");
     }
 
     @Test
@@ -49,5 +48,4 @@ public class GatewayServiceImplTest {
         gatewayService.printInfoForAGateway(1);
         verify(gatewayDaoMock, times(1)).findById(1);
     }
-
 }
