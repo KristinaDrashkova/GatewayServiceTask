@@ -23,11 +23,8 @@ public class GatewayServiceImpl implements GatewayService {
     }
 
     @SuppressWarnings("unchecked")
-    public void printInfoForAllGateways() {
-        List<Gateway> gateways = gatewayDao.findAll();
-        for (Gateway gateway : gateways) {
-            System.out.println(gateway.toString());
-        }
+    public List<Gateway> getAllGateways() {
+        return gatewayDao.findAll();
     }
 
     @Transactional
@@ -41,8 +38,8 @@ public class GatewayServiceImpl implements GatewayService {
         }
     }
 
-    public void printInfoForAGateway(long id) throws ClassNotFoundException {
-        Gateway gateway = (Gateway) gatewayDao.findById(id, "com.musala.gateway.entities.Gateway");
-        System.out.println(gateway);
+    public Gateway getGateway(long id) throws ClassNotFoundException {
+        return (Gateway) gatewayDao.findById(id, "com.musala.gateway.entities.Gateway");
+
     }
 }

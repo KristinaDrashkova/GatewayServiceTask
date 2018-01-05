@@ -29,7 +29,7 @@
 //
 //    @Test
 //    public void printInfoForAllGatewaysShouldWorkCorrectly() throws Exception {
-//        gatewayService.printInfoForAllGateways();
+//        gatewayService.getAllGateways();
 //        verify(gatewayDaoMock, times(1)).findAll();
 //    }
 //
@@ -46,7 +46,7 @@
 //
 //    @Test
 //    public void printInfoForAGatewayShouldWorkCorrectly() throws Exception {
-//        gatewayService.printInfoForAGateway(1);
+//        gatewayService.getGateway(1);
 //        verify(gatewayDaoMock, times(1)).findById(1);
 //    }
 //

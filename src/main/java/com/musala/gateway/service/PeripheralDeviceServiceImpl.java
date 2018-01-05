@@ -50,8 +50,7 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
     }
 
     @Override
-    public void printInfoForAPeripheralDevice(long id) throws ClassNotFoundException {
-        PeripheralDevice peripheralDevice = (PeripheralDevice) peripheralDeviceDao.findById(id, "com.musala.gateway.entities.PeripheralDevice");
-        System.out.println(peripheralDevice);
+    public PeripheralDevice getPeripheralDevice(long id) throws ClassNotFoundException {
+        return (PeripheralDevice) peripheralDeviceDao.findById(id, "com.musala.gateway.entities.PeripheralDevice");
     }
 }

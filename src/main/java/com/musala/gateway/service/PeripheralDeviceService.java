@@ -2,6 +2,7 @@ package com.musala.gateway.service;
 
 
 import com.musala.gateway.dto.PeripheralDeviceAddDto;
+import com.musala.gateway.entities.PeripheralDevice;
 
 public interface PeripheralDeviceService {
 
@@ -24,5 +25,5 @@ public interface PeripheralDeviceService {
      *
      * @param id generated in database
      */
-    void printInfoForAPeripheralDevice(long id) throws ClassNotFoundException;
+    PeripheralDevice getPeripheralDevice(long id) throws ClassNotFoundException;
 }

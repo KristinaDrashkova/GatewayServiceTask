@@ -60,7 +60,7 @@
 //
 //    @Test
 //    public void printInfoForAPeripheralDeviceShouldWorkCorrectly() throws Exception {
-//        peripheralDeviceService.printInfoForAPeripheralDevice(1);
+//        peripheralDeviceService.getPeripheralDevice(1);
 //
 //        Mockito.verify(peripheralDeviceDaoMock, times(1)).findById(1);
 //    }
