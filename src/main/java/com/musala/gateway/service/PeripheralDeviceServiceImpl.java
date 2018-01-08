@@ -5,6 +5,7 @@ import com.musala.gateway.dao.PeripheralDeviceDao;
 import com.musala.gateway.dto.PeripheralDeviceAddDto;
 import com.musala.gateway.entities.Gateway;
 import com.musala.gateway.entities.PeripheralDevice;
+import com.musala.gateway.exceptions.MoreThanTenDevicesException;
 import com.musala.gateway.utils.ModelParser;
 import com.musala.gateway.utils.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 @Service
+
 public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
     private final PeripheralDeviceDao peripheralDeviceDao;
     private final GatewayDao gatewayDao;
@@ -25,7 +27,7 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
 
     @Transactional
     @Override
-    public void save(PeripheralDeviceAddDto peripheralDeviceAddDto) throws ClassNotFoundException {
+    public void save(PeripheralDeviceAddDto peripheralDeviceAddDto) throws ClassNotFoundException, MoreThanTenDevicesException {
         Integer gatewayId = peripheralDeviceAddDto.getGateway();
         Gateway gateway = (Gateway) gatewayDao.findById(gatewayId, "com.musala.gateway.entities.Gateway");
         if (gateway.getPeripheralDevices().size() < 10) {
@@ -38,7 +40,7 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
             }
 
         } else {
-            //log here(no more than 10 devices per gateway)
+            throw new MoreThanTenDevicesException("Can not add more than 10 devices to a gateway");
 
         }
     }
@@ -53,4 +55,11 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
     public PeripheralDevice getPeripheralDevice(long id) throws ClassNotFoundException {
         return (PeripheralDevice) peripheralDeviceDao.findById(id, "com.musala.gateway.entities.PeripheralDevice");
     }
+
+    @Transactional
+    @Override
+    public void updatePeripheralDevice(long id, PeripheralDeviceAddDto peripheralDeviceAddDto) throws ClassNotFoundException {
+        peripheralDeviceDao.update(id, peripheralDeviceAddDto);
+    }
+
 }

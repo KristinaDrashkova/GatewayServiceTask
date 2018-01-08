@@ -21,9 +21,11 @@ public interface GatewayService {
     void save(GatewayAddDto gatewayAddDto);
 
     /**
-     * prints detailed information about a gateway by given parameter
+     * returns a gateway by given parameter
      *
      * @param id generated in database
      */
     Gateway getGateway(long id) throws ClassNotFoundException;
+
+    void updateGateway(long id, GatewayAddDto gatewayAddDto) throws ClassNotFoundException;
 }

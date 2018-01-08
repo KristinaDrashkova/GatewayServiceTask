@@ -1,15 +1,20 @@
 package com.musala.gateway.dto;
 
 import com.google.gson.annotations.Expose;
+import com.musala.gateway.annotations.IpV4Constraint;
+
+import javax.persistence.Column;
 
 public class GatewayAddDto {
     @Expose
+    @Column(unique = true)
     private String serialNumber;
 
     @Expose
     private String name;
 
     @Expose
+    @IpV4Constraint
     private String ipv4Address;
 
     public GatewayAddDto() {

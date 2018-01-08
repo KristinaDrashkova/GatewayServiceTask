@@ -24,7 +24,7 @@ public class GatewayServiceImpl implements GatewayService {
 
     @SuppressWarnings("unchecked")
     public List<Gateway> getAllGateways() {
-        return gatewayDao.findAll();
+        return gatewayDao.findAll("Gateway");
     }
 
     @Transactional
@@ -40,6 +40,10 @@ public class GatewayServiceImpl implements GatewayService {
 
     public Gateway getGateway(long id) throws ClassNotFoundException {
         return (Gateway) gatewayDao.findById(id, "com.musala.gateway.entities.Gateway");
+    }
 
+    @Transactional
+    public void updateGateway(long id, GatewayAddDto gatewayAddDto) throws ClassNotFoundException {
+        gatewayDao.update(id, gatewayAddDto);
     }
 }

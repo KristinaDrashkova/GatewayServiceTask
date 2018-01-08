@@ -1,8 +1,12 @@
 package com.musala.gateway.entities;
 
 
+import com.musala.gateway.annotations.IpV4Constraint;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -16,14 +20,15 @@ public class Gateway extends BaseEntity {
     @NotNull
     private String name;
 
-    @NotNull
+    @IpV4Constraint
     @Column(name = "ipv4_address")
     private String ipv4Address;
 
-    @OneToMany(mappedBy = "gateway", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "gateway", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<PeripheralDevice> peripheralDevices;
 
     public Gateway() {
+        this.peripheralDevices = new LinkedHashSet<>();
     }
 
     public Gateway(@NotNull String serialNumber, @NotNull String name, @NotNull String ipv4Address) {
@@ -62,6 +67,25 @@ public class Gateway extends BaseEntity {
 
     public void setPeripheralDevices(Set<PeripheralDevice> peripheralDevices) {
         this.peripheralDevices = peripheralDevices;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == this) return true;
+        if (!(object instanceof BaseEntity)) {
+            return false;
+        }
+
+        Gateway gateway = (Gateway) object;
+
+        return Objects.equals(serialNumber, gateway.serialNumber) &&
+                Objects.equals(name, gateway.name) &&
+                Objects.equals(ipv4Address, gateway.ipv4Address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(serialNumber, name, ipv4Address);
     }
 
     @Override

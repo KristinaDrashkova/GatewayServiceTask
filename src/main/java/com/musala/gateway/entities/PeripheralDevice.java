@@ -3,6 +3,7 @@ package com.musala.gateway.entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "peripheral_device")
@@ -75,6 +76,26 @@ public class PeripheralDevice extends BaseEntity {
 
     public void setGateway(Gateway gateway) {
         this.gateway = gateway;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == this) return true;
+        if (!(object instanceof BaseEntity)) {
+            return false;
+        }
+
+        PeripheralDevice peripheralDevice = (PeripheralDevice) object;
+
+        return Objects.equals(uid, peripheralDevice.uid) &&
+                Objects.equals(vendor, peripheralDevice.vendor) &&
+                Objects.equals(dateCreated, peripheralDevice.dateCreated) &&
+                Objects.equals(status, peripheralDevice.status);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uid, vendor, dateCreated, status);
     }
 
     @Override

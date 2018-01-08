@@ -3,6 +3,7 @@ package com.musala.gateway.service;
 
 import com.musala.gateway.dto.PeripheralDeviceAddDto;
 import com.musala.gateway.entities.PeripheralDevice;
+import com.musala.gateway.exceptions.MoreThanTenDevicesException;
 
 public interface PeripheralDeviceService {
 
@@ -11,7 +12,7 @@ public interface PeripheralDeviceService {
      *
      * @param peripheralDeviceAddDto data transfer object corresponding to an entity
      */
-    void save(PeripheralDeviceAddDto peripheralDeviceAddDto) throws ClassNotFoundException;
+    void save(PeripheralDeviceAddDto peripheralDeviceAddDto) throws ClassNotFoundException, MoreThanTenDevicesException;
 
     /**
      * removes from database the device by a given parameter
@@ -21,9 +22,11 @@ public interface PeripheralDeviceService {
     void removeDevice(long id) throws ClassNotFoundException;
 
     /**
-     * prints detailed information about a peripheral device by given parameter
+     * returns a peripheral device by given parameter
      *
      * @param id generated in database
      */
     PeripheralDevice getPeripheralDevice(long id) throws ClassNotFoundException;
+
+    void updatePeripheralDevice(long id, PeripheralDeviceAddDto peripheralDeviceAddDto) throws ClassNotFoundException;
 }

@@ -3,10 +3,12 @@ package com.musala.gateway.dto;
 import com.google.gson.annotations.Expose;
 import com.musala.gateway.entities.Status;
 
+import javax.persistence.Column;
 import java.util.Date;
 
 public class PeripheralDeviceAddDto {
     @Expose
+    @Column(unique = true)
     private Integer uid;
 
     @Expose

@@ -44,13 +44,14 @@ public class PeripheralDeviceDaoImplTest {
         peripheralDevice = new PeripheralDevice(1, "SteelSeries", date, Status.OFFLINE);
     }
 
+    @SuppressWarnings("unchecked")
     @Transactional
     @Test
     public void removeShouldWorkCorrectly() throws Exception {
         em.persist(peripheralDevice);
 
         peripheralDeviceDao.remove(peripheralDevice.getId());
-        List<BaseEntity> baseEntities = peripheralDeviceDao.findAll();
+        List<BaseEntity> baseEntities = peripheralDeviceDao.findAll("PeripheralDevice");
         Assert.assertEquals(0, baseEntities.size());
     }
 

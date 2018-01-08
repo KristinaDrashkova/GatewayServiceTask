@@ -2,12 +2,18 @@ package com.musala.gateway.terminal;
 
 import com.musala.gateway.dto.GatewayAddDto;
 import com.musala.gateway.dto.PeripheralDeviceAddDto;
+import com.musala.gateway.entities.Gateway;
+import com.musala.gateway.entities.PeripheralDevice;
+import com.musala.gateway.exceptions.MoreThanTenDevicesException;
 import com.musala.gateway.service.GatewayService;
 import com.musala.gateway.service.PeripheralDeviceService;
 import com.musala.gateway.utils.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Set;
 
 @Component
 public class Terminal implements CommandLineRunner {
@@ -29,6 +35,14 @@ public class Terminal implements CommandLineRunner {
     public void run(String... strings) throws Exception {
         importGatewaysFromJson();
         importPeripheralDevicesFromJson();
+        printInfoAboutAllGateways();
+        printInfoAboutAGateway(2);
+        updateGateway();
+    }
+
+    private void updateGateway() throws ClassNotFoundException {
+        GatewayAddDto gatewayAddDto = new GatewayAddDto("1330-1691-2320-1630-3127-2516", "B", "192.168.3.24");
+        gatewayService.updateGateway(1, gatewayAddDto);
     }
 
     private void importGatewaysFromJson() {
@@ -38,11 +52,23 @@ public class Terminal implements CommandLineRunner {
         }
     }
 
-    private void importPeripheralDevicesFromJson() throws ClassNotFoundException {
+    private void importPeripheralDevicesFromJson() throws ClassNotFoundException, MoreThanTenDevicesException {
         PeripheralDeviceAddDto[] peripheralDeviceAddDtos = jsonParser.getObject(PeripheralDeviceAddDto[].class, IMPORT_PERIPHERAL_DEVICE_PATH);
         for (PeripheralDeviceAddDto peripheralDeviceAddDto : peripheralDeviceAddDtos) {
             peripheralDeviceService.save(peripheralDeviceAddDto);
         }
     }
 
+    private void printInfoAboutAllGateways() {
+        List<Gateway> gateways = gatewayService.getAllGateways();
+        for (Gateway gateway : gateways) {
+            Set<PeripheralDevice> peripheralDevices = gateway.getPeripheralDevices();
+            System.out.println(gateway.toString());
+        }
+    }
+
+    private void printInfoAboutAGateway(long id) throws ClassNotFoundException {
+        Gateway gateway = gatewayService.getGateway(id);
+        System.out.println(gateway);
+    }
 }
