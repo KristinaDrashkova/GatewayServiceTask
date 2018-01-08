@@ -35,6 +35,7 @@ public class Gateway extends BaseEntity {
         this.serialNumber = serialNumber;
         this.name = name;
         this.ipv4Address = ipv4Address;
+        this.peripheralDevices = new LinkedHashSet<>();
     }
 
     public String getSerialNumber() {

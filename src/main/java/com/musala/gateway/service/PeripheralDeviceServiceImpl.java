@@ -29,7 +29,7 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
     @Override
     public void save(PeripheralDeviceAddDto peripheralDeviceAddDto) throws ClassNotFoundException, MoreThanTenDevicesException {
         Integer gatewayId = peripheralDeviceAddDto.getGateway();
-        Gateway gateway = (Gateway) gatewayDao.findById(gatewayId, "com.musala.gateway.entities.Gateway");
+        Gateway gateway = gatewayDao.findById(gatewayId);
         if (gateway.getPeripheralDevices().size() < 10) {
             PeripheralDevice peripheralDevice = ModelParser.getInstance().map(peripheralDeviceAddDto, PeripheralDevice.class);
             peripheralDevice.setGateway(gateway);
@@ -53,7 +53,7 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
 
     @Override
     public PeripheralDevice getPeripheralDevice(long id) throws ClassNotFoundException {
-        return (PeripheralDevice) peripheralDeviceDao.findById(id, "com.musala.gateway.entities.PeripheralDevice");
+        return peripheralDeviceDao.findById(id);
     }
 
     @Transactional

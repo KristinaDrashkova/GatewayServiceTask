@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 @Repository
@@ -25,32 +24,28 @@ public class BaseDaoImpl<E> implements BaseDao<E> {
     @SuppressWarnings("unchecked")
     @Override
     public E findById(long id, String className) throws ClassNotFoundException {
-        Class<E> currentClass = (Class<E>) Class.forName(className);
+        Class<E> currentClass = (Class<E>) Class.forName("com.musala.gateway.entities." + className);
         return em.find(currentClass, id);
     }
 
     @Override
     public <E> void save(E entity) {
-        try {
+//        try {
             em.persist(entity);
-        } catch (ConstraintViolationException e) {
-            e.getMessage();
-        }
+//        } catch (ConstraintViolationException e) {
+//            e.getMessage();
+//        }
     }
 
     @Transactional
     @SuppressWarnings("unchecked")
     @Override
     public <M> void update(long id, M dto, String classToMap) throws ClassNotFoundException {
-        BaseEntity baseEntity = (BaseEntity) this.findById(id, "com.musala.gateway.entities." + classToMap);
-        em.remove(baseEntity);
-        em.flush();
+        BaseEntity baseEntity = (BaseEntity) this.findById(id, classToMap);
         M objectFromDto = (M) ModelParser.getInstance().map(dto, Class.forName("com.musala.gateway.entities." + classToMap));
         if (ValidationUtil.isValid(objectFromDto)) {
-            baseEntity = (BaseEntity) objectFromDto;
+            em.remove(baseEntity);
+            em.persist(objectFromDto);
         }
-
-        em.persist(baseEntity);
     }
-
 }

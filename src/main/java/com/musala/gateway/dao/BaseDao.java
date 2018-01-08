@@ -9,5 +9,5 @@ public interface BaseDao<Е> {
 
     <E> void save(E entity);
 
-    <M> void update(long id, M dto, String classToMap) throws ClassNotFoundException;
+    <E> void update(long id, E dto, String classToMap) throws ClassNotFoundException;
 }
