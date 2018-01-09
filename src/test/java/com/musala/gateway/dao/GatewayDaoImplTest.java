@@ -47,7 +47,6 @@ public class GatewayDaoImplTest {
     private GatewayDao gatewayDao;
 
     @Transactional
-    @SuppressWarnings("unchecked")
     @Test
     public void findAllShouldWorkCorrectly() {
         List<Gateway> gateways = gatewayDao.findAll();
@@ -108,18 +107,27 @@ public class GatewayDaoImplTest {
     @Test
     public void updateShouldWorkCorrectly() throws ClassNotFoundException {
         em.persist(gatewayNormal);
-        gatewayDao.update(gatewayNormal.getId(), gatewayAddDto);
-        Gateway gateway = gatewayDao.findAll().get(0);
         Gateway gatewayFromDto = ModelParser.getInstance().map(gatewayAddDto, Gateway.class);
+        gatewayDao.update(gatewayNormal, gatewayFromDto);
+        Gateway gateway = gatewayDao.findAll().get(0);
         Assert.assertEquals(gateway, gatewayFromDto);
+    }
+    @Transactional
+    @Test
+    public void removeShouldWorkCorrectly() throws Exception {
+        em.persist(gatewayNormal);
+
+        gatewayDao.remove(gatewayNormal);
+        List<Gateway> peripheralDevices = gatewayDao.findAll();
+        Assert.assertEquals(0, peripheralDevices.size());
     }
 
     @Transactional
-    @Test
-    public void updateShouldNotUpdateInvalidDto() throws ClassNotFoundException {
+    @Test(expected = IllegalArgumentException.class)
+    public void removeShouldThrowExceptionWithNoExistingNumber() throws Exception {
         em.persist(gatewayNormal);
-        gatewayDao.update(gatewayNormal.getId(), gatewayAddDtoInvalid);
-        Gateway gateway = gatewayDao.findAll().get(0);
-        Assert.assertEquals(gateway, gatewayNormal);
+
+        gatewayDao.remove(10);
     }
+
 }

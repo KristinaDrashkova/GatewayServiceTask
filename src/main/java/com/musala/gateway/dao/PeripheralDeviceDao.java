@@ -11,7 +11,5 @@ public interface PeripheralDeviceDao extends BaseDao {
 
     void remove(PeripheralDevice peripheralDevice);
 
-    void update(long id, Object dto) throws ClassNotFoundException;
-
     PeripheralDevice findById(long id) throws ClassNotFoundException;
 }

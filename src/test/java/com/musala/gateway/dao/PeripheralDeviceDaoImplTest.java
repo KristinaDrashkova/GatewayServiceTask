@@ -103,13 +103,12 @@ public class PeripheralDeviceDaoImplTest {
         peripheralDeviceDao.save(peripheralDeviceNullDate);
     }
 
-    @SuppressWarnings("unchecked")
     @Transactional
     @Test
     public void removeShouldWorkCorrectly() throws Exception {
         em.persist(peripheralDeviceNormal);
 
-        peripheralDeviceDao.remove(peripheralDeviceNormal.getId());
+        peripheralDeviceDao.remove(peripheralDeviceNormal);
         List<PeripheralDevice> peripheralDevices = peripheralDeviceDao.findAll();
         Assert.assertEquals(0, peripheralDevices.size());
     }
@@ -126,10 +125,10 @@ public class PeripheralDeviceDaoImplTest {
     @Test
     public void updateShouldWorkCorrectly() throws ClassNotFoundException {
         em.persist(peripheralDeviceNormal);
-        peripheralDeviceDao.update(peripheralDeviceNormal.getId(), peripheralDeviceAddDto);
-        PeripheralDevice peripheralDevice = peripheralDeviceDao.findAll().get(0);
         PeripheralDevice peripheralDeviceFromDto =
                 ModelParser.getInstance().map(peripheralDeviceAddDto, PeripheralDevice.class);
+        peripheralDeviceDao.update(peripheralDeviceNormal, peripheralDeviceFromDto);
+        PeripheralDevice peripheralDevice = peripheralDeviceDao.findAll().get(0);
         Assert.assertEquals(peripheralDevice, peripheralDeviceFromDto);
     }
 

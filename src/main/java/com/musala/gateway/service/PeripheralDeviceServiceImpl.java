@@ -60,7 +60,11 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
     @Transactional
     @Override
     public void updatePeripheralDevice(long id, PeripheralDeviceAddDto peripheralDeviceAddDto) throws ClassNotFoundException {
-        peripheralDeviceDao.update(id, peripheralDeviceAddDto);
+        PeripheralDevice peripheralDevice = peripheralDeviceDao.findById(id);
+        PeripheralDevice peripheralDeviceFromDto = ModelParser.getInstance().map(peripheralDeviceAddDto, PeripheralDevice.class);
+        if (ValidationUtil.isValid(peripheralDeviceFromDto)) {
+            peripheralDeviceDao.update(peripheralDevice, peripheralDeviceFromDto);
+        }
     }
 
     public PeripheralDeviceDao getPeripheralDeviceDao() {

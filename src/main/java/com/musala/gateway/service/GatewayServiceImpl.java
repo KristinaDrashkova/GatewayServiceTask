@@ -45,7 +45,11 @@ public class GatewayServiceImpl implements GatewayService {
 
     @Transactional
     public void updateGateway(long id, GatewayAddDto gatewayAddDto) throws ClassNotFoundException {
-        gatewayDao.update(id, gatewayAddDto);
+        Gateway gateway = gatewayDao.findById(id);
+        Gateway gatewayFromDto = ModelParser.getInstance().map(gatewayAddDto, Gateway.class);
+        if (ValidationUtil.isValid(gatewayFromDto)) {
+            gatewayDao.update(gateway, gatewayFromDto);
+        }
     }
 
     public GatewayDao getGatewayDao() {

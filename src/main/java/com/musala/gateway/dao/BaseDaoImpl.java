@@ -1,13 +1,9 @@
 package com.musala.gateway.dao;
 
-import com.musala.gateway.entities.BaseEntity;
-import com.musala.gateway.utils.ModelParser;
-import com.musala.gateway.utils.ValidationUtil;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -30,22 +26,17 @@ public class BaseDaoImpl<E> implements BaseDao<E> {
 
     @Override
     public <E> void save(E entity) {
-//        try {
-            em.persist(entity);
-//        } catch (ConstraintViolationException e) {
-//            e.getMessage();
-//        }
+        em.persist(entity);
     }
 
-    @Transactional
-    @SuppressWarnings("unchecked")
     @Override
-    public <M> void update(long id, M dto, String classToMap) throws ClassNotFoundException {
-        BaseEntity baseEntity = (BaseEntity) this.findById(id, classToMap);
-        M objectFromDto = (M) ModelParser.getInstance().map(dto, Class.forName("com.musala.gateway.entities." + classToMap));
-        if (ValidationUtil.isValid(objectFromDto)) {
-            em.remove(baseEntity);
-            em.persist(objectFromDto);
-        }
+    public <E> void remove(E entity) {
+        em.remove(entity);
+    }
+
+    @Override
+    public <E> void update(E entityToUpdate, E newEntity) {
+        em.remove(entityToUpdate);
+        em.persist(newEntity);
     }
 }

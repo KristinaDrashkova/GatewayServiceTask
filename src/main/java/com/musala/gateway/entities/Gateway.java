@@ -5,7 +5,6 @@ import com.musala.gateway.annotations.IpV4Constraint;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -28,14 +27,12 @@ public class Gateway extends BaseEntity {
     private Set<PeripheralDevice> peripheralDevices;
 
     public Gateway() {
-        this.peripheralDevices = new LinkedHashSet<>();
     }
 
     public Gateway(@NotNull String serialNumber, @NotNull String name, @NotNull String ipv4Address) {
         this.serialNumber = serialNumber;
         this.name = name;
         this.ipv4Address = ipv4Address;
-        this.peripheralDevices = new LinkedHashSet<>();
     }
 
     public String getSerialNumber() {
@@ -62,7 +59,7 @@ public class Gateway extends BaseEntity {
         this.ipv4Address = ipv4Address;
     }
 
-    public Set<PeripheralDevice> getPeripheralDevices() {
+    public Set<PeripheralDevice>  getPeripheralDevices() {
         return peripheralDevices;
     }
 

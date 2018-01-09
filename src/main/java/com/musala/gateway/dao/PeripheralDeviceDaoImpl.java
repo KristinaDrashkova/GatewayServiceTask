@@ -33,11 +33,6 @@ public class PeripheralDeviceDaoImpl extends BaseDaoImpl implements PeripheralDe
         em.remove(peripheralDevice);
     }
 
-    @Transactional
-    public void update(long id, Object dto) throws ClassNotFoundException {
-        super.update(id, dto, "PeripheralDevice");
-    }
-
     @Override
     public PeripheralDevice findById(long id) throws ClassNotFoundException {
         return (PeripheralDevice) super.findById(id, "PeripheralDevice");

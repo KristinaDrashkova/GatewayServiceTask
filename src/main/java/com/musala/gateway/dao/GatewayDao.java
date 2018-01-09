@@ -9,5 +9,4 @@ public interface GatewayDao extends BaseDao {
 
     Gateway findById(long id) throws ClassNotFoundException;
 
-    void update(long id, Object dto) throws ClassNotFoundException;
 }

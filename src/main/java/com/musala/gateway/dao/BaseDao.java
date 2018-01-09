@@ -9,5 +9,7 @@ public interface BaseDao<Е> {
 
     <E> void save(E entity);
 
-    <E> void update(long id, E dto, String classToMap) throws ClassNotFoundException;
+    <E> void remove(E entity);
+
+    <E> void update(E entityToUpdate, E newEntity);
 }
