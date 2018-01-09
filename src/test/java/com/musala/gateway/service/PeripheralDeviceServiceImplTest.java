@@ -1,5 +1,6 @@
 package com.musala.gateway.service;
 
+import com.musala.gateway.JpaConfig;
 import com.musala.gateway.dao.GatewayDao;
 import com.musala.gateway.dao.PeripheralDeviceDao;
 import com.musala.gateway.dto.PeripheralDeviceAddDto;
@@ -10,7 +11,12 @@ import com.musala.gateway.exceptions.MoreThanTenDevicesException;
 import com.musala.gateway.utils.ModelParser;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -20,9 +26,14 @@ import java.util.Set;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(
+        classes = {JpaConfig.class},
+        loader = AnnotationConfigContextLoader.class)
 public class PeripheralDeviceServiceImplTest {
     private PeripheralDeviceDao peripheralDeviceDaoMock;
     private GatewayDao gatewayDaoMock;
+    @Autowired
     private PeripheralDeviceService peripheralDeviceService;
     private PeripheralDeviceAddDto peripheralDeviceAddDto;
     private Gateway gatewayMock;
@@ -31,7 +42,8 @@ public class PeripheralDeviceServiceImplTest {
     public void setUp() throws ParseException {
         peripheralDeviceDaoMock = Mockito.mock(PeripheralDeviceDao.class);
         gatewayDaoMock = Mockito.mock(GatewayDao.class);
-        peripheralDeviceService = new PeripheralDeviceServiceImpl(peripheralDeviceDaoMock, gatewayDaoMock);
+        peripheralDeviceService.setPeripheralDeviceDao(peripheralDeviceDaoMock);
+        peripheralDeviceService.setGatewayDao(gatewayDaoMock);
         peripheralDeviceAddDto =
                 new PeripheralDeviceAddDto(1, "IBM", new Date(), Status.OFFLINE, 1);
         gatewayMock = Mockito.mock(Gateway.class);

@@ -16,13 +16,14 @@ import javax.transaction.Transactional;
 @Service
 
 public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
-    private final PeripheralDeviceDao peripheralDeviceDao;
-    private final GatewayDao gatewayDao;
-
     @Autowired
-    public PeripheralDeviceServiceImpl(PeripheralDeviceDao peripheralDeviceDao, GatewayDao gatewayDao) {
-        this.peripheralDeviceDao = peripheralDeviceDao;
-        this.gatewayDao = gatewayDao;
+    private PeripheralDeviceDao peripheralDeviceDao;
+    @Autowired
+    private GatewayDao gatewayDao;
+
+    public PeripheralDeviceServiceImpl() {
+        this.setGatewayDao(gatewayDao);
+        this.setPeripheralDeviceDao(peripheralDeviceDao);
     }
 
     @Transactional
@@ -62,4 +63,19 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
         peripheralDeviceDao.update(id, peripheralDeviceAddDto);
     }
 
+    public PeripheralDeviceDao getPeripheralDeviceDao() {
+        return peripheralDeviceDao;
+    }
+
+    public void setPeripheralDeviceDao(PeripheralDeviceDao peripheralDeviceDao) {
+        this.peripheralDeviceDao = peripheralDeviceDao;
+    }
+
+    public GatewayDao getGatewayDao() {
+        return gatewayDao;
+    }
+
+    public void setGatewayDao(GatewayDao gatewayDao) {
+        this.gatewayDao = gatewayDao;
+    }
 }

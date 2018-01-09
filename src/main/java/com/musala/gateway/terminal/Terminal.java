@@ -3,7 +3,6 @@ package com.musala.gateway.terminal;
 import com.musala.gateway.dto.GatewayAddDto;
 import com.musala.gateway.dto.PeripheralDeviceAddDto;
 import com.musala.gateway.entities.Gateway;
-import com.musala.gateway.entities.PeripheralDevice;
 import com.musala.gateway.exceptions.MoreThanTenDevicesException;
 import com.musala.gateway.service.GatewayService;
 import com.musala.gateway.service.PeripheralDeviceService;
@@ -13,7 +12,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Set;
 
 @Component
 public class Terminal implements CommandLineRunner {
@@ -62,7 +60,6 @@ public class Terminal implements CommandLineRunner {
     private void printInfoAboutAllGateways() {
         List<Gateway> gateways = gatewayService.getAllGateways();
         for (Gateway gateway : gateways) {
-            Set<PeripheralDevice> peripheralDevices = gateway.getPeripheralDevices();
             System.out.println(gateway.toString());
         }
     }

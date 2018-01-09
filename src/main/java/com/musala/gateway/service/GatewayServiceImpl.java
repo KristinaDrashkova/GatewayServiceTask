@@ -15,11 +15,12 @@ import java.util.List;
 
 @Service
 public class GatewayServiceImpl implements GatewayService {
-    private final GatewayDao gatewayDao;
-
     @Autowired
-    public GatewayServiceImpl(GatewayDao gatewayDao) {
-        this.gatewayDao = gatewayDao;
+    private GatewayDao gatewayDao;
+
+//    @Autowired
+    public GatewayServiceImpl() {
+        this.setGatewayDao(gatewayDao);
     }
 
     @SuppressWarnings("unchecked")
@@ -45,5 +46,13 @@ public class GatewayServiceImpl implements GatewayService {
     @Transactional
     public void updateGateway(long id, GatewayAddDto gatewayAddDto) throws ClassNotFoundException {
         gatewayDao.update(id, gatewayAddDto);
+    }
+
+    public GatewayDao getGatewayDao() {
+        return gatewayDao;
+    }
+
+    public void setGatewayDao(GatewayDao gatewayDao) {
+        this.gatewayDao = gatewayDao;
     }
 }

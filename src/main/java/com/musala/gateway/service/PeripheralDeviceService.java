@@ -1,6 +1,8 @@
 package com.musala.gateway.service;
 
 
+import com.musala.gateway.dao.GatewayDao;
+import com.musala.gateway.dao.PeripheralDeviceDao;
 import com.musala.gateway.dto.PeripheralDeviceAddDto;
 import com.musala.gateway.entities.PeripheralDevice;
 import com.musala.gateway.exceptions.MoreThanTenDevicesException;
@@ -29,4 +31,8 @@ public interface PeripheralDeviceService {
     PeripheralDevice getPeripheralDevice(long id) throws ClassNotFoundException;
 
     void updatePeripheralDevice(long id, PeripheralDeviceAddDto peripheralDeviceAddDto) throws ClassNotFoundException;
+
+    void setGatewayDao(GatewayDao gatewayDao);
+
+    void setPeripheralDeviceDao(PeripheralDeviceDao peripheralDeviceDao);
 }

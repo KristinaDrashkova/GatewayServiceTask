@@ -1,5 +1,6 @@
 package com.musala.gateway.service;
 
+import com.musala.gateway.dao.GatewayDao;
 import com.musala.gateway.dto.GatewayAddDto;
 import com.musala.gateway.entities.Gateway;
 
@@ -28,4 +29,6 @@ public interface GatewayService {
     Gateway getGateway(long id) throws ClassNotFoundException;
 
     void updateGateway(long id, GatewayAddDto gatewayAddDto) throws ClassNotFoundException;
+
+    void setGatewayDao(GatewayDao gatewayDao);
 }
