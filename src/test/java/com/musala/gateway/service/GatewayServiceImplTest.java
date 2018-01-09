@@ -2,13 +2,14 @@ package com.musala.gateway.service;
 
 import com.musala.gateway.dao.GatewayDao;
 import com.musala.gateway.dto.GatewayAddDto;
+import com.musala.gateway.entities.Gateway;
+import com.musala.gateway.utils.ModelParser;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.text.ParseException;
 
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -35,7 +36,8 @@ public class GatewayServiceImplTest {
     @Test
     public void saveShouldWorkCorrectly() throws Exception {
         gatewayService.save(gatewayAddDto);
-        verify(gatewayDaoMock, times(1)).save(any());
+        Gateway gateway = ModelParser.getInstance().map(gatewayAddDto, Gateway.class);
+        verify(gatewayDaoMock, times(1)).save(gateway);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -51,7 +53,7 @@ public class GatewayServiceImplTest {
 
     @Test
     public void updateShouldWorkCorrectly() throws ClassNotFoundException {
-        gatewayService.updateGateway(1, new GatewayAddDto());
-        verify(gatewayDaoMock, times(1)).update(1, any());
+        gatewayService.updateGateway(1, gatewayAddDto);
+        verify(gatewayDaoMock, times(1)).update(1, gatewayAddDto);
     }
 }

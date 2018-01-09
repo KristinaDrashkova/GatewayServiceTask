@@ -22,7 +22,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "com.musala.gateway.dao")
-@ComponentScan(value = "com.musala.gateway.dao")
+@ComponentScan({"com.musala.gateway.dao", "com.musala.gateway.service"})
 @PropertySource(value = "application.properties")
 @EnableTransactionManagement
 public class JpaConfig {

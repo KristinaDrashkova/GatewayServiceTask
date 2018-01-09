@@ -4,18 +4,19 @@ import com.musala.gateway.dao.GatewayDao;
 import com.musala.gateway.dao.PeripheralDeviceDao;
 import com.musala.gateway.dto.PeripheralDeviceAddDto;
 import com.musala.gateway.entities.Gateway;
+import com.musala.gateway.entities.PeripheralDevice;
 import com.musala.gateway.entities.Status;
+import com.musala.gateway.exceptions.MoreThanTenDevicesException;
+import com.musala.gateway.utils.ModelParser;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedHashSet;
-import java.util.Locale;
+import java.util.Set;
 
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -31,9 +32,8 @@ public class PeripheralDeviceServiceImplTest {
         peripheralDeviceDaoMock = Mockito.mock(PeripheralDeviceDao.class);
         gatewayDaoMock = Mockito.mock(GatewayDao.class);
         peripheralDeviceService = new PeripheralDeviceServiceImpl(peripheralDeviceDaoMock, gatewayDaoMock);
-        DateFormat format = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
         peripheralDeviceAddDto =
-                new PeripheralDeviceAddDto(1, "IBM", format.parse("2015-12-20"), Status.OFFLINE, 1);
+                new PeripheralDeviceAddDto(1, "IBM", new Date(), Status.OFFLINE, 1);
         gatewayMock = Mockito.mock(Gateway.class);
         Mockito.when(gatewayMock.getPeripheralDevices()).thenReturn(new LinkedHashSet<>(1));
     }
@@ -42,7 +42,8 @@ public class PeripheralDeviceServiceImplTest {
     public void saveShouldWorkCorrectly() throws Exception {
         Mockito.when(gatewayDaoMock.findById(1)).thenReturn(gatewayMock);
         peripheralDeviceService.save(peripheralDeviceAddDto);
-        verify(peripheralDeviceDaoMock, times(1)).save(any());
+        PeripheralDevice peripheralDevice = ModelParser.getInstance().map(peripheralDeviceAddDto, PeripheralDevice.class);
+        verify(peripheralDeviceDaoMock, times(1)).save(peripheralDevice);
     }
 
     @Test(expected = NullPointerException.class)
@@ -63,5 +64,20 @@ public class PeripheralDeviceServiceImplTest {
         peripheralDeviceService.getPeripheralDevice(1);
 
         Mockito.verify(peripheralDeviceDaoMock, times(1)).findById(1);
+    }
+
+    @Test(expected = MoreThanTenDevicesException.class)
+    public void saveMoreThanTenPeripheralDevicesShouldThrowCustomException() throws ClassNotFoundException, MoreThanTenDevicesException {
+        Set<PeripheralDevice> peripheralDevices = Mockito.mock(LinkedHashSet.class);
+        Mockito.when(peripheralDevices.size()).thenReturn(10);
+        Mockito.when(gatewayMock.getPeripheralDevices()).thenReturn(peripheralDevices);
+        Mockito.when(gatewayDaoMock.findById(1)).thenReturn(gatewayMock);
+        peripheralDeviceService.save(peripheralDeviceAddDto);
+    }
+
+    @Test
+    public void updatePeripheralDeviceShouldWorkCorrectly() throws ClassNotFoundException {
+        peripheralDeviceService.updatePeripheralDevice(1, peripheralDeviceAddDto);
+        verify(peripheralDeviceDaoMock, times(1)).update(1, peripheralDeviceAddDto);
     }
 }
