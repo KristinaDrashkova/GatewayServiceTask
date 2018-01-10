@@ -20,6 +20,7 @@ import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 
+@SuppressWarnings("unchecked")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
         classes = {JpaConfig.class},
@@ -37,8 +38,7 @@ public class GatewayDaoImplTest {
             new Gateway("1245-1234-1234-1237", "name", null);
     private GatewayAddDto gatewayAddDto =
             new GatewayAddDto("1331-1691-2320-1630-3127-2516", "Q", "192.168.3.24");
-    private GatewayAddDto gatewayAddDtoInvalid =
-            new GatewayAddDto("1331-1691-2320-1630-3127-2516", "Q", "1921.168.3.24");
+
     @PersistenceContext
     private EntityManager em;
 

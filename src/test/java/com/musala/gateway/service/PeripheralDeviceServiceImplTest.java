@@ -26,30 +26,26 @@ import java.util.Set;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+@SuppressWarnings("unchekced")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
         classes = {JpaConfig.class},
         loader = AnnotationConfigContextLoader.class)
 public class PeripheralDeviceServiceImplTest {
-    private PeripheralDeviceDao peripheralDeviceDaoMock;
-    private GatewayDao gatewayDaoMock;
+    private PeripheralDeviceDao peripheralDeviceDaoMock = Mockito.mock(PeripheralDeviceDao.class);
+    private GatewayDao gatewayDaoMock = Mockito.mock(GatewayDao.class);
     @Autowired
     private PeripheralDeviceService peripheralDeviceService;
-    private PeripheralDeviceAddDto peripheralDeviceAddDto;
-    private Gateway gatewayMock;
-    private PeripheralDevice peripheralDevice;
+    private PeripheralDeviceAddDto peripheralDeviceAddDto =
+            new PeripheralDeviceAddDto(1, "IBM", new Date(), Status.OFFLINE, 1);
+    private Gateway gatewayMock = Mockito.mock(Gateway.class);
+    private PeripheralDevice peripheralDevice = new PeripheralDevice(1, "IBM", new Date(), Status.ONLINE);
 
     @Before
     public void setUp() throws ParseException, ClassNotFoundException {
-        peripheralDeviceDaoMock = Mockito.mock(PeripheralDeviceDao.class);
-        gatewayDaoMock = Mockito.mock(GatewayDao.class);
         peripheralDeviceService.setPeripheralDeviceDao(peripheralDeviceDaoMock);
         peripheralDeviceService.setGatewayDao(gatewayDaoMock);
-        peripheralDeviceAddDto =
-                new PeripheralDeviceAddDto(1, "IBM", new Date(), Status.OFFLINE, 1);
-        gatewayMock = Mockito.mock(Gateway.class);
         Mockito.when(gatewayMock.getPeripheralDevices()).thenReturn(new LinkedHashSet<>(1));
-        peripheralDevice = new PeripheralDevice(1, "IBM", new Date(), Status.ONLINE);
         Mockito.when(peripheralDeviceDaoMock.findById(1)).thenReturn(peripheralDevice);
     }
 

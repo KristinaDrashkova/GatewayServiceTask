@@ -3,9 +3,9 @@ package com.musala.gateway.dao;
 import java.util.List;
 
 public interface BaseDao<K> {
-    List<K> findAll(Class<K> entityClass);
+    List<K> findAll();
 
-    K findById(long id, Class<K> entityClass) throws ClassNotFoundException;
+    K findById(long id) throws ClassNotFoundException;
 
     void save(K entity);
 

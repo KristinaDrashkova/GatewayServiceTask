@@ -8,14 +8,17 @@ import java.util.List;
 
 @Repository
 public class GatewayDaoImpl extends BaseDaoImpl implements GatewayDao {
+    public GatewayDaoImpl() {
+        super(Gateway.class);
+    }
 
     @Override
     public List<Gateway> findAll() {
-        return super.findAll(Gateway.class);
+        return super.findAll();
     }
 
     @Override
     public Gateway findById(long id) throws ClassNotFoundException {
-        return (Gateway) super.findById(id, Gateway.class);
+        return (Gateway) super.findById(id);
     }
 }

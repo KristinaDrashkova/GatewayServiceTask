@@ -4,17 +4,23 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+@SuppressWarnings("unchecked")
 public abstract class BaseDaoImpl<K> implements BaseDao<K> {
     @PersistenceContext(name = "gateway")
     private EntityManager em;
+    private Class<K> entityClass;
+
+    public BaseDaoImpl(Class<K> entityClass) {
+        this.entityClass = entityClass;
+    }
 
     @Override
-    public List<K> findAll(Class<K> entityClass) {
+    public List<K> findAll() {
         return em.createQuery("FROM " + entityClass.getSimpleName()).getResultList();
     }
 
     @Override
-    public K findById(long id, Class<K> entityClass) throws ClassNotFoundException {
+    public K findById(long id) throws ClassNotFoundException {
         return em.find(entityClass, id);
     }
 

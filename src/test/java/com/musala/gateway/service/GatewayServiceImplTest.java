@@ -20,24 +20,24 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+@SuppressWarnings("unchecked")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
         classes = {JpaConfig.class},
         loader = AnnotationConfigContextLoader.class)
 public class GatewayServiceImplTest {
-    private GatewayDao gatewayDaoMock;
+    private GatewayDao gatewayDaoMock = Mockito.mock(GatewayDao.class);
     @Autowired
     private GatewayService gatewayService;
-    private GatewayAddDto gatewayAddDto;
-    private Gateway gateway;
+    private GatewayAddDto gatewayAddDto = new GatewayAddDto("1330-1691-2320-1630-3127-2515", "A", "192.168.3.24");
+    private GatewayAddDto gatewayAddDtoInvalid =
+            new GatewayAddDto("1331-1691-2320-1630-3127-2516", "Q", "1921.168.3.24");
+    private Gateway gateway = new Gateway("1245-1234-1234-1235", "name", "192.168.3.24");
 
 
     @Before
     public void setUp() throws ParseException, ClassNotFoundException {
-        gatewayDaoMock = Mockito.mock(GatewayDao.class);
         gatewayService.setGatewayDao(gatewayDaoMock);
-        gatewayAddDto = new GatewayAddDto("1330-1691-2320-1630-3127-2515", "A", "192.168.3.24");
-        gateway = new Gateway("1245-1234-1234-1235", "name", "192.168.3.24");
         Mockito.when(gatewayDaoMock.findById(1)).thenReturn(gateway);
     }
 

@@ -14,16 +14,19 @@ public class PeripheralDeviceDaoImpl extends BaseDaoImpl implements PeripheralDe
     @PersistenceContext(name = "gateway")
     private EntityManager em;
 
-    @SuppressWarnings("unchecked")
+    public PeripheralDeviceDaoImpl() {
+        super(PeripheralDevice.class);
+    }
+
     @Override
     public List<PeripheralDevice> findAll() {
-        return super.findAll(PeripheralDevice.class);
+        return super.findAll();
     }
 
     @Transactional
     @Override
     public void remove(long id) throws ClassNotFoundException {
-        PeripheralDevice peripheralDevice = (PeripheralDevice) findById(id, PeripheralDevice.class);
+        PeripheralDevice peripheralDevice = findById(id);
         em.remove(peripheralDevice);
     }
 
@@ -35,6 +38,6 @@ public class PeripheralDeviceDaoImpl extends BaseDaoImpl implements PeripheralDe
 
     @Override
     public PeripheralDevice findById(long id) throws ClassNotFoundException {
-        return (PeripheralDevice) super.findById(id, PeripheralDevice.class);
+        return (PeripheralDevice) super.findById(id);
     }
 }
