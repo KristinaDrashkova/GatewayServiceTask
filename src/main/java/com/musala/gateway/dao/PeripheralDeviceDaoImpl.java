@@ -25,7 +25,7 @@ public class PeripheralDeviceDaoImpl extends BaseDaoImpl implements PeripheralDe
 
     @Transactional
     @Override
-    public void remove(long id) throws ClassNotFoundException {
+    public void remove(long id) {
         PeripheralDevice peripheralDevice = findById(id);
         em.remove(peripheralDevice);
     }
@@ -37,7 +37,7 @@ public class PeripheralDeviceDaoImpl extends BaseDaoImpl implements PeripheralDe
     }
 
     @Override
-    public PeripheralDevice findById(long id) throws ClassNotFoundException {
+    public PeripheralDevice findById(long id) {
         return (PeripheralDevice) super.findById(id);
     }
 }

@@ -20,7 +20,7 @@ public abstract class BaseDaoImpl<K> implements BaseDao<K> {
     }
 
     @Override
-    public K findById(long id) throws ClassNotFoundException {
+    public K findById(long id) {
         return em.find(entityClass, id);
     }
 

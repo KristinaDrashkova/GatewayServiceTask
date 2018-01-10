@@ -7,5 +7,5 @@ import java.util.List;
 public interface GatewayDao extends BaseDao {
     List<Gateway> findAll();
 
-    Gateway findById(long id) throws ClassNotFoundException;
+    Gateway findById(long id);
 }

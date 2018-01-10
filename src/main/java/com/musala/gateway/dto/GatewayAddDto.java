@@ -4,15 +4,19 @@ import com.google.gson.annotations.Expose;
 import com.musala.gateway.annotations.IpV4Constraint;
 
 import javax.persistence.Column;
+import javax.validation.constraints.NotNull;
 
 public class GatewayAddDto {
+    @NotNull
     @Expose
     @Column(unique = true)
     private String serialNumber;
 
+    @NotNull
     @Expose
     private String name;
 
+    @NotNull
     @Expose
     @IpV4Constraint
     private String ipv4Address;

@@ -60,7 +60,7 @@ public class GatewayDaoImplTest {
 
     @Transactional
     @Test
-    public void findByIdShouldWorkCorrectly() throws ClassNotFoundException {
+    public void findByIdShouldWorkCorrectly() {
         em.persist(gatewayNormal);
 
         Gateway gatewayDb = gatewayDao.findById(gatewayNormal.getId());
@@ -105,13 +105,14 @@ public class GatewayDaoImplTest {
 
     @Transactional
     @Test
-    public void updateShouldWorkCorrectly() throws ClassNotFoundException {
+    public void updateShouldWorkCorrectly() {
         em.persist(gatewayNormal);
         Gateway gatewayFromDto = ModelParser.getInstance().map(gatewayAddDto, Gateway.class);
         gatewayDao.update(gatewayNormal, gatewayFromDto);
         Gateway gateway = gatewayDao.findAll().get(0);
         Assert.assertEquals(gateway, gatewayFromDto);
     }
+
     @Transactional
     @Test
     public void removeShouldWorkCorrectly() throws Exception {

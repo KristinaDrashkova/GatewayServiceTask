@@ -4,22 +4,28 @@ import com.google.gson.annotations.Expose;
 import com.musala.gateway.entities.Status;
 
 import javax.persistence.Column;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class PeripheralDeviceAddDto {
+    @NotNull
     @Expose
     @Column(unique = true)
     private Integer uid;
 
+    @NotNull
     @Expose
     private String vendor;
 
+    @NotNull
     @Expose
     private Date dateCreated;
 
+    @NotNull
     @Expose
     private Status status;
 
+    @NotNull
     @Expose
     private Integer gateway;
 

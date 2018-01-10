@@ -26,18 +26,21 @@ import java.util.Set;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@SuppressWarnings("unchekced")
+@SuppressWarnings("unchecked")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
         classes = {JpaConfig.class},
         loader = AnnotationConfigContextLoader.class)
 public class PeripheralDeviceServiceImplTest {
-    private PeripheralDeviceDao peripheralDeviceDaoMock = Mockito.mock(PeripheralDeviceDao.class);
-    private GatewayDao gatewayDaoMock = Mockito.mock(GatewayDao.class);
     @Autowired
     private PeripheralDeviceService peripheralDeviceService;
+
+    private PeripheralDeviceDao peripheralDeviceDaoMock = Mockito.mock(PeripheralDeviceDao.class);
+    private GatewayDao gatewayDaoMock = Mockito.mock(GatewayDao.class);
     private PeripheralDeviceAddDto peripheralDeviceAddDto =
             new PeripheralDeviceAddDto(1, "IBM", new Date(), Status.OFFLINE, 1);
+    private PeripheralDeviceAddDto peripheralDeviceAddDtoInvalid =
+            new PeripheralDeviceAddDto(null, "IBM", new Date(), Status.OFFLINE, 1);
     private Gateway gatewayMock = Mockito.mock(Gateway.class);
     private PeripheralDevice peripheralDevice = new PeripheralDevice(1, "IBM", new Date(), Status.ONLINE);
 
@@ -70,7 +73,7 @@ public class PeripheralDeviceServiceImplTest {
     }
 
     @Test
-    public void removeDeviceWithEntityShouldWorkCorrectly() throws ClassNotFoundException {
+    public void removeDeviceWithEntityShouldWorkCorrectly() {
         peripheralDeviceService.removeDevice(peripheralDevice);
         Mockito.verify(peripheralDeviceDaoMock, times(1)).remove(peripheralDevice);
     }
@@ -83,7 +86,7 @@ public class PeripheralDeviceServiceImplTest {
     }
 
     @Test(expected = MoreThanTenDevicesException.class)
-    public void saveMoreThanTenPeripheralDevicesShouldThrowCustomException() throws ClassNotFoundException, MoreThanTenDevicesException {
+    public void saveMoreThanTenPeripheralDevicesShouldThrowCustomException() throws MoreThanTenDevicesException {
         Set<PeripheralDevice> peripheralDevices = Mockito.mock(LinkedHashSet.class);
         Mockito.when(peripheralDevices.size()).thenReturn(10);
         Mockito.when(gatewayMock.getPeripheralDevices()).thenReturn(peripheralDevices);
@@ -96,5 +99,15 @@ public class PeripheralDeviceServiceImplTest {
         peripheralDeviceService.updatePeripheralDevice(1, peripheralDeviceAddDto);
         PeripheralDevice peripheralDeviceFromDto = ModelParser.getInstance().map(peripheralDeviceAddDto, PeripheralDevice.class);
         verify(peripheralDeviceDaoMock, times(1)).update(peripheralDevice, peripheralDeviceFromDto);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void saveShouldThrowAssertionErrorWithInvalidDto() throws MoreThanTenDevicesException {
+        peripheralDeviceService.save(peripheralDeviceAddDtoInvalid);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void updateShouldThrowAssertionErrorWithInvalidDto() throws MoreThanTenDevicesException {
+        peripheralDeviceService.updatePeripheralDevice(1, peripheralDeviceAddDtoInvalid);
     }
 }

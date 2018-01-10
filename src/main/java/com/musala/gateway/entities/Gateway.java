@@ -59,7 +59,7 @@ public class Gateway extends BaseEntity {
         this.ipv4Address = ipv4Address;
     }
 
-    public Set<PeripheralDevice>  getPeripheralDevices() {
+    public Set<PeripheralDevice> getPeripheralDevices() {
         return peripheralDevices;
     }
 

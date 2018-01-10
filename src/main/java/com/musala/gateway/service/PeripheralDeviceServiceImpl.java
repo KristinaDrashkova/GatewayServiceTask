@@ -7,14 +7,13 @@ import com.musala.gateway.entities.Gateway;
 import com.musala.gateway.entities.PeripheralDevice;
 import com.musala.gateway.exceptions.MoreThanTenDevicesException;
 import com.musala.gateway.utils.ModelParser;
-import com.musala.gateway.utils.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
 @Service
-
+@SuppressWarnings("unchecked")
 public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
     @Autowired
     private PeripheralDeviceDao peripheralDeviceDao;
@@ -28,17 +27,15 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
 
     @Transactional
     @Override
-    public void save(PeripheralDeviceAddDto peripheralDeviceAddDto) throws ClassNotFoundException, MoreThanTenDevicesException {
+    public void save(PeripheralDeviceAddDto peripheralDeviceAddDto) throws MoreThanTenDevicesException {
+        assert (peripheralDeviceAddDto.getUid() != null && peripheralDeviceAddDto.getVendor() != null && peripheralDeviceAddDto.getStatus() != null
+        && peripheralDeviceAddDto.getDateCreated() != null && peripheralDeviceAddDto.getGateway() != null);
         Integer gatewayId = peripheralDeviceAddDto.getGateway();
         Gateway gateway = gatewayDao.findById(gatewayId);
         if (gateway.getPeripheralDevices().size() < 10) {
             PeripheralDevice peripheralDevice = ModelParser.getInstance().map(peripheralDeviceAddDto, PeripheralDevice.class);
             peripheralDevice.setGateway(gateway);
-            if (ValidationUtil.isValid(peripheralDevice)) {
-                peripheralDeviceDao.save(peripheralDevice);
-            } else {
-                //log here
-            }
+            peripheralDeviceDao.save(peripheralDevice);
 
         } else {
             throw new MoreThanTenDevicesException("Can not add more than 10 devices to a gateway");
@@ -48,7 +45,7 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
 
     @Transactional
     @Override
-    public void removeDevice(long id) throws ClassNotFoundException {
+    public void removeDevice(long id) {
         peripheralDeviceDao.remove(id);
     }
 
@@ -58,18 +55,18 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
     }
 
     @Override
-    public PeripheralDevice getPeripheralDevice(long id) throws ClassNotFoundException {
+    public PeripheralDevice getPeripheralDevice(long id) {
         return peripheralDeviceDao.findById(id);
     }
 
     @Transactional
     @Override
-    public void updatePeripheralDevice(long id, PeripheralDeviceAddDto peripheralDeviceAddDto) throws ClassNotFoundException {
+    public void updatePeripheralDevice(long id, PeripheralDeviceAddDto peripheralDeviceAddDto) {
+        assert (peripheralDeviceAddDto.getUid() != null && peripheralDeviceAddDto.getVendor() != null && peripheralDeviceAddDto.getStatus() != null
+                && peripheralDeviceAddDto.getDateCreated() != null && peripheralDeviceAddDto.getGateway() != null);
         PeripheralDevice peripheralDevice = peripheralDeviceDao.findById(id);
         PeripheralDevice peripheralDeviceFromDto = ModelParser.getInstance().map(peripheralDeviceAddDto, PeripheralDevice.class);
-        if (ValidationUtil.isValid(peripheralDeviceFromDto)) {
-            peripheralDeviceDao.update(peripheralDevice, peripheralDeviceFromDto);
-        }
+        peripheralDeviceDao.update(peripheralDevice, peripheralDeviceFromDto);
     }
 
     public void setPeripheralDeviceDao(PeripheralDeviceDao peripheralDeviceDao) {

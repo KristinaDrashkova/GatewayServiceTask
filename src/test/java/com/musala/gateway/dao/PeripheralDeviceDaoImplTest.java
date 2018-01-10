@@ -32,10 +32,10 @@ public class PeripheralDeviceDaoImplTest {
 
     private PeripheralDevice peripheralDeviceRepeatingUid = new PeripheralDevice(1, "IBM", new Date(), Status.ONLINE);
     private PeripheralDevice peripheralDeviceNormal = new PeripheralDevice(1, "SteelSeries", new Date(), Status.OFFLINE);
-    private PeripheralDevice peripheralDeviceNullUid = new PeripheralDevice(null, "SteelSeries",  new Date(), Status.OFFLINE);
-    private PeripheralDevice peripheralDeviceNullVendor = new PeripheralDevice(1, null,  new Date(), Status.OFFLINE);
+    private PeripheralDevice peripheralDeviceNullUid = new PeripheralDevice(null, "SteelSeries", new Date(), Status.OFFLINE);
+    private PeripheralDevice peripheralDeviceNullVendor = new PeripheralDevice(1, null, new Date(), Status.OFFLINE);
     private PeripheralDevice peripheralDeviceNullDate = new PeripheralDevice(null, "SteelSeries", null, Status.OFFLINE);
-    private PeripheralDevice peripheralDeviceNullStatus = new PeripheralDevice(1, "SteelSeries",  new Date(), null);
+    private PeripheralDevice peripheralDeviceNullStatus = new PeripheralDevice(1, "SteelSeries", new Date(), null);
     private PeripheralDeviceAddDto peripheralDeviceAddDto = new PeripheralDeviceAddDto(10, "SteelSeries", new Date(), Status.OFFLINE, 1);
 
     @PersistenceContext
@@ -81,6 +81,7 @@ public class PeripheralDeviceDaoImplTest {
         peripheralDeviceDao.save(peripheralDeviceNormal);
         peripheralDeviceDao.save(peripheralDeviceRepeatingUid);
     }
+
     @Transactional
     @Test(expected = ConstraintViolationException.class)
     public void saveShouldThrowExceptionWithNullUid() throws Exception {
@@ -92,11 +93,13 @@ public class PeripheralDeviceDaoImplTest {
     public void saveShouldThrowExceptionWithNullVendor() throws Exception {
         peripheralDeviceDao.save(peripheralDeviceNullVendor);
     }
+
     @Transactional
     @Test(expected = ConstraintViolationException.class)
     public void saveShouldThrowExceptionWithNullStatus() throws Exception {
         peripheralDeviceDao.save(peripheralDeviceNullStatus);
     }
+
     @Transactional
     @Test(expected = ConstraintViolationException.class)
     public void saveShouldThrowExceptionWithNullDate() throws Exception {

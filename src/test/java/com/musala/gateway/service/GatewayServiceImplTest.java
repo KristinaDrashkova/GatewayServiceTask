@@ -14,9 +14,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import java.text.ParseException;
-
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -26,17 +23,18 @@ import static org.mockito.Mockito.verify;
         classes = {JpaConfig.class},
         loader = AnnotationConfigContextLoader.class)
 public class GatewayServiceImplTest {
-    private GatewayDao gatewayDaoMock = Mockito.mock(GatewayDao.class);
     @Autowired
     private GatewayService gatewayService;
+
+    private GatewayDao gatewayDaoMock = Mockito.mock(GatewayDao.class);
     private GatewayAddDto gatewayAddDto = new GatewayAddDto("1330-1691-2320-1630-3127-2515", "A", "192.168.3.24");
     private GatewayAddDto gatewayAddDtoInvalid =
-            new GatewayAddDto("1331-1691-2320-1630-3127-2516", "Q", "1921.168.3.24");
+            new GatewayAddDto(null, "Q", "1921.168.3.24");
     private Gateway gateway = new Gateway("1245-1234-1234-1235", "name", "192.168.3.24");
 
 
     @Before
-    public void setUp() throws ParseException, ClassNotFoundException {
+    public void setUp() {
         gatewayService.setGatewayDao(gatewayDaoMock);
         Mockito.when(gatewayDaoMock.findById(1)).thenReturn(gateway);
     }
@@ -49,13 +47,9 @@ public class GatewayServiceImplTest {
 
     @Test
     public void saveShouldWorkCorrectly() throws Exception {
+        Gateway gateway = ModelParser.getInstance().map(gatewayAddDto, Gateway.class);
         gatewayService.save(gatewayAddDto);
-        verify(gatewayDaoMock, times(1)).save(any());
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void saveShouldThrowExceptionWithNullArgument() throws Exception {
-        gatewayService.save(null);
+        verify(gatewayDaoMock, times(1)).save(gateway);
     }
 
     @Test
@@ -65,9 +59,19 @@ public class GatewayServiceImplTest {
     }
 
     @Test
-    public void updateShouldWorkCorrectly() throws ClassNotFoundException {
+    public void updateShouldWorkCorrectly() {
         Gateway gatewayFromDto = ModelParser.getInstance().map(gatewayAddDto, Gateway.class);
         gatewayService.updateGateway(1, gatewayAddDto);
         verify(gatewayDaoMock, times(1)).update(gateway, gatewayFromDto);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void saveShouldThrowAssertionErrorWithInvalidDto() throws Exception {
+        gatewayService.save(gatewayAddDtoInvalid);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void updateShouldThrowAssertionErrorWithInvalidDto() {
+        gatewayService.updateGateway(1, gatewayAddDtoInvalid);
     }
 }

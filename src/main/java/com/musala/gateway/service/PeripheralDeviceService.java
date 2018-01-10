@@ -14,20 +14,36 @@ public interface PeripheralDeviceService {
      *
      * @param peripheralDeviceAddDto data transfer object corresponding to an entity
      */
-    void save(PeripheralDeviceAddDto peripheralDeviceAddDto) throws ClassNotFoundException, MoreThanTenDevicesException;
+    void save(PeripheralDeviceAddDto peripheralDeviceAddDto) throws MoreThanTenDevicesException;
 
     /**
      * removes from database the device by a given parameter
      *
-     * @param id generated in database
+     * @param id identifier generated in database
      */
-    void removeDevice(long id) throws ClassNotFoundException;
+    void removeDevice(long id);
 
+
+    /**
+     * removes a given device from database
+     *
+     * @param peripheralDevice to be removed
+     */
     void removeDevice(PeripheralDevice peripheralDevice);
 
-    PeripheralDevice getPeripheralDevice(long id) throws ClassNotFoundException;
+    /**
+     * @param id identifier generated in database
+     * @return device found in database by given identifier
+     */
+    PeripheralDevice getPeripheralDevice(long id);
 
-    void updatePeripheralDevice(long id, PeripheralDeviceAddDto peripheralDeviceAddDto) throws ClassNotFoundException;
+    /**
+     * updates peripheralDevice in database
+     *
+     * @param id                     identifier generated in database
+     * @param peripheralDeviceAddDto mapping object for PeripheralDevice
+     */
+    void updatePeripheralDevice(long id, PeripheralDeviceAddDto peripheralDeviceAddDto);
 
     void setGatewayDao(GatewayDao gatewayDao);
 

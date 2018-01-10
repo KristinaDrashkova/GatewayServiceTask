@@ -5,7 +5,7 @@ import java.util.List;
 public interface BaseDao<K> {
     List<K> findAll();
 
-    K findById(long id) throws ClassNotFoundException;
+    K findById(long id);
 
     void save(K entity);
 

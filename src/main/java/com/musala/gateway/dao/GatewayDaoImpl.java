@@ -18,7 +18,7 @@ public class GatewayDaoImpl extends BaseDaoImpl implements GatewayDao {
     }
 
     @Override
-    public Gateway findById(long id) throws ClassNotFoundException {
+    public Gateway findById(long id) {
         return (Gateway) super.findById(id);
     }
 }

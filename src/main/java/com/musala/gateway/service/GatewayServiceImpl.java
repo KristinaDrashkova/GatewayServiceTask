@@ -14,11 +14,12 @@ import java.util.List;
 
 
 @Service
+@SuppressWarnings("unchecked")
 public class GatewayServiceImpl implements GatewayService {
     @Autowired
     private GatewayDao gatewayDao;
 
-//    @Autowired
+    //    @Autowired
     public GatewayServiceImpl() {
         this.setGatewayDao(gatewayDao);
     }
@@ -30,21 +31,19 @@ public class GatewayServiceImpl implements GatewayService {
 
     @Transactional
     public void save(GatewayAddDto gatewayAddDto) {
+        assert (gatewayAddDto.getName() != null && gatewayAddDto.getIpv4Address() != null && gatewayAddDto.getSerialNumber() != null);
         Gateway gateway = ModelParser.getInstance().map(gatewayAddDto, Gateway.class);
         gateway.setPeripheralDevices(new HashSet<>());
-        if (ValidationUtil.isValid(gateway)) {
-            gatewayDao.save(gateway);
-        } else {
-            //log here
-        }
+        gatewayDao.save(gateway);
     }
 
-    public Gateway getGateway(long id) throws ClassNotFoundException {
+    public Gateway getGateway(long id) {
         return gatewayDao.findById(id);
     }
 
     @Transactional
-    public void updateGateway(long id, GatewayAddDto gatewayAddDto) throws ClassNotFoundException {
+    public void updateGateway(long id, GatewayAddDto gatewayAddDto) {
+        assert (gatewayAddDto.getName() != null && gatewayAddDto.getIpv4Address() != null && gatewayAddDto.getSerialNumber() != null);
         Gateway gateway = gatewayDao.findById(id);
         Gateway gatewayFromDto = ModelParser.getInstance().map(gatewayAddDto, Gateway.class);
         if (ValidationUtil.isValid(gatewayFromDto)) {
