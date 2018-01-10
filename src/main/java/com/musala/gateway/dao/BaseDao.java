@@ -2,14 +2,14 @@ package com.musala.gateway.dao;
 
 import java.util.List;
 
-public interface BaseDao<Е> {
-    List<Е> findAll(String selectedClass);
+public interface BaseDao<E> {
+    List findAll(Class<E> entityClass);
 
-    <E> E findById(long id, String className) throws ClassNotFoundException;
+    E findById(long id, Class<E> entityClass) throws ClassNotFoundException;
 
-    <E> void save(E entity);
+    void save(E entity);
 
-    <E> void remove(E entity);
+    void remove(E entity);
 
-    <E> void update(E entityToUpdate, E newEntity);
+    void update(E entityToUpdate, E newEntity);
 }

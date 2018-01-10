@@ -52,10 +52,6 @@ public class GatewayServiceImpl implements GatewayService {
         }
     }
 
-    public GatewayDao getGatewayDao() {
-        return gatewayDao;
-    }
-
     public void setGatewayDao(GatewayDao gatewayDao) {
         this.gatewayDao = gatewayDao;
     }

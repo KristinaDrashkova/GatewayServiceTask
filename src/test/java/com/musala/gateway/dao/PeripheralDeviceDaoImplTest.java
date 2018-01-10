@@ -107,18 +107,29 @@ public class PeripheralDeviceDaoImplTest {
     @Test
     public void removeShouldWorkCorrectly() throws Exception {
         em.persist(peripheralDeviceNormal);
-
-        peripheralDeviceDao.remove(peripheralDeviceNormal);
         List<PeripheralDevice> peripheralDevices = peripheralDeviceDao.findAll();
+        Assert.assertTrue(peripheralDevices.contains(peripheralDeviceNormal));
+        peripheralDeviceDao.remove(peripheralDeviceNormal);
+        peripheralDevices = peripheralDeviceDao.findAll();
         Assert.assertEquals(0, peripheralDevices.size());
     }
 
     @Transactional
     @Test(expected = IllegalArgumentException.class)
     public void removeShouldThrowExceptionWithNoExistingNumber() throws Exception {
-        em.persist(peripheralDeviceNormal);
-
         peripheralDeviceDao.remove(10);
+    }
+
+    @Transactional
+    @Test
+    public void removeWithNumberShouldWorkCorrectly() throws ClassNotFoundException {
+        em.persist(peripheralDeviceNormal);
+        List<PeripheralDevice> peripheralDevices = peripheralDeviceDao.findAll();
+        Assert.assertTrue(peripheralDevices.contains(peripheralDeviceNormal));
+        long id = peripheralDeviceNormal.getId();
+        peripheralDeviceDao.remove(id);
+        peripheralDevices = peripheralDeviceDao.findAll();
+        Assert.assertEquals(0, peripheralDevices.size());
     }
 
     @Transactional

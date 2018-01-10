@@ -11,31 +11,28 @@ public class BaseDaoImpl<E> implements BaseDao<E> {
     @PersistenceContext(name = "gateway")
     private EntityManager em;
 
-    @SuppressWarnings("unchecked")
     @Override
-    public List<E> findAll(String selectedClass) {
-        return em.createQuery("FROM " + selectedClass).getResultList();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public E findById(long id, String className) throws ClassNotFoundException {
-        Class<E> currentClass = (Class<E>) Class.forName("com.musala.gateway.entities." + className);
-        return em.find(currentClass, id);
+    public List findAll(Class<E> entityClass) {
+        return em.createQuery("FROM " + entityClass.getSimpleName()).getResultList();
     }
 
     @Override
-    public <E> void save(E entity) {
+    public E findById(long id, Class<E> entityClass) throws ClassNotFoundException {
+        return em.find(entityClass, id);
+    }
+
+    @Override
+    public void save(E entity) {
         em.persist(entity);
     }
 
     @Override
-    public <E> void remove(E entity) {
+    public void remove(E entity) {
         em.remove(entity);
     }
 
     @Override
-    public <E> void update(E entityToUpdate, E newEntity) {
+    public void update(E entityToUpdate, E newEntity) {
         em.remove(entityToUpdate);
         em.persist(newEntity);
     }

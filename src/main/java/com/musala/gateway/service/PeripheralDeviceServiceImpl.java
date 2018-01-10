@@ -53,6 +53,11 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
     }
 
     @Override
+    public void removeDevice(PeripheralDevice peripheralDevice) {
+        peripheralDeviceDao.remove(peripheralDevice);
+    }
+
+    @Override
     public PeripheralDevice getPeripheralDevice(long id) throws ClassNotFoundException {
         return peripheralDeviceDao.findById(id);
     }
@@ -67,16 +72,8 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
         }
     }
 
-    public PeripheralDeviceDao getPeripheralDeviceDao() {
-        return peripheralDeviceDao;
-    }
-
     public void setPeripheralDeviceDao(PeripheralDeviceDao peripheralDeviceDao) {
         this.peripheralDeviceDao = peripheralDeviceDao;
-    }
-
-    public GatewayDao getGatewayDao() {
-        return gatewayDao;
     }
 
     public void setGatewayDao(GatewayDao gatewayDao) {

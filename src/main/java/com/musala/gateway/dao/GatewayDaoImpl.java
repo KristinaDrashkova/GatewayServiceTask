@@ -11,11 +11,11 @@ public class GatewayDaoImpl extends BaseDaoImpl implements GatewayDao {
     @SuppressWarnings("unchecked")
     @Override
     public List<Gateway> findAll() {
-        return super.findAll("Gateway");
+        return super.findAll(Gateway.class);
     }
 
     @Override
     public Gateway findById(long id) throws ClassNotFoundException {
-        return (Gateway) super.findById(id, "Gateway");
+        return (Gateway) super.findById(id, Gateway.class);
     }
 }

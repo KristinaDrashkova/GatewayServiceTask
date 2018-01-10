@@ -17,14 +17,14 @@ public class PeripheralDeviceDaoImpl extends BaseDaoImpl implements PeripheralDe
     @SuppressWarnings("unchecked")
     @Override
     public List<PeripheralDevice> findAll() {
-        return super.findAll("PeripheralDevice");
+        return super.findAll(PeripheralDevice.class);
     }
 
     @Transactional
     @Override
     public void remove(long id) throws ClassNotFoundException {
-        PeripheralDevice peripheralDevice = (PeripheralDevice) findById(id, "PeripheralDevice");
-        remove(peripheralDevice);
+        PeripheralDevice peripheralDevice = (PeripheralDevice) findById(id, PeripheralDevice.class);
+        em.remove(peripheralDevice);
     }
 
     @Transactional
@@ -35,6 +35,6 @@ public class PeripheralDeviceDaoImpl extends BaseDaoImpl implements PeripheralDe
 
     @Override
     public PeripheralDevice findById(long id) throws ClassNotFoundException {
-        return (PeripheralDevice) super.findById(id, "PeripheralDevice");
+        return (PeripheralDevice) super.findById(id, PeripheralDevice.class);
     }
 }

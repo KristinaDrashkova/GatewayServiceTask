@@ -23,11 +23,8 @@ public interface PeripheralDeviceService {
      */
     void removeDevice(long id) throws ClassNotFoundException;
 
-    /**
-     * returns a peripheral device by given parameter
-     *
-     * @param id generated in database
-     */
+    void removeDevice(PeripheralDevice peripheralDevice);
+
     PeripheralDevice getPeripheralDevice(long id) throws ClassNotFoundException;
 
     void updatePeripheralDevice(long id, PeripheralDeviceAddDto peripheralDeviceAddDto) throws ClassNotFoundException;

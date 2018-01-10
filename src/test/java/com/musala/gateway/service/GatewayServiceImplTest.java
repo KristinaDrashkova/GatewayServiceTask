@@ -3,6 +3,8 @@ package com.musala.gateway.service;
 import com.musala.gateway.JpaConfig;
 import com.musala.gateway.dao.GatewayDao;
 import com.musala.gateway.dto.GatewayAddDto;
+import com.musala.gateway.entities.Gateway;
+import com.musala.gateway.utils.ModelParser;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,13 +29,16 @@ public class GatewayServiceImplTest {
     @Autowired
     private GatewayService gatewayService;
     private GatewayAddDto gatewayAddDto;
+    private Gateway gateway;
 
 
     @Before
-    public void setUp() throws ParseException {
+    public void setUp() throws ParseException, ClassNotFoundException {
         gatewayDaoMock = Mockito.mock(GatewayDao.class);
         gatewayService.setGatewayDao(gatewayDaoMock);
         gatewayAddDto = new GatewayAddDto("1330-1691-2320-1630-3127-2515", "A", "192.168.3.24");
+        gateway = new Gateway("1245-1234-1234-1235", "name", "192.168.3.24");
+        Mockito.when(gatewayDaoMock.findById(1)).thenReturn(gateway);
     }
 
     @Test
@@ -61,7 +66,8 @@ public class GatewayServiceImplTest {
 
     @Test
     public void updateShouldWorkCorrectly() throws ClassNotFoundException {
+        Gateway gatewayFromDto = ModelParser.getInstance().map(gatewayAddDto, Gateway.class);
         gatewayService.updateGateway(1, gatewayAddDto);
-        verify(gatewayDaoMock, times(1)).update(1, gatewayAddDto);
+        verify(gatewayDaoMock, times(1)).update(gateway, gatewayFromDto);
     }
 }

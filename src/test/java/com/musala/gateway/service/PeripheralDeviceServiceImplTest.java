@@ -37,9 +37,10 @@ public class PeripheralDeviceServiceImplTest {
     private PeripheralDeviceService peripheralDeviceService;
     private PeripheralDeviceAddDto peripheralDeviceAddDto;
     private Gateway gatewayMock;
+    private PeripheralDevice peripheralDevice;
 
     @Before
-    public void setUp() throws ParseException {
+    public void setUp() throws ParseException, ClassNotFoundException {
         peripheralDeviceDaoMock = Mockito.mock(PeripheralDeviceDao.class);
         gatewayDaoMock = Mockito.mock(GatewayDao.class);
         peripheralDeviceService.setPeripheralDeviceDao(peripheralDeviceDaoMock);
@@ -48,6 +49,8 @@ public class PeripheralDeviceServiceImplTest {
                 new PeripheralDeviceAddDto(1, "IBM", new Date(), Status.OFFLINE, 1);
         gatewayMock = Mockito.mock(Gateway.class);
         Mockito.when(gatewayMock.getPeripheralDevices()).thenReturn(new LinkedHashSet<>(1));
+        peripheralDevice = new PeripheralDevice(1, "IBM", new Date(), Status.ONLINE);
+        Mockito.when(peripheralDeviceDaoMock.findById(1)).thenReturn(peripheralDevice);
     }
 
     @Test
@@ -65,10 +68,15 @@ public class PeripheralDeviceServiceImplTest {
     }
 
     @Test
-    public void removeDeviceShouldWorkCorrectly() throws Exception {
+    public void removeDeviceWithIdShouldWorkCorrectly() throws Exception {
         peripheralDeviceService.removeDevice(1);
-
         Mockito.verify(peripheralDeviceDaoMock, times(1)).remove(1);
+    }
+
+    @Test
+    public void removeDeviceWithEntityShouldWorkCorrectly() throws ClassNotFoundException {
+        peripheralDeviceService.removeDevice(peripheralDevice);
+        Mockito.verify(peripheralDeviceDaoMock, times(1)).remove(peripheralDevice);
     }
 
     @Test
@@ -90,6 +98,7 @@ public class PeripheralDeviceServiceImplTest {
     @Test
     public void updatePeripheralDeviceShouldWorkCorrectly() throws ClassNotFoundException {
         peripheralDeviceService.updatePeripheralDevice(1, peripheralDeviceAddDto);
-        verify(peripheralDeviceDaoMock, times(1)).update(1, peripheralDeviceAddDto);
+        PeripheralDevice peripheralDeviceFromDto = ModelParser.getInstance().map(peripheralDeviceAddDto, PeripheralDevice.class);
+        verify(peripheralDeviceDaoMock, times(1)).update(peripheralDevice, peripheralDeviceFromDto);
     }
 }
