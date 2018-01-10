@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public class GatewayDaoImpl extends BaseDaoImpl implements GatewayDao {
-    @SuppressWarnings("unchecked")
+
     @Override
     public List<Gateway> findAll() {
         return super.findAll(Gateway.class);

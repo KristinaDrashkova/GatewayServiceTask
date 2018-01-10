@@ -1,38 +1,35 @@
 package com.musala.gateway.dao;
 
-import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Repository
-public class BaseDaoImpl<E> implements BaseDao<E> {
+public abstract class BaseDaoImpl<K> implements BaseDao<K> {
     @PersistenceContext(name = "gateway")
     private EntityManager em;
 
     @Override
-    public List findAll(Class<E> entityClass) {
+    public List<K> findAll(Class<K> entityClass) {
         return em.createQuery("FROM " + entityClass.getSimpleName()).getResultList();
     }
 
     @Override
-    public E findById(long id, Class<E> entityClass) throws ClassNotFoundException {
+    public K findById(long id, Class<K> entityClass) throws ClassNotFoundException {
         return em.find(entityClass, id);
     }
 
     @Override
-    public void save(E entity) {
+    public void save(K entity) {
         em.persist(entity);
     }
 
     @Override
-    public void remove(E entity) {
+    public void remove(K entity) {
         em.remove(entity);
     }
 
     @Override
-    public void update(E entityToUpdate, E newEntity) {
+    public void update(K entityToUpdate, K newEntity) {
         em.remove(entityToUpdate);
         em.persist(newEntity);
     }
