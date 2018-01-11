@@ -17,7 +17,6 @@ import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 
-@SuppressWarnings("unchecked")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
         classes = {JpaConfig.class},

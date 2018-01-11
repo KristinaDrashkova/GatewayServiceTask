@@ -43,7 +43,7 @@ public interface PeripheralDeviceService {
      * @param id                     identifier generated in database
      * @param peripheralDeviceAddDto mapping object for PeripheralDevice
      */
-    void updatePeripheralDevice(long id, PeripheralDeviceAddDto peripheralDeviceAddDto);
+    void updatePeripheralDevice(long id, PeripheralDeviceAddDto peripheralDeviceAddDto) throws MoreThanTenDevicesException;
 
     void setGatewayDao(GatewayDao gatewayDao);
 

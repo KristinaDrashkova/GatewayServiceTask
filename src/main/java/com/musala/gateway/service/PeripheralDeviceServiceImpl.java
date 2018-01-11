@@ -28,16 +28,11 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
         assert (peripheralDeviceAddDto.getDateCreated() != null);
         long gatewayId = peripheralDeviceAddDto.getGateway();
         Gateway gateway = gatewayDao.findById(gatewayId);
-        if (gateway.getPeripheralDevices().size() < 10) {
-            PeripheralDevice peripheralDevice = ModelParser.getInstance().map(peripheralDeviceAddDto, PeripheralDevice.class);
-            peripheralDevice.setGateway(gateway);
-            peripheralDeviceDao.save(peripheralDevice);
+        checkForLessThanTenDevices(gateway);
+        PeripheralDevice peripheralDevice = ModelParser.getInstance().map(peripheralDeviceAddDto, PeripheralDevice.class);
+        peripheralDevice.setGateway(gateway);
+        peripheralDeviceDao.save(peripheralDevice);
 
-        } else {
-            //TODO add as a separate method check + update
-            throw new MoreThanTenDevicesException("Can not add more than 10 devices to a gateway");
-
-        }
     }
 
     @Transactional
@@ -58,18 +53,21 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
 
     @Transactional
     @Override
-    public void updatePeripheralDevice(long id, PeripheralDeviceAddDto peripheralDeviceAddDto) {
+    public void updatePeripheralDevice(long id, PeripheralDeviceAddDto peripheralDeviceAddDto) throws MoreThanTenDevicesException {
         assert (peripheralDeviceAddDto.getUid() != null);
         assert (peripheralDeviceAddDto.getVendor() != null);
         assert (peripheralDeviceAddDto.getStatus() != null);
         assert (peripheralDeviceAddDto.getDateCreated() != null);
+        Gateway gateway = gatewayDao.findById(peripheralDeviceAddDto.getGateway());
         PeripheralDevice peripheralDevice = peripheralDeviceDao.findById(id);
+        if (peripheralDeviceAddDto.getGateway() != peripheralDevice.getGateway().getId()) {
+            checkForLessThanTenDevices(gateway);
+        }
         peripheralDevice.setUid(peripheralDeviceAddDto.getUid());
         peripheralDevice.setVendor(peripheralDeviceAddDto.getVendor());
         peripheralDevice.setStatus(peripheralDeviceAddDto.getStatus());
         peripheralDevice.setDateCreated(peripheralDeviceAddDto.getDateCreated());
-        peripheralDevice.setGateway(gatewayDao.findById(peripheralDeviceAddDto.getGateway()));
-
+        peripheralDevice.setGateway(gateway);
     }
 
     public void setPeripheralDeviceDao(PeripheralDeviceDao peripheralDeviceDao) {
@@ -78,5 +76,11 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
 
     public void setGatewayDao(GatewayDao gatewayDao) {
         this.gatewayDao = gatewayDao;
+    }
+
+    private void checkForLessThanTenDevices(Gateway gateway) throws MoreThanTenDevicesException {
+        if (gateway.getPeripheralDevices().size() >= 10) {
+            throw new MoreThanTenDevicesException("Can not add more than 10 devices to a gateway");
+        }
     }
 }

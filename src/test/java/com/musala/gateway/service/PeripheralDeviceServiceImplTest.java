@@ -27,7 +27,6 @@ import java.util.Set;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@SuppressWarnings("unchecked")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
         classes = {JpaConfig.class},
@@ -49,9 +48,11 @@ public class PeripheralDeviceServiceImplTest {
     public void setUp() throws ParseException, ClassNotFoundException {
         peripheralDeviceService.setPeripheralDeviceDao(peripheralDeviceDaoMock);
         peripheralDeviceService.setGatewayDao(gatewayDaoMock);
+        peripheralDevice.setGateway(gatewayMock);
         Mockito.when(gatewayMock.getPeripheralDevices()).thenReturn(new LinkedHashSet<>(1));
         Mockito.when(peripheralDeviceDaoMock.findById(1)).thenReturn(peripheralDevice);
         Mockito.when(gatewayDaoMock.findById(1)).thenReturn(gatewayMock);
+        Mockito.when(gatewayMock.getPeripheralDevices()).thenReturn(new LinkedHashSet<>());
     }
 
     @Test
@@ -96,7 +97,7 @@ public class PeripheralDeviceServiceImplTest {
     }
 
     @Test
-    public void updatePeripheralDeviceShouldWorkCorrectly() throws ClassNotFoundException {
+    public void updatePeripheralDeviceShouldWorkCorrectly() throws ClassNotFoundException, MoreThanTenDevicesException {
         peripheralDeviceService.updatePeripheralDevice(1, peripheralDeviceAddDto);
         Assert.assertEquals(peripheralDevice.getUid(), peripheralDeviceAddDto.getUid());
         Assert.assertEquals(peripheralDevice.getVendor(), peripheralDeviceAddDto.getVendor());
