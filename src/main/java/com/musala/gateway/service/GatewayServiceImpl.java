@@ -4,36 +4,28 @@ import com.musala.gateway.dao.GatewayDao;
 import com.musala.gateway.dto.GatewayAddDto;
 import com.musala.gateway.entities.Gateway;
 import com.musala.gateway.utils.ModelParser;
-import com.musala.gateway.utils.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
 import java.util.List;
 
 
 @Service
-@SuppressWarnings("unchecked")
 public class GatewayServiceImpl implements GatewayService {
     @Autowired
     private GatewayDao gatewayDao;
 
-    //    @Autowired
-    public GatewayServiceImpl() {
-        this.setGatewayDao(gatewayDao);
-    }
-
-    @SuppressWarnings("unchecked")
     public List<Gateway> getAllGateways() {
         return gatewayDao.findAll();
     }
 
     @Transactional
     public void save(GatewayAddDto gatewayAddDto) {
-        assert (gatewayAddDto.getName() != null && gatewayAddDto.getIpv4Address() != null && gatewayAddDto.getSerialNumber() != null);
+        assert (gatewayAddDto.getName() != null);
+        assert (gatewayAddDto.getIpv4Address() != null);
+        assert (gatewayAddDto.getSerialNumber() != null);
         Gateway gateway = ModelParser.getInstance().map(gatewayAddDto, Gateway.class);
-        gateway.setPeripheralDevices(new HashSet<>());
         gatewayDao.save(gateway);
     }
 
@@ -43,12 +35,14 @@ public class GatewayServiceImpl implements GatewayService {
 
     @Transactional
     public void updateGateway(long id, GatewayAddDto gatewayAddDto) {
-        assert (gatewayAddDto.getName() != null && gatewayAddDto.getIpv4Address() != null && gatewayAddDto.getSerialNumber() != null);
+        assert (gatewayAddDto.getName() != null);
+        assert (gatewayAddDto.getIpv4Address() != null);
+        assert (gatewayAddDto.getSerialNumber() != null);
         Gateway gateway = gatewayDao.findById(id);
-        Gateway gatewayFromDto = ModelParser.getInstance().map(gatewayAddDto, Gateway.class);
-        if (ValidationUtil.isValid(gatewayFromDto)) {
-            gatewayDao.update(gateway, gatewayFromDto);
-        }
+        //TODO remove ModelParser. use setters to update new values for the existing gateway
+        gateway.setName(gatewayAddDto.getName());
+        gateway.setSerialNumber(gatewayAddDto.getSerialNumber());
+        gateway.setIpv4Address(gateway.getIpv4Address());
     }
 
     public void setGatewayDao(GatewayDao gatewayDao) {

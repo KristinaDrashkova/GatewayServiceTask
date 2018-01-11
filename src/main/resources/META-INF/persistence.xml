@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence">
+     <!--try to use only one file!!! -->
     <persistence-unit name="gateway">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>

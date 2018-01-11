@@ -5,6 +5,7 @@ import com.musala.gateway.annotations.IpV4Constraint;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -24,7 +25,7 @@ public class Gateway extends BaseEntity {
     private String ipv4Address;
 
     @OneToMany(mappedBy = "gateway", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<PeripheralDevice> peripheralDevices;
+    private Set<PeripheralDevice> peripheralDevices = new LinkedHashSet<>();
 
     public Gateway() {
     }

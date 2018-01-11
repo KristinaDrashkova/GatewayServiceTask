@@ -1,8 +1,10 @@
 package com.musala.gateway.dao;
 
+import com.musala.gateway.entities.BaseEntity;
+
 import java.util.List;
 
-public interface BaseDao<K> {
+public interface BaseDao<K extends BaseEntity> {
     List<K> findAll();
 
     K findById(long id);
@@ -10,6 +12,4 @@ public interface BaseDao<K> {
     void save(K entity);
 
     void remove(K entity);
-
-    void update(K entityToUpdate, K newEntity);
 }

@@ -10,7 +10,7 @@ import java.util.Objects;
 public class PeripheralDevice extends BaseEntity {
 
     @NotNull
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private Integer uid;
 
     @NotNull

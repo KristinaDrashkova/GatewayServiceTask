@@ -1,11 +1,12 @@
 package com.musala.gateway.dao;
 
+import com.musala.gateway.entities.BaseEntity;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@SuppressWarnings("unchecked")
-public abstract class BaseDaoImpl<K> implements BaseDao<K> {
+public abstract class BaseDaoImpl<K extends BaseEntity> implements BaseDao<K> {
     @PersistenceContext(name = "gateway")
     private EntityManager em;
     private Class<K> entityClass;
@@ -16,7 +17,7 @@ public abstract class BaseDaoImpl<K> implements BaseDao<K> {
 
     @Override
     public List<K> findAll() {
-        return em.createQuery("FROM " + entityClass.getSimpleName()).getResultList();
+        return em.createQuery("FROM " + entityClass.getSimpleName(), entityClass).getResultList();
     }
 
     @Override
@@ -34,9 +35,4 @@ public abstract class BaseDaoImpl<K> implements BaseDao<K> {
         em.remove(entity);
     }
 
-    @Override
-    public void update(K entityToUpdate, K newEntity) {
-        em.remove(entityToUpdate);
-        em.persist(newEntity);
-    }
 }

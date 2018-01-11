@@ -1,10 +1,8 @@
 package com.musala.gateway.dao;
 
 import com.musala.gateway.JpaConfig;
-import com.musala.gateway.dto.PeripheralDeviceAddDto;
 import com.musala.gateway.entities.PeripheralDevice;
 import com.musala.gateway.entities.Status;
-import com.musala.gateway.utils.ModelParser;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,14 +27,12 @@ import java.util.List;
 public class PeripheralDeviceDaoImplTest {
     @Autowired
     private PeripheralDeviceDao peripheralDeviceDao;
-
     private PeripheralDevice peripheralDeviceRepeatingUid = new PeripheralDevice(1, "IBM", new Date(), Status.ONLINE);
     private PeripheralDevice peripheralDeviceNormal = new PeripheralDevice(1, "SteelSeries", new Date(), Status.OFFLINE);
     private PeripheralDevice peripheralDeviceNullUid = new PeripheralDevice(null, "SteelSeries", new Date(), Status.OFFLINE);
     private PeripheralDevice peripheralDeviceNullVendor = new PeripheralDevice(1, null, new Date(), Status.OFFLINE);
     private PeripheralDevice peripheralDeviceNullDate = new PeripheralDevice(null, "SteelSeries", null, Status.OFFLINE);
     private PeripheralDevice peripheralDeviceNullStatus = new PeripheralDevice(1, "SteelSeries", new Date(), null);
-    private PeripheralDeviceAddDto peripheralDeviceAddDto = new PeripheralDeviceAddDto(10, "SteelSeries", new Date(), Status.OFFLINE, 1);
 
     @PersistenceContext
     private EntityManager em;
@@ -134,16 +130,4 @@ public class PeripheralDeviceDaoImplTest {
         peripheralDevices = peripheralDeviceDao.findAll();
         Assert.assertEquals(0, peripheralDevices.size());
     }
-
-    @Transactional
-    @Test
-    public void updateShouldWorkCorrectly() throws ClassNotFoundException {
-        em.persist(peripheralDeviceNormal);
-        PeripheralDevice peripheralDeviceFromDto =
-                ModelParser.getInstance().map(peripheralDeviceAddDto, PeripheralDevice.class);
-        peripheralDeviceDao.update(peripheralDeviceNormal, peripheralDeviceFromDto);
-        PeripheralDevice peripheralDevice = peripheralDeviceDao.findAll().get(0);
-        Assert.assertEquals(peripheralDevice, peripheralDeviceFromDto);
-    }
-
 }

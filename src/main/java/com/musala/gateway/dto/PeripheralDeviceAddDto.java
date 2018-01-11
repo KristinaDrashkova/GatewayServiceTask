@@ -27,12 +27,12 @@ public class PeripheralDeviceAddDto {
 
     @NotNull
     @Expose
-    private Integer gateway;
+    private long gateway;
 
     public PeripheralDeviceAddDto() {
     }
 
-    public PeripheralDeviceAddDto(Integer uid, String vendor, Date dateCreated, Status status, Integer gateway) {
+    public PeripheralDeviceAddDto(Integer uid, String vendor, Date dateCreated, Status status, long gateway) {
         this.uid = uid;
         this.vendor = vendor;
         this.dateCreated = dateCreated;
@@ -72,11 +72,11 @@ public class PeripheralDeviceAddDto {
         this.status = status;
     }
 
-    public Integer getGateway() {
+    public long getGateway() {
         return gateway;
     }
 
-    public void setGateway(Integer gateway) {
+    public void setGateway(long gateway) {
         this.gateway = gateway;
     }
 }

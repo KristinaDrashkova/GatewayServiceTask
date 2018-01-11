@@ -13,24 +13,20 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 @Service
-@SuppressWarnings("unchecked")
 public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
     @Autowired
     private PeripheralDeviceDao peripheralDeviceDao;
     @Autowired
     private GatewayDao gatewayDao;
 
-    public PeripheralDeviceServiceImpl() {
-        this.setGatewayDao(gatewayDao);
-        this.setPeripheralDeviceDao(peripheralDeviceDao);
-    }
-
     @Transactional
     @Override
     public void save(PeripheralDeviceAddDto peripheralDeviceAddDto) throws MoreThanTenDevicesException {
-        assert (peripheralDeviceAddDto.getUid() != null && peripheralDeviceAddDto.getVendor() != null && peripheralDeviceAddDto.getStatus() != null
-        && peripheralDeviceAddDto.getDateCreated() != null && peripheralDeviceAddDto.getGateway() != null);
-        Integer gatewayId = peripheralDeviceAddDto.getGateway();
+        assert (peripheralDeviceAddDto.getUid() != null);
+        assert (peripheralDeviceAddDto.getVendor() != null);
+        assert (peripheralDeviceAddDto.getStatus() != null);
+        assert (peripheralDeviceAddDto.getDateCreated() != null);
+        long gatewayId = peripheralDeviceAddDto.getGateway();
         Gateway gateway = gatewayDao.findById(gatewayId);
         if (gateway.getPeripheralDevices().size() < 10) {
             PeripheralDevice peripheralDevice = ModelParser.getInstance().map(peripheralDeviceAddDto, PeripheralDevice.class);
@@ -38,6 +34,7 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
             peripheralDeviceDao.save(peripheralDevice);
 
         } else {
+            //TODO add as a separate method check + update
             throw new MoreThanTenDevicesException("Can not add more than 10 devices to a gateway");
 
         }
@@ -62,11 +59,17 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
     @Transactional
     @Override
     public void updatePeripheralDevice(long id, PeripheralDeviceAddDto peripheralDeviceAddDto) {
-        assert (peripheralDeviceAddDto.getUid() != null && peripheralDeviceAddDto.getVendor() != null && peripheralDeviceAddDto.getStatus() != null
-                && peripheralDeviceAddDto.getDateCreated() != null && peripheralDeviceAddDto.getGateway() != null);
+        assert (peripheralDeviceAddDto.getUid() != null);
+        assert (peripheralDeviceAddDto.getVendor() != null);
+        assert (peripheralDeviceAddDto.getStatus() != null);
+        assert (peripheralDeviceAddDto.getDateCreated() != null);
         PeripheralDevice peripheralDevice = peripheralDeviceDao.findById(id);
-        PeripheralDevice peripheralDeviceFromDto = ModelParser.getInstance().map(peripheralDeviceAddDto, PeripheralDevice.class);
-        peripheralDeviceDao.update(peripheralDevice, peripheralDeviceFromDto);
+        peripheralDevice.setUid(peripheralDeviceAddDto.getUid());
+        peripheralDevice.setVendor(peripheralDeviceAddDto.getVendor());
+        peripheralDevice.setStatus(peripheralDeviceAddDto.getStatus());
+        peripheralDevice.setDateCreated(peripheralDeviceAddDto.getDateCreated());
+        peripheralDevice.setGateway(gatewayDao.findById(peripheralDeviceAddDto.getGateway()));
+
     }
 
     public void setPeripheralDeviceDao(PeripheralDeviceDao peripheralDeviceDao) {

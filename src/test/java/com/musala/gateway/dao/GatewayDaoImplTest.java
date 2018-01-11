@@ -1,14 +1,11 @@
 package com.musala.gateway.dao;
 
 import com.musala.gateway.JpaConfig;
-import com.musala.gateway.dto.GatewayAddDto;
 import com.musala.gateway.entities.Gateway;
-import com.musala.gateway.utils.ModelParser;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -36,13 +33,10 @@ public class GatewayDaoImplTest {
             new Gateway("1245-1234-1234-1236", null, "192.168.3.24");
     private Gateway gatewayNullAddress =
             new Gateway("1245-1234-1234-1237", "name", null);
-    private GatewayAddDto gatewayAddDto =
-            new GatewayAddDto("1331-1691-2320-1630-3127-2516", "Q", "192.168.3.24");
 
     @PersistenceContext
     private EntityManager em;
 
-    @Qualifier("gatewayDaoImpl")
     @Autowired
     private GatewayDao gatewayDao;
 
@@ -105,30 +99,12 @@ public class GatewayDaoImplTest {
 
     @Transactional
     @Test
-    public void updateShouldWorkCorrectly() {
-        em.persist(gatewayNormal);
-        Gateway gatewayFromDto = ModelParser.getInstance().map(gatewayAddDto, Gateway.class);
-        gatewayDao.update(gatewayNormal, gatewayFromDto);
-        Gateway gateway = gatewayDao.findAll().get(0);
-        Assert.assertEquals(gateway, gatewayFromDto);
-    }
-
-    @Transactional
-    @Test
     public void removeShouldWorkCorrectly() throws Exception {
         em.persist(gatewayNormal);
 
         gatewayDao.remove(gatewayNormal);
         List<Gateway> peripheralDevices = gatewayDao.findAll();
         Assert.assertEquals(0, peripheralDevices.size());
-    }
-
-    @Transactional
-    @Test(expected = IllegalArgumentException.class)
-    public void removeShouldThrowExceptionWithNoExistingNumber() throws Exception {
-        em.persist(gatewayNormal);
-
-        gatewayDao.remove(10);
     }
 
 }

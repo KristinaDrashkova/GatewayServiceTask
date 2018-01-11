@@ -5,6 +5,7 @@ import com.musala.gateway.dao.GatewayDao;
 import com.musala.gateway.dto.GatewayAddDto;
 import com.musala.gateway.entities.Gateway;
 import com.musala.gateway.utils.ModelParser;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,9 +61,10 @@ public class GatewayServiceImplTest {
 
     @Test
     public void updateShouldWorkCorrectly() {
-        Gateway gatewayFromDto = ModelParser.getInstance().map(gatewayAddDto, Gateway.class);
         gatewayService.updateGateway(1, gatewayAddDto);
-        verify(gatewayDaoMock, times(1)).update(gateway, gatewayFromDto);
+        Assert.assertEquals(gateway.getName(), gatewayAddDto.getName());
+        Assert.assertEquals(gateway.getIpv4Address(), gatewayAddDto.getIpv4Address());
+        Assert.assertEquals(gateway.getSerialNumber(), gatewayAddDto.getSerialNumber());
     }
 
     @Test(expected = AssertionError.class)

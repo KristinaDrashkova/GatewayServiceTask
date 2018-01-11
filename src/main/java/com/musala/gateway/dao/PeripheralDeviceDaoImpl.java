@@ -6,10 +6,9 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Repository
-public class PeripheralDeviceDaoImpl extends BaseDaoImpl implements PeripheralDeviceDao {
+public class PeripheralDeviceDaoImpl extends BaseDaoImpl<PeripheralDevice> implements PeripheralDeviceDao {
 
     @PersistenceContext(name = "gateway")
     private EntityManager em;
@@ -18,10 +17,6 @@ public class PeripheralDeviceDaoImpl extends BaseDaoImpl implements PeripheralDe
         super(PeripheralDevice.class);
     }
 
-    @Override
-    public List<PeripheralDevice> findAll() {
-        return super.findAll();
-    }
 
     @Transactional
     @Override
@@ -36,8 +31,4 @@ public class PeripheralDeviceDaoImpl extends BaseDaoImpl implements PeripheralDe
         em.remove(peripheralDevice);
     }
 
-    @Override
-    public PeripheralDevice findById(long id) {
-        return (PeripheralDevice) super.findById(id);
-    }
 }

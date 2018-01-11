@@ -3,22 +3,11 @@ package com.musala.gateway.dao;
 import com.musala.gateway.entities.Gateway;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 
 @Repository
-public class GatewayDaoImpl extends BaseDaoImpl implements GatewayDao {
+public class GatewayDaoImpl extends BaseDaoImpl<Gateway> implements GatewayDao {
     public GatewayDaoImpl() {
         super(Gateway.class);
     }
 
-    @Override
-    public List<Gateway> findAll() {
-        return super.findAll();
-    }
-
-    @Override
-    public Gateway findById(long id) {
-        return (Gateway) super.findById(id);
-    }
 }

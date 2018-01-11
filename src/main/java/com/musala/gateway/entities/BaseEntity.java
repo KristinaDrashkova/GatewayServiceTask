@@ -2,8 +2,8 @@ package com.musala.gateway.entities;
 
 import javax.persistence.*;
 
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@MappedSuperclass
+
 public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
