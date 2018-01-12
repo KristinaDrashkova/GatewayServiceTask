@@ -23,7 +23,6 @@ public interface PeripheralDeviceService {
      */
     void removeDevice(long id);
 
-
     /**
      * removes a given device from database
      *

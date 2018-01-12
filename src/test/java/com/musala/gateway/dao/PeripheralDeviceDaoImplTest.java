@@ -3,7 +3,6 @@ package com.musala.gateway.dao;
 import com.musala.gateway.entities.PeripheralDevice;
 import com.musala.gateway.entities.Status;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -34,12 +32,6 @@ public class PeripheralDeviceDaoImplTest {
 
     @PersistenceContext
     private EntityManager em;
-
-    @Before
-    public void setUp() throws SQLException {
-        em.createQuery("DELETE FROM PeripheralDevice").executeUpdate();
-        em.createQuery("DELETE FROM Gateway").executeUpdate();
-    }
 
 
     @Transactional

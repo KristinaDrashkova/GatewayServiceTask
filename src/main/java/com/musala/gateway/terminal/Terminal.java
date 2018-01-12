@@ -31,11 +31,11 @@ public class Terminal implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        importGatewaysFromJson();
-        importPeripheralDevicesFromJson();
-        printInfoAboutAllGateways();
-        printInfoAboutAGateway(2);
-        updateGateway();
+//        importGatewaysFromJson();
+//        importPeripheralDevicesFromJson();
+//        printInfoAboutAllGateways();
+//        printInfoAboutAGateway(2);
+//        updateGateway();
     }
 
     private void updateGateway() throws ClassNotFoundException {

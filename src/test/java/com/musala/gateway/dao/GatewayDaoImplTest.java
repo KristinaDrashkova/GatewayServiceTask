@@ -2,7 +2,6 @@ package com.musala.gateway.dao;
 
 import com.musala.gateway.entities.Gateway;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
-import java.sql.SQLException;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -36,12 +34,6 @@ public class GatewayDaoImplTest {
 
     @Autowired
     private GatewayDao gatewayDao;
-
-    @Before
-    public void setUp() throws SQLException {
-        em.createQuery("DELETE FROM PeripheralDevice").executeUpdate();
-        em.createQuery("DELETE FROM Gateway").executeUpdate();
-    }
 
     @Transactional
     @Test
@@ -106,8 +98,8 @@ public class GatewayDaoImplTest {
         em.persist(gatewayNormal);
 
         gatewayDao.remove(gatewayNormal);
-        List<Gateway> peripheralDevices = gatewayDao.findAll();
-        Assert.assertEquals(0, peripheralDevices.size());
+        List<Gateway> gateways = gatewayDao.findAll();
+        Assert.assertEquals(0, gateways.size());
     }
 
 }
