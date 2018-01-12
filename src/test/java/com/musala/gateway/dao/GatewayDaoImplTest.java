@@ -1,26 +1,24 @@
 package com.musala.gateway.dao;
 
-import com.musala.gateway.JpaConfig;
 import com.musala.gateway.entities.Gateway;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
+import java.sql.SQLException;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(
-        classes = {JpaConfig.class},
-        loader = AnnotationConfigContextLoader.class)
+@SpringBootTest
 public class GatewayDaoImplTest {
     private Gateway gatewayNormal =
             new Gateway("1245-1234-1234-1235", "name", "192.168.3.24");
@@ -38,6 +36,12 @@ public class GatewayDaoImplTest {
 
     @Autowired
     private GatewayDao gatewayDao;
+
+    @Before
+    public void setUp() throws SQLException {
+        em.createQuery("DELETE FROM PeripheralDevice").executeUpdate();
+        em.createQuery("DELETE FROM Gateway").executeUpdate();
+    }
 
     @Transactional
     @Test
@@ -90,7 +94,7 @@ public class GatewayDaoImplTest {
     }
 
     @Transactional
-    @Test(expected = PersistenceException.class)
+    @Test(expected = DataIntegrityViolationException.class)
     public void saveShouldThrowExceptionWithRepeatingSerialNumber() throws Exception {
         gatewayDao.save(gatewayNormal);
         gatewayDao.save(gatewayWithRepeatingSerialNumber);

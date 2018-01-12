@@ -1,28 +1,27 @@
 package com.musala.gateway.dao;
 
-import com.musala.gateway.JpaConfig;
 import com.musala.gateway.entities.PeripheralDevice;
 import com.musala.gateway.entities.Status;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(
-        classes = {JpaConfig.class},
-        loader = AnnotationConfigContextLoader.class)
+@SpringBootTest
 public class PeripheralDeviceDaoImplTest {
     @Autowired
     private PeripheralDeviceDao peripheralDeviceDao;
@@ -35,6 +34,12 @@ public class PeripheralDeviceDaoImplTest {
 
     @PersistenceContext
     private EntityManager em;
+
+    @Before
+    public void setUp() throws SQLException {
+        em.createQuery("DELETE FROM PeripheralDevice").executeUpdate();
+        em.createQuery("DELETE FROM Gateway").executeUpdate();
+    }
 
 
     @Transactional
@@ -71,7 +76,7 @@ public class PeripheralDeviceDaoImplTest {
     }
 
     @Transactional
-    @Test(expected = PersistenceException.class)
+    @Test(expected = DataIntegrityViolationException.class)
     public void saveShouldThrowExceptionWithRepeatingUid() {
         peripheralDeviceDao.save(peripheralDeviceNormal);
         peripheralDeviceDao.save(peripheralDeviceRepeatingUid);
@@ -113,7 +118,7 @@ public class PeripheralDeviceDaoImplTest {
     }
 
     @Transactional
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = InvalidDataAccessApiUsageException.class)
     public void removeShouldThrowExceptionWithNoExistingNumber() throws Exception {
         peripheralDeviceDao.remove(10);
     }

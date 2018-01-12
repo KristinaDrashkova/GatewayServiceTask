@@ -1,6 +1,5 @@
 package com.musala.gateway.service;
 
-import com.musala.gateway.JpaConfig;
 import com.musala.gateway.dao.GatewayDao;
 import com.musala.gateway.dto.GatewayAddDto;
 import com.musala.gateway.entities.Gateway;
@@ -11,17 +10,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(
-        classes = {JpaConfig.class},
-        loader = AnnotationConfigContextLoader.class)
+@SpringBootTest
 public class GatewayServiceImplTest {
     @Autowired
     private GatewayService gatewayService;
