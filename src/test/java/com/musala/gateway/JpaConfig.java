@@ -37,7 +37,7 @@ public class JpaConfig {
         dataSource.setUrl(env.getProperty("spring.datasource.url"));
         dataSource.setUsername(env.getProperty("spring.datasource.username"));
         dataSource.setPassword(env.getProperty("spring.datasource.password"));
-        DriverManager.getConnection("jdbc:h2:mem:test", null, null);
+        DriverManager.getConnection(dataSource.getUrl(), dataSource.getUsername(), dataSource.getPassword());
         return dataSource;
     }
 
@@ -46,7 +46,6 @@ public class JpaConfig {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 
-//        vendorAdapter.setGenerateDdl(env.getProperty("datasource.initializeOnStart", Boolean.class));
         vendorAdapter.setDatabasePlatform(env.getProperty("spring.jpa.properties.hibernate.dialect"));
         factory.setJpaVendorAdapter(vendorAdapter);
 
@@ -65,13 +64,4 @@ public class JpaConfig {
         EntityManagerFactory factory = entityManagerFactory().getObject();
         return new JpaTransactionManager(factory);
     }
-//    @Bean
-//    public EntityManagerFactory getEMF() {
-//        return Persistence.createEntityManagerFactory("persistence.xml");
-//    }
-    // configure entityManagerFactory
-
-    // configure transactionManager
-
-    // configure additional Hibernate Properties
 }
