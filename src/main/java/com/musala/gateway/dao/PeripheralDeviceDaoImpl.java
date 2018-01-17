@@ -25,10 +25,14 @@ public class PeripheralDeviceDaoImpl extends BaseDaoImpl<PeripheralDevice> imple
         em.remove(peripheralDevice);
     }
 
+    @Override
+    public PeripheralDevice findByUid(int uid) {
+        return (PeripheralDevice) em.createQuery("SELECT pd FROM PeripheralDevice pd WHERE pd.uid LIKE " + uid).getResultList().get(0);
+    }
+
     @Transactional
     @Override
     public void remove(PeripheralDevice peripheralDevice) {
         em.remove(peripheralDevice);
     }
-
 }

@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -72,8 +73,8 @@ public class PeripheralDeviceServiceImplTest {
 
     @Test
     public void removeDeviceWithEntityShouldWorkCorrectly() {
-        peripheralDeviceService.removeDevice(peripheralDevice);
-        Mockito.verify(peripheralDeviceDaoMock, times(1)).remove(peripheralDevice);
+        peripheralDeviceService.removeDevice(peripheralDeviceAddDto);
+        Mockito.verify(peripheralDeviceDaoMock, times(1)).remove(any());
     }
 
     @Test
@@ -83,6 +84,7 @@ public class PeripheralDeviceServiceImplTest {
         Mockito.verify(peripheralDeviceDaoMock, times(1)).findById(1);
     }
 
+    @SuppressWarnings("unchecked")
     @Test(expected = MoreThanTenDevicesException.class)
     public void saveMoreThanTenPeripheralDevicesShouldThrowCustomException() throws MoreThanTenDevicesException {
         Set<PeripheralDevice> peripheralDevices = Mockito.mock(LinkedHashSet.class);

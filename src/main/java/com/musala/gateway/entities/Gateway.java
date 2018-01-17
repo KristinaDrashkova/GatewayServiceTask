@@ -1,6 +1,7 @@
 package com.musala.gateway.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.musala.gateway.annotations.IpV4Constraint;
 
 import javax.persistence.*;
@@ -24,7 +25,8 @@ public class Gateway extends BaseEntity {
     @Column(name = "ipv4_address")
     private String ipv4Address;
 
-    @OneToMany(mappedBy = "gateway", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "gateway", fetch = FetchType.EAGER)
+    @JsonManagedReference
     private Set<PeripheralDevice> peripheralDevices = new LinkedHashSet<>();
 
     public Gateway() {

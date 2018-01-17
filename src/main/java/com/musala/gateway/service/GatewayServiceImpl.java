@@ -39,10 +39,9 @@ public class GatewayServiceImpl implements GatewayService {
         assert (gatewayAddDto.getIpv4Address() != null);
         assert (gatewayAddDto.getSerialNumber() != null);
         Gateway gateway = gatewayDao.findById(id);
-        //TODO remove ModelParser. use setters to update new values for the existing gateway
         gateway.setName(gatewayAddDto.getName());
         gateway.setSerialNumber(gatewayAddDto.getSerialNumber());
-        gateway.setIpv4Address(gateway.getIpv4Address());
+        gateway.setIpv4Address(gatewayAddDto.getIpv4Address());
     }
 
     public void setGatewayDao(GatewayDao gatewayDao) {

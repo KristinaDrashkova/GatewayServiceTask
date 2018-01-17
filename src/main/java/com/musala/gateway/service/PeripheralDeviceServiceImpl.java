@@ -42,7 +42,8 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
     }
 
     @Override
-    public void removeDevice(PeripheralDevice peripheralDevice) {
+    public void removeDevice(PeripheralDeviceAddDto peripheralDeviceAddDto) {
+        PeripheralDevice peripheralDevice = peripheralDeviceDao.findByUid(peripheralDeviceAddDto.getUid());
         peripheralDeviceDao.remove(peripheralDevice);
     }
 

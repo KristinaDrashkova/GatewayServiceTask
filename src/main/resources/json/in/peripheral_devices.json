@@ -1,12 +1,72 @@
 [
-  {"uid" : "1", "vendor" : "Logitech", "dateCreated" : "2015-12-20", "status" : "ONLINE", "gateway" : "1"},
-  {"uid" : "2", "vendor" : "Arctic", "dateCreated" : "2014-10-20", "status" : "ONLINE", "gateway" : "2"},
-  {"uid" : "3", "vendor" : "ASUS", "dateCreated" : "2017-09-20", "status" : "OFFLINE", "gateway" : "2"},
-  {"uid" : "4", "vendor" : "Gigabyte Technology", "dateCreated" : "2015-12-20", "status" : "ONLINE", "gateway" : "2"},
-  {"uid" : "5", "vendor" : "Sony", "dateCreated" : "2014-11-30", "status" : "ONLINE", "gateway" : "3"},
-  {"uid" : "6", "vendor" : "Philips", "dateCreated" : "2015-12-20", "status" : "OFFLINE", "gateway" : "4"},
-  {"uid" : "7", "vendor" : "Microsoft", "dateCreated" : "2015-12-20", "status" : "ONLINE", "gateway" : "4"},
-  {"uid" : "8", "vendor" : "Alienware", "dateCreated" : "2015-12-20", "status" : "ONLINE", "gateway" : "5"},
-  {"uid" : "9", "vendor" : "EVGA", "dateCreated" : "2015-12-20", "status" : "OFFLINE", "gateway" : "6"},
-  {"uid" : "10", "vendor" : "SteelSeries", "dateCreated" : "2015-12-20", "status" : "ONLINE", "gateway" : "6"}
+  {
+    "uid": "1",
+    "vendor": "Logitech",
+    "dateCreated": "2015-12-20",
+    "status": "ONLINE",
+    "gateway": "1"
+  },
+  {
+    "uid": "2",
+    "vendor": "Arctic",
+    "dateCreated": "2014-10-20",
+    "status": "ONLINE",
+    "gateway": "2"
+  },
+  {
+    "uid": "3",
+    "vendor": "ASUS",
+    "dateCreated": "2017-09-20",
+    "status": "OFFLINE",
+    "gateway": "2"
+  },
+  {
+    "uid": "4",
+    "vendor": "Gigabyte Technology",
+    "dateCreated": "2015-12-20",
+    "status": "ONLINE",
+    "gateway": "2"
+  },
+  {
+    "uid": "5",
+    "vendor": "Sony",
+    "dateCreated": "2014-11-30",
+    "status": "ONLINE",
+    "gateway": "3"
+  },
+  {
+    "uid": "6",
+    "vendor": "Philips",
+    "dateCreated": "2015-12-20",
+    "status": "OFFLINE",
+    "gateway": "4"
+  },
+  {
+    "uid": "7",
+    "vendor": "Microsoft",
+    "dateCreated": "2015-12-20",
+    "status": "ONLINE",
+    "gateway": "4"
+  },
+  {
+    "uid": "8",
+    "vendor": "Alienware",
+    "dateCreated": "2015-12-20",
+    "status": "ONLINE",
+    "gateway": "5"
+  },
+  {
+    "uid": "9",
+    "vendor": "EVGA",
+    "dateCreated": "2015-12-20",
+    "status": "OFFLINE",
+    "gateway": "6"
+  },
+  {
+    "uid": "10",
+    "vendor": "SteelSeries",
+    "dateCreated": "2015-12-20",
+    "status": "ONLINE",
+    "gateway": "6"
+  }
 ]

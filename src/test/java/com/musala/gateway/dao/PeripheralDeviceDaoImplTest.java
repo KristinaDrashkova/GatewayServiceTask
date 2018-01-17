@@ -60,6 +60,19 @@ public class PeripheralDeviceDaoImplTest {
 
     @Transactional
     @Test
+    public void findByUidShouldWorkCorrectly() {
+        em.persist(peripheralDeviceNormal);
+        PeripheralDevice peripheralDeviceDb = peripheralDeviceDao.findByUid(peripheralDeviceNormal.getUid());
+        Assert.assertEquals(peripheralDeviceNormal, peripheralDeviceDb);
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void findByUidShouldThrowExceptionWithInvalidUid() {
+        peripheralDeviceDao.findByUid(2);
+    }
+
+    @Transactional
+    @Test
     public void saveShouldWorkCorrectly() throws Exception {
         peripheralDeviceDao.save(peripheralDeviceNormal);
 

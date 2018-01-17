@@ -1,5 +1,7 @@
 package com.musala.gateway.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -24,8 +26,9 @@ public class PeripheralDevice extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "gateway_id", referencedColumnName = "id")
+    @JsonBackReference
     private Gateway gateway;
 
     public PeripheralDevice() {
