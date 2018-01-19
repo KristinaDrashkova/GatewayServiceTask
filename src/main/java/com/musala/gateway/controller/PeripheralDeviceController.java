@@ -21,7 +21,7 @@ public class PeripheralDeviceController {
         return ResponseEntity.ok().body("Peripheral device has been updated successfully");
     }
 
-    @RequestMapping(value = {"","/"}, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = {"", "/"}, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> savePeripheralDevice(@RequestBody PeripheralDeviceAddDto peripheralDeviceAddDto) throws MoreThanTenDevicesException {
         peripheralDeviceService.save(peripheralDeviceAddDto);
         return ResponseEntity.ok().body("Peripheral device has been saved successfully");
@@ -34,6 +34,6 @@ public class PeripheralDeviceController {
     }
 
     public void setPeripheralDeviceService(PeripheralDeviceService peripheralDeviceService) {
-        this.peripheralDeviceService =  peripheralDeviceService;
+        this.peripheralDeviceService = peripheralDeviceService;
     }
 }
