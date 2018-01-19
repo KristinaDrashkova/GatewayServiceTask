@@ -5,7 +5,9 @@ import com.musala.gateway.dao.PeripheralDeviceDao;
 import com.musala.gateway.dto.PeripheralDeviceAddDto;
 import com.musala.gateway.entities.Gateway;
 import com.musala.gateway.entities.PeripheralDevice;
+import com.musala.gateway.exceptions.GatewayNotFoundException;
 import com.musala.gateway.exceptions.MoreThanTenDevicesException;
+import com.musala.gateway.exceptions.PeripheralDeviceNotFoundException;
 import com.musala.gateway.utils.ModelParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,9 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
         assert (peripheralDeviceAddDto.getDateCreated() != null);
         long gatewayId = peripheralDeviceAddDto.getGateway();
         Gateway gateway = gatewayDao.findById(gatewayId);
+        if (gateway == null) {
+            throw new GatewayNotFoundException(gatewayId);
+        }
         checkForLessThanTenDevices(gateway);
         PeripheralDevice peripheralDevice = ModelParser.getInstance().map(peripheralDeviceAddDto, PeripheralDevice.class);
         peripheralDevice.setGateway(gateway);
@@ -38,18 +43,20 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
     @Transactional
     @Override
     public void removeDevice(long id) {
-        peripheralDeviceDao.remove(id);
-    }
-
-    @Override
-    public void removeDevice(PeripheralDeviceAddDto peripheralDeviceAddDto) {
-        PeripheralDevice peripheralDevice = peripheralDeviceDao.findByUid(peripheralDeviceAddDto.getUid());
+        PeripheralDevice peripheralDevice = peripheralDeviceDao.findById(id);
+        if (peripheralDevice == null) {
+            throw new PeripheralDeviceNotFoundException(id);
+        }
         peripheralDeviceDao.remove(peripheralDevice);
     }
 
     @Override
     public PeripheralDevice getPeripheralDevice(long id) {
-        return peripheralDeviceDao.findById(id);
+        PeripheralDevice peripheralDevice = peripheralDeviceDao.findById(id);
+        if (peripheralDevice == null) {
+            throw new PeripheralDeviceNotFoundException(id);
+        }
+        return peripheralDevice;
     }
 
     @Transactional
@@ -60,7 +67,13 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
         assert (peripheralDeviceAddDto.getStatus() != null);
         assert (peripheralDeviceAddDto.getDateCreated() != null);
         Gateway gateway = gatewayDao.findById(peripheralDeviceAddDto.getGateway());
+        if (gateway == null) {
+            throw new GatewayNotFoundException(peripheralDeviceAddDto.getGateway());
+        }
         PeripheralDevice peripheralDevice = peripheralDeviceDao.findById(id);
+        if (peripheralDevice == null) {
+            throw new PeripheralDeviceNotFoundException(id);
+        }
         if (peripheralDeviceAddDto.getGateway() != peripheralDevice.getGateway().getId()) {
             checkForLessThanTenDevices(gateway);
         }

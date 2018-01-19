@@ -3,6 +3,7 @@ package com.musala.gateway.service;
 import com.musala.gateway.dao.GatewayDao;
 import com.musala.gateway.dto.GatewayAddDto;
 import com.musala.gateway.entities.Gateway;
+import com.musala.gateway.exceptions.GatewayNotFoundException;
 import com.musala.gateway.utils.ModelParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,11 @@ public class GatewayServiceImpl implements GatewayService {
     }
 
     public Gateway getGateway(long id) {
-        return gatewayDao.findById(id);
+        Gateway gateway = gatewayDao.findById(id);
+        if (gateway == null) {
+            throw new GatewayNotFoundException(id);
+        }
+        return gateway;
     }
 
     @Transactional
@@ -39,6 +44,9 @@ public class GatewayServiceImpl implements GatewayService {
         assert (gatewayAddDto.getIpv4Address() != null);
         assert (gatewayAddDto.getSerialNumber() != null);
         Gateway gateway = gatewayDao.findById(id);
+        if (gateway == null) {
+            throw new GatewayNotFoundException(id);
+        }
         gateway.setName(gatewayAddDto.getName());
         gateway.setSerialNumber(gatewayAddDto.getSerialNumber());
         gateway.setIpv4Address(gatewayAddDto.getIpv4Address());

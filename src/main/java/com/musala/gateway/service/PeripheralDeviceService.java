@@ -24,13 +24,6 @@ public interface PeripheralDeviceService {
     void removeDevice(long id);
 
     /**
-     * removes a given device from database
-     *
-     * @param peripheralDeviceAddDto to be removed
-     */
-    void removeDevice(PeripheralDeviceAddDto peripheralDeviceAddDto);
-
-    /**
      * @param id identifier generated in database
      * @return device found in database by given identifier
      */

@@ -3,6 +3,7 @@ package com.musala.gateway.service;
 import com.musala.gateway.dao.GatewayDao;
 import com.musala.gateway.dto.GatewayAddDto;
 import com.musala.gateway.entities.Gateway;
+import com.musala.gateway.exceptions.GatewayNotFoundException;
 import com.musala.gateway.utils.ModelParser;
 import org.junit.Assert;
 import org.junit.Before;
@@ -33,6 +34,7 @@ public class GatewayServiceImplTest {
     public void setUp() {
         gatewayService.setGatewayDao(gatewayDaoMock);
         Mockito.when(gatewayDaoMock.findById(1)).thenReturn(gateway);
+        Mockito.when(gatewayDaoMock.findById(2)).thenReturn(null);
     }
 
     @Test
@@ -60,6 +62,7 @@ public class GatewayServiceImplTest {
         Assert.assertEquals(gateway.getName(), gatewayAddDto.getName());
         Assert.assertEquals(gateway.getIpv4Address(), gatewayAddDto.getIpv4Address());
         Assert.assertEquals(gateway.getSerialNumber(), gatewayAddDto.getSerialNumber());
+        verify(gatewayDaoMock, times(1)).findById(1);
     }
 
     @Test(expected = AssertionError.class)
@@ -70,5 +73,15 @@ public class GatewayServiceImplTest {
     @Test(expected = AssertionError.class)
     public void updateShouldThrowAssertionErrorWithInvalidDto() {
         gatewayService.updateGateway(1, gatewayAddDtoInvalid);
+    }
+
+    @Test(expected = GatewayNotFoundException.class)
+    public void getShouldThrowCustomExceptionWithInvalidId() throws ClassNotFoundException {
+        gatewayService.getGateway(2);
+    }
+
+    @Test(expected = GatewayNotFoundException.class)
+    public void updateShouldThrowCustomExceptionWithInvalidId() {
+        gatewayService.updateGateway(2, gatewayAddDto);
     }
 }
