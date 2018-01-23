@@ -5,9 +5,8 @@ import com.musala.gateway.dao.PeripheralDeviceDao;
 import com.musala.gateway.dto.PeripheralDeviceAddDto;
 import com.musala.gateway.entities.Gateway;
 import com.musala.gateway.entities.PeripheralDevice;
-import com.musala.gateway.exceptions.GatewayNotFoundException;
+import com.musala.gateway.exceptions.ModelNotFoundException;
 import com.musala.gateway.exceptions.MoreThanTenDevicesException;
-import com.musala.gateway.exceptions.PeripheralDeviceNotFoundException;
 import com.musala.gateway.utils.ModelParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,7 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
 
     @Transactional
     @Override
-    public void save(PeripheralDeviceAddDto peripheralDeviceAddDto) throws MoreThanTenDevicesException {
+    public void savePeripheralDevice(PeripheralDeviceAddDto peripheralDeviceAddDto) throws MoreThanTenDevicesException, ModelNotFoundException {
         assert (peripheralDeviceAddDto.getUid() != null);
         assert (peripheralDeviceAddDto.getVendor() != null);
         assert (peripheralDeviceAddDto.getStatus() != null);
@@ -31,7 +30,7 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
         long gatewayId = peripheralDeviceAddDto.getGateway();
         Gateway gateway = gatewayDao.findById(gatewayId);
         if (gateway == null) {
-            throw new GatewayNotFoundException(gatewayId);
+            throw new ModelNotFoundException(gatewayId, Gateway.class.getSimpleName());
         }
         checkForLessThanTenDevices(gateway);
         PeripheralDevice peripheralDevice = ModelParser.getInstance().map(peripheralDeviceAddDto, PeripheralDevice.class);
@@ -42,37 +41,37 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
 
     @Transactional
     @Override
-    public void removeDevice(long id) {
+    public void removeDevice(long id) throws ModelNotFoundException {
         PeripheralDevice peripheralDevice = peripheralDeviceDao.findById(id);
         if (peripheralDevice == null) {
-            throw new PeripheralDeviceNotFoundException(id);
+            throw new ModelNotFoundException(id, PeripheralDevice.class.getSimpleName());
         }
         peripheralDeviceDao.remove(peripheralDevice);
     }
 
     @Override
-    public PeripheralDevice getPeripheralDevice(long id) {
+    public PeripheralDevice getPeripheralDevice(long id) throws ModelNotFoundException {
         PeripheralDevice peripheralDevice = peripheralDeviceDao.findById(id);
         if (peripheralDevice == null) {
-            throw new PeripheralDeviceNotFoundException(id);
+            throw new ModelNotFoundException(id, PeripheralDevice.class.getSimpleName());
         }
         return peripheralDevice;
     }
 
     @Transactional
     @Override
-    public void updatePeripheralDevice(long id, PeripheralDeviceAddDto peripheralDeviceAddDto) throws MoreThanTenDevicesException {
+    public void updatePeripheralDevice(long id, PeripheralDeviceAddDto peripheralDeviceAddDto) throws MoreThanTenDevicesException, ModelNotFoundException {
         assert (peripheralDeviceAddDto.getUid() != null);
         assert (peripheralDeviceAddDto.getVendor() != null);
         assert (peripheralDeviceAddDto.getStatus() != null);
         assert (peripheralDeviceAddDto.getDateCreated() != null);
         Gateway gateway = gatewayDao.findById(peripheralDeviceAddDto.getGateway());
         if (gateway == null) {
-            throw new GatewayNotFoundException(peripheralDeviceAddDto.getGateway());
+            throw new ModelNotFoundException(peripheralDeviceAddDto.getGateway(), Gateway.class.getSimpleName());
         }
         PeripheralDevice peripheralDevice = peripheralDeviceDao.findById(id);
         if (peripheralDevice == null) {
-            throw new PeripheralDeviceNotFoundException(id);
+            throw new ModelNotFoundException(id, PeripheralDevice.class.getSimpleName());
         }
         if (peripheralDeviceAddDto.getGateway() != peripheralDevice.getGateway().getId()) {
             checkForLessThanTenDevices(gateway);

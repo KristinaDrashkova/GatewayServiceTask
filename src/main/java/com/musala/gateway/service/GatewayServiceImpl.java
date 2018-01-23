@@ -3,7 +3,7 @@ package com.musala.gateway.service;
 import com.musala.gateway.dao.GatewayDao;
 import com.musala.gateway.dto.GatewayAddDto;
 import com.musala.gateway.entities.Gateway;
-import com.musala.gateway.exceptions.GatewayNotFoundException;
+import com.musala.gateway.exceptions.ModelNotFoundException;
 import com.musala.gateway.utils.ModelParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class GatewayServiceImpl implements GatewayService {
     }
 
     @Transactional
-    public void save(GatewayAddDto gatewayAddDto) {
+    public void saveGateway(GatewayAddDto gatewayAddDto) {
         assert (gatewayAddDto.getName() != null);
         assert (gatewayAddDto.getIpv4Address() != null);
         assert (gatewayAddDto.getSerialNumber() != null);
@@ -30,22 +30,22 @@ public class GatewayServiceImpl implements GatewayService {
         gatewayDao.save(gateway);
     }
 
-    public Gateway getGateway(long id) {
+    public Gateway getGateway(long id) throws ModelNotFoundException {
         Gateway gateway = gatewayDao.findById(id);
         if (gateway == null) {
-            throw new GatewayNotFoundException(id);
+            throw new ModelNotFoundException(id, Gateway.class.getSimpleName());
         }
         return gateway;
     }
 
     @Transactional
-    public void updateGateway(long id, GatewayAddDto gatewayAddDto) {
+    public void updateGateway(long id, GatewayAddDto gatewayAddDto) throws ModelNotFoundException {
         assert (gatewayAddDto.getName() != null);
         assert (gatewayAddDto.getIpv4Address() != null);
         assert (gatewayAddDto.getSerialNumber() != null);
         Gateway gateway = gatewayDao.findById(id);
         if (gateway == null) {
-            throw new GatewayNotFoundException(id);
+            throw new ModelNotFoundException(id, Gateway.class.getSimpleName());
         }
         gateway.setName(gatewayAddDto.getName());
         gateway.setSerialNumber(gatewayAddDto.getSerialNumber());

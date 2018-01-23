@@ -3,7 +3,7 @@ package com.musala.gateway.service;
 import com.musala.gateway.dao.GatewayDao;
 import com.musala.gateway.dto.GatewayAddDto;
 import com.musala.gateway.entities.Gateway;
-import com.musala.gateway.exceptions.GatewayNotFoundException;
+import com.musala.gateway.exceptions.ModelNotFoundException;
 import com.musala.gateway.utils.ModelParser;
 import org.junit.Assert;
 import org.junit.Before;
@@ -46,7 +46,7 @@ public class GatewayServiceImplTest {
     @Test
     public void saveShouldWorkCorrectly() throws Exception {
         Gateway gateway = ModelParser.getInstance().map(gatewayAddDto, Gateway.class);
-        gatewayService.save(gatewayAddDto);
+        gatewayService.saveGateway(gatewayAddDto);
         verify(gatewayDaoMock, times(1)).save(gateway);
     }
 
@@ -57,7 +57,7 @@ public class GatewayServiceImplTest {
     }
 
     @Test
-    public void updateShouldWorkCorrectly() {
+    public void updateShouldWorkCorrectly() throws ModelNotFoundException {
         gatewayService.updateGateway(1, gatewayAddDto);
         Assert.assertEquals(gateway.getName(), gatewayAddDto.getName());
         Assert.assertEquals(gateway.getIpv4Address(), gatewayAddDto.getIpv4Address());
@@ -67,21 +67,21 @@ public class GatewayServiceImplTest {
 
     @Test(expected = AssertionError.class)
     public void saveShouldThrowAssertionErrorWithInvalidDto() throws Exception {
-        gatewayService.save(gatewayAddDtoInvalid);
+        gatewayService.saveGateway(gatewayAddDtoInvalid);
     }
 
     @Test(expected = AssertionError.class)
-    public void updateShouldThrowAssertionErrorWithInvalidDto() {
+    public void updateShouldThrowAssertionErrorWithInvalidDto() throws ModelNotFoundException {
         gatewayService.updateGateway(1, gatewayAddDtoInvalid);
     }
 
-    @Test(expected = GatewayNotFoundException.class)
-    public void getShouldThrowCustomExceptionWithInvalidId() throws ClassNotFoundException {
+    @Test(expected = ModelNotFoundException.class)
+    public void getShouldThrowCustomExceptionWithInvalidId() throws ClassNotFoundException, ModelNotFoundException {
         gatewayService.getGateway(2);
     }
 
-    @Test(expected = GatewayNotFoundException.class)
-    public void updateShouldThrowCustomExceptionWithInvalidId() {
+    @Test(expected = ModelNotFoundException.class)
+    public void updateShouldThrowCustomExceptionWithInvalidId() throws ModelNotFoundException {
         gatewayService.updateGateway(2, gatewayAddDto);
     }
 }

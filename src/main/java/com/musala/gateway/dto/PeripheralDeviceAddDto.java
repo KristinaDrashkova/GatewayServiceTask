@@ -6,6 +6,7 @@ import com.musala.gateway.entities.Status;
 import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.Objects;
 
 public class PeripheralDeviceAddDto {
     @NotNull
@@ -79,4 +80,26 @@ public class PeripheralDeviceAddDto {
     public void setGateway(long gateway) {
         this.gateway = gateway;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == this) return true;
+        if (!(object instanceof PeripheralDeviceAddDto)) {
+            return false;
+        }
+
+        PeripheralDeviceAddDto peripheralDeviceAddDto = (PeripheralDeviceAddDto) object;
+
+        return Objects.equals(uid, peripheralDeviceAddDto.uid) &&
+                Objects.equals(vendor, peripheralDeviceAddDto.vendor) &&
+                Objects.equals(dateCreated, peripheralDeviceAddDto.dateCreated) &&
+                Objects.equals(status, peripheralDeviceAddDto.status) &&
+                Objects.equals(gateway, peripheralDeviceAddDto.gateway);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uid, vendor, dateCreated, status, gateway);
+    }
+
 }

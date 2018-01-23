@@ -5,6 +5,7 @@ import com.musala.gateway.annotations.IpV4Constraint;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 public class GatewayAddDto {
     @NotNull
@@ -53,4 +54,24 @@ public class GatewayAddDto {
     public void setIpv4Address(String ipv4Address) {
         this.ipv4Address = ipv4Address;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == this) return true;
+        if (!(object instanceof GatewayAddDto)) {
+            return false;
+        }
+
+        GatewayAddDto gatewayAddDto = (GatewayAddDto) object;
+
+        return Objects.equals(serialNumber, gatewayAddDto.serialNumber) &&
+                Objects.equals(name, gatewayAddDto.name) &&
+                Objects.equals(ipv4Address, gatewayAddDto.ipv4Address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(serialNumber, name, ipv4Address);
+    }
+
 }

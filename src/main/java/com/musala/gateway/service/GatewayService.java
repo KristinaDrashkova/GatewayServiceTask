@@ -3,6 +3,7 @@ package com.musala.gateway.service;
 import com.musala.gateway.dao.GatewayDao;
 import com.musala.gateway.dto.GatewayAddDto;
 import com.musala.gateway.entities.Gateway;
+import com.musala.gateway.exceptions.ModelNotFoundException;
 
 import java.util.List;
 
@@ -19,14 +20,14 @@ public interface GatewayService {
      *
      * @param gatewayAddDto data transfer object corresponding to an entity
      */
-    void save(GatewayAddDto gatewayAddDto);
+    void saveGateway(GatewayAddDto gatewayAddDto);
 
     /**
      * returns a gateway by given parameter
      *
      * @param id generated in database
      */
-    Gateway getGateway(long id) throws ClassNotFoundException;
+    Gateway getGateway(long id) throws ClassNotFoundException, ModelNotFoundException;
 
     /**
      * updates gateway record in database
@@ -34,7 +35,7 @@ public interface GatewayService {
      * @param id            identifier generated in database
      * @param gatewayAddDto mapping object for gateway
      */
-    void updateGateway(long id, GatewayAddDto gatewayAddDto);
+    void updateGateway(long id, GatewayAddDto gatewayAddDto) throws ModelNotFoundException;
 
     void setGatewayDao(GatewayDao gatewayDao);
 }

@@ -39,7 +39,7 @@ public class GatewayControllerTest {
     @Test
     public void saveGatewayShouldWorkCorrectly() throws Exception {
         gatewayController.saveGateway(gatewayAddDto);
-        verify(mockedGatewayService, times(1)).save(gatewayAddDto);
+        verify(mockedGatewayService, times(1)).saveGateway(gatewayAddDto);
         verifyNoMoreInteractions(mockedGatewayService);
     }
 

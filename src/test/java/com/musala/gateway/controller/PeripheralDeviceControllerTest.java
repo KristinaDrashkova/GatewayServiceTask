@@ -41,7 +41,7 @@ public class PeripheralDeviceControllerTest {
     @Test
     public void savePeripheralDevice() throws Exception {
         peripheralDeviceController.savePeripheralDevice(peripheralDeviceAddDto);
-        verify(mockedPeripheralDeviceService, times(1)).save(peripheralDeviceAddDto);
+        verify(mockedPeripheralDeviceService, times(1)).savePeripheralDevice(peripheralDeviceAddDto);
         verifyNoMoreInteractions(mockedPeripheralDeviceService);
     }
 
