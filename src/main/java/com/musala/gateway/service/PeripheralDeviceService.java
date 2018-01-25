@@ -15,7 +15,7 @@ public interface PeripheralDeviceService {
      *
      * @param peripheralDeviceAddDto data transfer object corresponding to an entity
      */
-    void savePeripheralDevice(PeripheralDeviceAddDto peripheralDeviceAddDto) throws MoreThanTenDevicesException, ModelNotFoundException;
+    PeripheralDevice savePeripheralDevice(PeripheralDeviceAddDto peripheralDeviceAddDto) throws MoreThanTenDevicesException, ModelNotFoundException;
 
     /**
      * removes from database the device by a given parameter

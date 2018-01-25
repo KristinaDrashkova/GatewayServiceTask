@@ -1,6 +1,7 @@
 package com.musala.gateway.controller;
 
 import com.musala.gateway.dto.PeripheralDeviceAddDto;
+import com.musala.gateway.entities.PeripheralDevice;
 import com.musala.gateway.exceptions.ModelNotFoundException;
 import com.musala.gateway.exceptions.MoreThanTenDevicesException;
 import com.musala.gateway.service.PeripheralDeviceService;
@@ -25,8 +26,8 @@ public class PeripheralDeviceController {
 
     @RequestMapping(value = {"", "/"}, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> savePeripheralDevice(@RequestBody PeripheralDeviceAddDto peripheralDeviceAddDto) throws MoreThanTenDevicesException, ModelNotFoundException {
-        peripheralDeviceService.savePeripheralDevice(peripheralDeviceAddDto);
-        return new ResponseEntity<>("Peripheral device has been saved successfully", HttpStatus.OK);
+        PeripheralDevice peripheralDevice = peripheralDeviceService.savePeripheralDevice(peripheralDeviceAddDto);
+        return new ResponseEntity<>(peripheralDevice, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

@@ -22,7 +22,7 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
 
     @Transactional
     @Override
-    public void savePeripheralDevice(PeripheralDeviceAddDto peripheralDeviceAddDto) throws MoreThanTenDevicesException, ModelNotFoundException {
+    public PeripheralDevice savePeripheralDevice(PeripheralDeviceAddDto peripheralDeviceAddDto) throws MoreThanTenDevicesException, ModelNotFoundException {
         assert (peripheralDeviceAddDto.getUid() != null);
         assert (peripheralDeviceAddDto.getVendor() != null);
         assert (peripheralDeviceAddDto.getStatus() != null);
@@ -36,7 +36,7 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
         PeripheralDevice peripheralDevice = ModelParser.getInstance().map(peripheralDeviceAddDto, PeripheralDevice.class);
         peripheralDevice.setGateway(gateway);
         peripheralDeviceDao.save(peripheralDevice);
-
+        return peripheralDevice;
     }
 
     @Transactional

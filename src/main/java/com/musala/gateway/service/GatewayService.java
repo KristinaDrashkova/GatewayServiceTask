@@ -20,7 +20,7 @@ public interface GatewayService {
      *
      * @param gatewayAddDto data transfer object corresponding to an entity
      */
-    void saveGateway(GatewayAddDto gatewayAddDto);
+    Gateway saveGateway(GatewayAddDto gatewayAddDto);
 
     /**
      * returns a gateway by given parameter

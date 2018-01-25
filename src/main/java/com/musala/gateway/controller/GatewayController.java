@@ -27,8 +27,8 @@ public class GatewayController {
 
     @RequestMapping(value = {"", "/"}, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity saveGateway(@RequestBody GatewayAddDto gatewayAddDto) {
-        gatewayService.saveGateway(gatewayAddDto);
-        return new ResponseEntity<>("Gateway has been saved successfully", HttpStatus.OK);
+        Gateway gateway = gatewayService.saveGateway(gatewayAddDto);
+        return new ResponseEntity<>(gateway, HttpStatus.OK);
     }
 
     @RequestMapping(value = {"", "/"}, method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -40,7 +40,7 @@ public class GatewayController {
         return new ResponseEntity<>(gateways, headers, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<?> getInfoAboutAGateway(@PathVariable long id) throws ClassNotFoundException, ModelNotFoundException {
         Gateway gateway = gatewayService.getGateway(id);

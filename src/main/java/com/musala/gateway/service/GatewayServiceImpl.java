@@ -22,12 +22,13 @@ public class GatewayServiceImpl implements GatewayService {
     }
 
     @Transactional
-    public void saveGateway(GatewayAddDto gatewayAddDto) {
+    public Gateway saveGateway(GatewayAddDto gatewayAddDto) {
         assert (gatewayAddDto.getName() != null);
         assert (gatewayAddDto.getIpv4Address() != null);
         assert (gatewayAddDto.getSerialNumber() != null);
         Gateway gateway = ModelParser.getInstance().map(gatewayAddDto, Gateway.class);
         gatewayDao.save(gateway);
+        return gateway;
     }
 
     public Gateway getGateway(long id) throws ModelNotFoundException {
