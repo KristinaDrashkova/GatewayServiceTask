@@ -20,7 +20,8 @@ public class GatewayController {
     private GatewayService gatewayService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity updateGateway(@PathVariable long id, @RequestBody GatewayAddDto gatewayAddDto) throws ClassNotFoundException, ModelNotFoundException {
+    public ResponseEntity updateGateway(@PathVariable long id, @RequestBody GatewayAddDto gatewayAddDto)
+            throws ClassNotFoundException, ModelNotFoundException {
         gatewayService.updateGateway(id, gatewayAddDto);
         return new ResponseEntity<>("Gateway has been updated successfully", HttpStatus.OK);
     }
@@ -42,7 +43,8 @@ public class GatewayController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<?> getInfoAboutAGateway(@PathVariable long id) throws ClassNotFoundException, ModelNotFoundException {
+    public ResponseEntity<?> getInfoAboutAGateway(@PathVariable long id)
+            throws ClassNotFoundException, ModelNotFoundException {
         Gateway gateway = gatewayService.getGateway(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");

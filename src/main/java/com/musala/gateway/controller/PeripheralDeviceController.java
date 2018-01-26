@@ -25,7 +25,8 @@ public class PeripheralDeviceController {
     }
 
     @RequestMapping(value = {"", "/"}, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> savePeripheralDevice(@RequestBody PeripheralDeviceAddDto peripheralDeviceAddDto) throws MoreThanTenDevicesException, ModelNotFoundException {
+    public ResponseEntity<?> savePeripheralDevice(@RequestBody PeripheralDeviceAddDto peripheralDeviceAddDto)
+            throws MoreThanTenDevicesException, ModelNotFoundException {
         PeripheralDevice peripheralDevice = peripheralDeviceService.savePeripheralDevice(peripheralDeviceAddDto);
         return new ResponseEntity<>(peripheralDevice, HttpStatus.OK);
     }

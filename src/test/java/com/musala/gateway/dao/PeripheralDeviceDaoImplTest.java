@@ -22,12 +22,18 @@ import java.util.List;
 public class PeripheralDeviceDaoImplTest {
     @Autowired
     private PeripheralDeviceDao peripheralDeviceDao;
-    private PeripheralDevice peripheralDeviceRepeatingUid = new PeripheralDevice(3, "IBM", new Date(), Status.ONLINE);
-    private PeripheralDevice peripheralDeviceNormal = new PeripheralDevice(3, "SteelSeries", new Date(), Status.OFFLINE);
-    private PeripheralDevice peripheralDeviceNullUid = new PeripheralDevice(null, "SteelSeries", new Date(), Status.OFFLINE);
-    private PeripheralDevice peripheralDeviceNullVendor = new PeripheralDevice(3, null, new Date(), Status.OFFLINE);
-    private PeripheralDevice peripheralDeviceNullDate = new PeripheralDevice(null, "SteelSeries", null, Status.OFFLINE);
-    private PeripheralDevice peripheralDeviceNullStatus = new PeripheralDevice(3, "SteelSeries", new Date(), null);
+    private PeripheralDevice peripheralDeviceRepeatingUid =
+            new PeripheralDevice(3, "IBM", new Date(), Status.ONLINE);
+    private PeripheralDevice peripheralDeviceNormal =
+            new PeripheralDevice(3, "SteelSeries", new Date(), Status.OFFLINE);
+    private PeripheralDevice peripheralDeviceNullUid =
+            new PeripheralDevice(null, "SteelSeries", new Date(), Status.OFFLINE);
+    private PeripheralDevice peripheralDeviceNullVendor =
+            new PeripheralDevice(3, null, new Date(), Status.OFFLINE);
+    private PeripheralDevice peripheralDeviceNullDate =
+            new PeripheralDevice(null, "SteelSeries", null, Status.OFFLINE);
+    private PeripheralDevice peripheralDeviceNullStatus =
+            new PeripheralDevice(3, "SteelSeries", new Date(), null);
 
     @PersistenceContext
     private EntityManager em;

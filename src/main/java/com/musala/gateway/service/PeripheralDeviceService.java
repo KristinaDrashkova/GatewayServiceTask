@@ -15,7 +15,8 @@ public interface PeripheralDeviceService {
      *
      * @param peripheralDeviceAddDto data transfer object corresponding to an entity
      */
-    PeripheralDevice savePeripheralDevice(PeripheralDeviceAddDto peripheralDeviceAddDto) throws MoreThanTenDevicesException, ModelNotFoundException;
+    PeripheralDevice savePeripheralDevice(PeripheralDeviceAddDto peripheralDeviceAddDto)
+            throws MoreThanTenDevicesException, ModelNotFoundException;
 
     /**
      * removes from database the device by a given parameter
@@ -36,7 +37,8 @@ public interface PeripheralDeviceService {
      * @param id                     identifier generated in database
      * @param peripheralDeviceAddDto mapping object for PeripheralDevice
      */
-    void updatePeripheralDevice(long id, PeripheralDeviceAddDto peripheralDeviceAddDto) throws MoreThanTenDevicesException, ModelNotFoundException;
+    void updatePeripheralDevice(long id, PeripheralDeviceAddDto peripheralDeviceAddDto)
+            throws MoreThanTenDevicesException, ModelNotFoundException;
 
     void setGatewayDao(GatewayDao gatewayDao);
 
