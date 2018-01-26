@@ -39,12 +39,12 @@ public class GatewayDaoImplTest {
     @Test
     public void findAllShouldWorkCorrectly() {
         List<Gateway> gateways = gatewayDao.findAll();
-        Assert.assertEquals(0, gateways.size());
+        Assert.assertEquals(2, gateways.size());
         em.persist(gatewayNormal);
 
         gateways = gatewayDao.findAll();
         Assert.assertTrue(gateways.contains(gatewayNormal));
-        Assert.assertEquals(1, gateways.size());
+        Assert.assertEquals(3, gateways.size());
     }
 
     @Transactional
@@ -99,7 +99,7 @@ public class GatewayDaoImplTest {
 
         gatewayDao.remove(gatewayNormal);
         List<Gateway> gateways = gatewayDao.findAll();
-        Assert.assertEquals(0, gateways.size());
+        Assert.assertEquals(2, gateways.size());
     }
 
 }

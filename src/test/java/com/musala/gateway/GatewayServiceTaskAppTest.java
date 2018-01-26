@@ -4,10 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.musala.gateway.dto.GatewayAddDto;
 import com.musala.gateway.dto.PeripheralDeviceAddDto;
 import com.musala.gateway.entities.Gateway;
-import com.musala.gateway.entities.PeripheralDevice;
 import com.musala.gateway.entities.Status;
 import org.json.JSONException;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,12 +18,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.Iterator;
-
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.notNullValue;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 
 @RunWith(value = SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = GatewayServiceTaskApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -40,10 +32,11 @@ public class GatewayServiceTaskAppTest {
     private HttpEntity<PeripheralDeviceAddDto> peripheralDeviceRequest;
     private HttpEntity<String> entity;
     private GatewayAddDto gatewayAddDto =
-            new GatewayAddDto("1111-2222-3333-4444-5555", "testOne", "255.168.3.24");
+            new GatewayAddDto("5555-4444-3333-2222-1111", "test", "255.168.3.24");
     private PeripheralDeviceAddDto peripheralDeviceAddDto =
-            new PeripheralDeviceAddDto(1, "IBM", new Date(), Status.OFFLINE, 1);
+            new PeripheralDeviceAddDto(3, "Test", new Date(), Status.OFFLINE, 2);
     private ObjectMapper mapper = new ObjectMapper();
+
     @Before
     public void setUp() {
         headers.add("Content-Type", "application/json");
@@ -76,8 +69,8 @@ public class GatewayServiceTaskAppTest {
 
     @Test
     public void gatewayGetSingleGatewayShouldReturnBadRequestStatusWithInvalidId() {
-        String uri = createURLWithPort("/gateway/");
-        ResponseEntity<String> response = restTemplate.exchange(uri + "101", HttpMethod.GET, entity, String.class);
+        String uri = createURLWithPort("/gateway/101");
+        ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
         Assert.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 
     }
@@ -85,42 +78,38 @@ public class GatewayServiceTaskAppTest {
     @Test
     public void gatewayPostMethodShouldWorkCorrectly() {
         String uri = createURLWithPort("/gateway/");
-        ResponseEntity<GatewayAddDto> response = restTemplate
-                .exchange(uri + "1", HttpMethod.GET, gatewayRequest, GatewayAddDto.class);
+        ResponseEntity<String> response = restTemplate
+                .exchange(uri, HttpMethod.POST, gatewayRequest, String.class);
         Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assert.assertTrue(response.getBody().contains("5555-4444-3333-2222-1111"));
+        Assert.assertTrue(response.getBody().contains("test"));
+        Assert.assertTrue(response.getBody().contains("255.168.3.24"));
     }
 
     @Test
     public void gatewayPostMethodShouldReturnBadRequestStatusWithDuplicateSerialNumber() {
         String uri = createURLWithPort("/gateway");
-        gatewayRequest = new HttpEntity<>(gatewayAddDto);
         ResponseEntity<String> response = restTemplate.postForEntity(uri, gatewayRequest, String.class);
         Assert.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 
     @Test
     public void gatewayPutMethodShouldWorkCorrectly() {
-        String uri = createURLWithPort("/gateway/");
-        GatewayAddDto gatewayAddDtoTwo =
-                new GatewayAddDto("1330-1691-2320-1630-3127-2515", "A", "192.168.3.24");
-        gatewayRequest = new HttpEntity<>(gatewayAddDtoTwo);
-
-        restTemplate.put(uri + "1", gatewayRequest, String.class);
-        ResponseEntity<GatewayAddDto> response = restTemplate.exchange(
-                uri + "1",
-                HttpMethod.GET, entity, GatewayAddDto.class);
-        GatewayAddDto currentDto = response.getBody();
-        assertThat(currentDto, notNullValue());
-        assertThat(currentDto.getSerialNumber(), is("1330-1691-2320-1630-3127-2515"));
-        assertThat(currentDto.getName(), is("A"));
-        assertThat(currentDto.getIpv4Address(), is("192.168.3.24"));
+        String uri = createURLWithPort("/gateway/3");
+        gatewayRequest = new HttpEntity<>
+                (new GatewayAddDto("1330-1691-2320-1630-3127-2515", "A", "192.168.3.24"));
+        restTemplate.put(uri, gatewayRequest, String.class);
+        ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
+        Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assert.assertTrue(response.getBody().contains("1330-1691-2320-1630-3127-2515"));
+        Assert.assertTrue(response.getBody().contains("A"));
+        Assert.assertTrue(response.getBody().contains("192.168.3.24"));
     }
 
     @Test
     public void gatewayPutMethodShouldReturnBadRequestStatusWithInvalidId() throws Exception {
-        String uri = createURLWithPort("/gateway/");
-        ResponseEntity<GatewayAddDto> response = restTemplate.exchange(uri + "2",
-                HttpMethod.PUT, entity, GatewayAddDto.class);
+        String uri = createURLWithPort("/gateway/101");
+        ResponseEntity<GatewayAddDto> response = restTemplate.exchange(uri, HttpMethod.PUT, entity, GatewayAddDto.class);
         Assert.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 
     }
@@ -128,36 +117,28 @@ public class GatewayServiceTaskAppTest {
     @Test
     public void peripheralDevicePostMethodShouldWorkCorrectly() {
         String uri = createURLWithPort("/peripheralDevice/");
+        peripheralDeviceRequest = new HttpEntity<>(peripheralDeviceAddDto);
         restTemplate.postForEntity(uri, peripheralDeviceRequest, String.class);
-        PeripheralDevice peripheralDevice = getPeripheralDevice();
-        assertNotNull(peripheralDevice);
-        assertThat(peripheralDevice.getUid(), is(1));
-        assertThat(peripheralDevice.getVendor(), is("IBM"));
-        assertThat(peripheralDevice.getStatus(), is(Status.OFFLINE));
+
+
     }
 
     @Test
     public void peripheralDevicePostMethodShouldReturnBadRequestStatusWithDuplicateUid() {
         String uri = createURLWithPort("/peripheralDevice/");
-        restTemplate.postForEntity(uri, peripheralDeviceRequest, String.class);
+        peripheralDeviceRequest =
+                new HttpEntity<>(new PeripheralDeviceAddDto(1, "SEGA", new Date(), Status.ONLINE, 2));
         ResponseEntity<String> response = restTemplate.postForEntity(uri, peripheralDeviceRequest, String.class);
         Assert.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 
     @Test
     public void peripheralDevicePutMethodShouldWorkCorrectly() {
-        PeripheralDeviceAddDto peripheralDeviceAddDtoTwo =
-                new PeripheralDeviceAddDto(1, "INTEL", new Date(), Status.ONLINE, 1);
-        String uri = createURLWithPort("/peripheralDevice/");
-        restTemplate.postForEntity(uri, peripheralDeviceRequest, String.class);
-        peripheralDeviceRequest = new HttpEntity<>(peripheralDeviceAddDtoTwo);
-        restTemplate.put(uri + "1", peripheralDeviceRequest);
-
-        PeripheralDevice peripheralDevice = getPeripheralDevice();
-        assertNotNull(peripheralDevice);
-        assertThat(peripheralDevice.getUid(), is(1));
-        assertThat(peripheralDevice.getVendor(), is("INTEL"));
-        assertThat(peripheralDevice.getStatus(), is(Status.ONLINE));
+        String uri = createURLWithPort("/peripheralDevice/1");
+        peripheralDeviceRequest = new HttpEntity<>
+                (new PeripheralDeviceAddDto(1, "SEGA", new Date(), Status.ONLINE, 1));
+        ResponseEntity<String> response = restTemplate.exchange(uri,HttpMethod.PUT, peripheralDeviceRequest, String.class);
+        Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
@@ -169,11 +150,9 @@ public class GatewayServiceTaskAppTest {
 
     @Test
     public void peripheralDeviceDeleteMethodShouldWorkCorrectly() {
-        String uri = createURLWithPort("/peripheralDevice/");
-        restTemplate.postForEntity(uri, peripheralDeviceRequest, String.class);
-        assertNotNull(getPeripheralDevice());
-        restTemplate.delete(uri + "1");
-        Assert.assertEquals(null, getPeripheralDevice());
+        String uri = createURLWithPort("/peripheralDevice/2");
+        ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.DELETE, entity, String.class);
+        Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
@@ -183,24 +162,6 @@ public class GatewayServiceTaskAppTest {
         Assert.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 
-    @After
-    public void finalize() {
-        restTemplate.delete(createURLWithPort("/gateway/1"));
-        restTemplate.delete(createURLWithPort("/peripheralDevice/1"));
-    }
-
-    private PeripheralDevice getPeripheralDevice() {
-        String uri = createURLWithPort("/gateway/");
-        ResponseEntity<Gateway> response = restTemplate
-                .exchange(uri + "1", HttpMethod.GET, gatewayRequest, Gateway.class);
-        Gateway gateway = response.getBody();
-        Iterator<PeripheralDevice> it = gateway.getPeripheralDevices().iterator();
-
-        if (!it.hasNext()) {
-            return null;
-        }
-        return it.next();
-    }
     private String createURLWithPort(String uri) {
         return "http://localhost:" + port + uri;
     }

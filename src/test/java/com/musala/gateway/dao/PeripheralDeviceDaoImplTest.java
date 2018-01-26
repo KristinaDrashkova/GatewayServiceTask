@@ -22,12 +22,12 @@ import java.util.List;
 public class PeripheralDeviceDaoImplTest {
     @Autowired
     private PeripheralDeviceDao peripheralDeviceDao;
-    private PeripheralDevice peripheralDeviceRepeatingUid = new PeripheralDevice(1, "IBM", new Date(), Status.ONLINE);
-    private PeripheralDevice peripheralDeviceNormal = new PeripheralDevice(1, "SteelSeries", new Date(), Status.OFFLINE);
+    private PeripheralDevice peripheralDeviceRepeatingUid = new PeripheralDevice(3, "IBM", new Date(), Status.ONLINE);
+    private PeripheralDevice peripheralDeviceNormal = new PeripheralDevice(3, "SteelSeries", new Date(), Status.OFFLINE);
     private PeripheralDevice peripheralDeviceNullUid = new PeripheralDevice(null, "SteelSeries", new Date(), Status.OFFLINE);
-    private PeripheralDevice peripheralDeviceNullVendor = new PeripheralDevice(1, null, new Date(), Status.OFFLINE);
+    private PeripheralDevice peripheralDeviceNullVendor = new PeripheralDevice(3, null, new Date(), Status.OFFLINE);
     private PeripheralDevice peripheralDeviceNullDate = new PeripheralDevice(null, "SteelSeries", null, Status.OFFLINE);
-    private PeripheralDevice peripheralDeviceNullStatus = new PeripheralDevice(1, "SteelSeries", new Date(), null);
+    private PeripheralDevice peripheralDeviceNullStatus = new PeripheralDevice(3, "SteelSeries", new Date(), null);
 
     @PersistenceContext
     private EntityManager em;
@@ -38,12 +38,12 @@ public class PeripheralDeviceDaoImplTest {
     @Test
     public void findAllShouldWorkCorrectly() {
         List<PeripheralDevice> peripheralDevices = peripheralDeviceDao.findAll();
-        Assert.assertEquals(0, peripheralDevices.size());
+        Assert.assertEquals(2, peripheralDevices.size());
         em.persist(peripheralDeviceNormal);
 
         peripheralDevices = peripheralDeviceDao.findAll();
         Assert.assertTrue(peripheralDevices.contains(peripheralDeviceNormal));
-        Assert.assertEquals(1, peripheralDevices.size());
+        Assert.assertEquals(3, peripheralDevices.size());
     }
 
     @Transactional
@@ -105,6 +105,6 @@ public class PeripheralDeviceDaoImplTest {
         Assert.assertTrue(peripheralDevices.contains(peripheralDeviceNormal));
         peripheralDeviceDao.remove(peripheralDeviceNormal);
         peripheralDevices = peripheralDeviceDao.findAll();
-        Assert.assertEquals(0, peripheralDevices.size());
+        Assert.assertEquals(2, peripheralDevices.size());
     }
 }
