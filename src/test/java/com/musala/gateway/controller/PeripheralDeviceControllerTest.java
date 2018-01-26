@@ -34,7 +34,8 @@ public class PeripheralDeviceControllerTest {
     @Test
     public void updatePeripheralDevice() throws Exception {
         peripheralDeviceController.updatePeripheralDevice(1, peripheralDeviceAddDto);
-        verify(mockedPeripheralDeviceService, times(1)).updatePeripheralDevice(1, peripheralDeviceAddDto);
+        verify(mockedPeripheralDeviceService, times(1)).
+                updatePeripheralDevice(1, peripheralDeviceAddDto);
         verifyNoMoreInteractions(mockedPeripheralDeviceService);
     }
 

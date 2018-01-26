@@ -10,8 +10,9 @@ import java.util.List;
 
 public interface GatewayService {
 
+
     /**
-     * prints detailed information about all the gateways
+     * @return List of all the gateways in the database
      */
     List<Gateway> getAllGateways();
 

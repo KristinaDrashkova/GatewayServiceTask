@@ -24,7 +24,8 @@ public class GatewayServiceImplTest {
     private GatewayService gatewayService;
 
     private GatewayDao gatewayDaoMock = Mockito.mock(GatewayDao.class);
-    private GatewayAddDto gatewayAddDto = new GatewayAddDto("1330-1691-2320-1630-3127-2515", "A", "192.168.3.24");
+    private GatewayAddDto gatewayAddDto =
+            new GatewayAddDto("1330-1691-2320-1630-3127-2515", "A", "192.168.3.24");
     private GatewayAddDto gatewayAddDtoInvalid =
             new GatewayAddDto(null, "Q", "1921.168.3.24");
     private Gateway gateway = new Gateway("1245-1234-1234-1235", "name", "192.168.3.24");

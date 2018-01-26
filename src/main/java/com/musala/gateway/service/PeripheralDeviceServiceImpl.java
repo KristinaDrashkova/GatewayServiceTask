@@ -92,7 +92,7 @@ public class PeripheralDeviceServiceImpl implements PeripheralDeviceService {
     }
 
     private void checkForLessThanTenDevices(Gateway gateway) throws MoreThanTenDevicesException {
-        if (gateway.getPeripheralDevices().size() >= 10) {
+        if (gateway.getPeripheralDevices().size() == 10) {
             throw new MoreThanTenDevicesException("Can not add more than 10 devices to a gateway");
         }
     }

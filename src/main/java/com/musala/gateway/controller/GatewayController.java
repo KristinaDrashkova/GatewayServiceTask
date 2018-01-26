@@ -40,7 +40,7 @@ public class GatewayController {
         return new ResponseEntity<>(gateways, headers, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{id}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<?> getInfoAboutAGateway(@PathVariable long id) throws ClassNotFoundException, ModelNotFoundException {
         Gateway gateway = gatewayService.getGateway(id);

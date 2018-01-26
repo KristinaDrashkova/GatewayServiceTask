@@ -21,8 +21,9 @@ import java.util.Date;
 
 @RunWith(value = SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = GatewayServiceTaskApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-public class GatewayServiceTaskAppTest {
+public class GatewayServiceTaskAPITest {
 
+    private static final String HTTP_LOCALHOST = "http://localhost:";
     @LocalServerPort
     private int port;
 
@@ -59,12 +60,14 @@ public class GatewayServiceTaskAppTest {
     }
 
     @Test
-    public void gatewayGetOneShouldWorkCorrectly() throws JSONException {
+    public void gatewayGetByIdShouldWorkCorrectly() throws JSONException {
         String uri = createURLWithPort("/gateway/1");
-        ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
-        Assert.assertTrue(response.getBody().contains("1111-2222-3333-4444-5555"));
-        Assert.assertTrue(response.getBody().contains("testOne"));
-        Assert.assertTrue(response.getBody().contains("255.168.3.24"));
+        ResponseEntity<Gateway> response = restTemplate.exchange(uri, HttpMethod.GET, entity, Gateway.class);
+        Gateway gateway = response.getBody();
+        Assert.assertEquals("1111-2222-3333-4444-5555", gateway.getSerialNumber());
+        Assert.assertEquals("testOne", gateway.getName());
+        Assert.assertEquals("255.168.3.24", gateway.getIpv4Address());
+        Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
@@ -78,12 +81,13 @@ public class GatewayServiceTaskAppTest {
     @Test
     public void gatewayPostMethodShouldWorkCorrectly() {
         String uri = createURLWithPort("/gateway/");
-        ResponseEntity<String> response = restTemplate
-                .exchange(uri, HttpMethod.POST, gatewayRequest, String.class);
+        ResponseEntity<Gateway> response = restTemplate
+                .exchange(uri, HttpMethod.POST, gatewayRequest, Gateway.class);
         Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assert.assertTrue(response.getBody().contains("5555-4444-3333-2222-1111"));
-        Assert.assertTrue(response.getBody().contains("test"));
-        Assert.assertTrue(response.getBody().contains("255.168.3.24"));
+        Gateway gateway = response.getBody();
+        Assert.assertEquals("5555-4444-3333-2222-1111", gateway.getSerialNumber());
+        Assert.assertEquals("test", gateway.getName());
+        Assert.assertEquals("255.168.3.24", gateway.getIpv4Address());
     }
 
     @Test
@@ -99,11 +103,12 @@ public class GatewayServiceTaskAppTest {
         gatewayRequest = new HttpEntity<>
                 (new GatewayAddDto("1330-1691-2320-1630-3127-2515", "A", "192.168.3.24"));
         restTemplate.put(uri, gatewayRequest, String.class);
-        ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
+        ResponseEntity<Gateway> response = restTemplate.getForEntity(uri, Gateway.class);
         Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assert.assertTrue(response.getBody().contains("1330-1691-2320-1630-3127-2515"));
-        Assert.assertTrue(response.getBody().contains("A"));
-        Assert.assertTrue(response.getBody().contains("192.168.3.24"));
+        Gateway gateway = response.getBody();
+        Assert.assertEquals("1330-1691-2320-1630-3127-2515", gateway.getSerialNumber());
+        Assert.assertEquals("A", gateway.getName());
+        Assert.assertEquals("192.168.3.24", gateway.getIpv4Address());
     }
 
     @Test
@@ -137,7 +142,7 @@ public class GatewayServiceTaskAppTest {
         String uri = createURLWithPort("/peripheralDevice/1");
         peripheralDeviceRequest = new HttpEntity<>
                 (new PeripheralDeviceAddDto(1, "SEGA", new Date(), Status.ONLINE, 1));
-        ResponseEntity<String> response = restTemplate.exchange(uri,HttpMethod.PUT, peripheralDeviceRequest, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.PUT, peripheralDeviceRequest, String.class);
         Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
@@ -163,6 +168,6 @@ public class GatewayServiceTaskAppTest {
     }
 
     private String createURLWithPort(String uri) {
-        return "http://localhost:" + port + uri;
+        return HTTP_LOCALHOST + port + uri;
     }
 }

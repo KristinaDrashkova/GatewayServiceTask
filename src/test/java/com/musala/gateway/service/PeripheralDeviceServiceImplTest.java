@@ -81,7 +81,8 @@ public class PeripheralDeviceServiceImplTest {
 
     @SuppressWarnings("unchecked")
     @Test(expected = MoreThanTenDevicesException.class)
-    public void saveMoreThanTenPeripheralDevicesShouldThrowCustomException() throws MoreThanTenDevicesException, ModelNotFoundException {
+    public void saveMoreThanTenPeripheralDevicesShouldThrowCustomException()
+            throws MoreThanTenDevicesException, ModelNotFoundException {
         Set<PeripheralDevice> peripheralDevices = Mockito.mock(LinkedHashSet.class);
         Mockito.when(peripheralDevices.size()).thenReturn(10);
         Mockito.when(gatewayMock.getPeripheralDevices()).thenReturn(peripheralDevices);
@@ -90,7 +91,8 @@ public class PeripheralDeviceServiceImplTest {
     }
 
     @Test
-    public void updatePeripheralDeviceShouldWorkCorrectly() throws ClassNotFoundException, MoreThanTenDevicesException, ModelNotFoundException {
+    public void updatePeripheralDeviceShouldWorkCorrectly()
+            throws ClassNotFoundException, MoreThanTenDevicesException, ModelNotFoundException {
         peripheralDeviceService.updatePeripheralDevice(1, peripheralDeviceAddDto);
         Assert.assertEquals(peripheralDevice.getUid(), peripheralDeviceAddDto.getUid());
         Assert.assertEquals(peripheralDevice.getVendor(), peripheralDeviceAddDto.getVendor());
@@ -100,33 +102,39 @@ public class PeripheralDeviceServiceImplTest {
     }
 
     @Test(expected = AssertionError.class)
-    public void saveShouldThrowAssertionErrorWithInvalidDto() throws MoreThanTenDevicesException, ModelNotFoundException {
+    public void saveShouldThrowAssertionErrorWithInvalidDto()
+            throws MoreThanTenDevicesException, ModelNotFoundException {
         peripheralDeviceService.savePeripheralDevice(peripheralDeviceAddDtoInvalid);
     }
 
     @Test(expected = ModelNotFoundException.class)
-    public void saveShouldThrowCustomExceptionWithInvalidGatewayId() throws MoreThanTenDevicesException, ModelNotFoundException {
+    public void saveShouldThrowCustomExceptionWithInvalidGatewayId()
+            throws MoreThanTenDevicesException, ModelNotFoundException {
         Mockito.when(gatewayDaoMock.findById(1)).thenReturn(null);
         peripheralDeviceService.savePeripheralDevice(peripheralDeviceAddDto);
     }
 
     @Test(expected = AssertionError.class)
-    public void updateShouldThrowAssertionErrorWithInvalidDto() throws MoreThanTenDevicesException, ModelNotFoundException {
+    public void updateShouldThrowAssertionErrorWithInvalidDto()
+            throws MoreThanTenDevicesException, ModelNotFoundException {
         peripheralDeviceService.updatePeripheralDevice(1, peripheralDeviceAddDtoInvalid);
     }
 
     @Test(expected = ModelNotFoundException.class)
-    public void getShouldThrowCustomExceptionWithInvalidId() throws ClassNotFoundException, ModelNotFoundException {
+    public void getShouldThrowCustomExceptionWithInvalidId()
+            throws ClassNotFoundException, ModelNotFoundException {
         peripheralDeviceService.getPeripheralDevice(2);
     }
 
     @Test(expected = ModelNotFoundException.class)
-    public void updateShouldThrowCustomExceptionWithInvalidPeripheralDeviceId() throws MoreThanTenDevicesException, ModelNotFoundException {
+    public void updateShouldThrowCustomExceptionWithInvalidPeripheralDeviceId()
+            throws MoreThanTenDevicesException, ModelNotFoundException {
         peripheralDeviceService.updatePeripheralDevice(2, peripheralDeviceAddDto);
     }
 
     @Test(expected = ModelNotFoundException.class)
-    public void updateShouldThrowCustomExceptionWithInvalidGatewayId() throws MoreThanTenDevicesException, ModelNotFoundException {
+    public void updateShouldThrowCustomExceptionWithInvalidGatewayId()
+            throws MoreThanTenDevicesException, ModelNotFoundException {
         Mockito.when(gatewayDaoMock.findById(1)).thenReturn(null);
         peripheralDeviceService.updatePeripheralDevice(1, peripheralDeviceAddDto);
     }
