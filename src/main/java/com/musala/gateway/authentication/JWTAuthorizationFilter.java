@@ -13,9 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static com.musala.gateway.authentication.Constants.HEADER_STRING;
-import static com.musala.gateway.authentication.Constants.SECRET;
-import static com.musala.gateway.authentication.Constants.TOKEN_PREFIX;
+import static com.musala.gateway.authentication.Constants.*;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
